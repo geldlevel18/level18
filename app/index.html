@@ -46,7 +46,9 @@ b,strong{color:var(--ink)}
 .tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:99px;background:#ffffff14;color:var(--cyan);margin-bottom:8px}
 .btn{display:block;width:100%;border:0;border-radius:16px;padding:15px;font-weight:800;font-size:16px;background:var(--lime);color:#111;cursor:pointer;font-family:inherit;margin-top:12px}
 .btn.ghost{background:var(--card2);color:var(--ink)}
-.btn.small{display:inline-block;width:auto;padding:10px 14px;font-size:13px;margin:6px 6px 0 0}
+.btn.small{display:inline-block;width:auto;padding:10px 14px;font-size:13px;margin:6px 6px 0 0;min-height:44px}
+.tile:focus-visible,.flip:focus-visible,.check:focus-visible,.opt:focus-visible,.btn:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+.badge:not(.got){opacity:.55}
 .flip{perspective:900px;margin:10px 0;cursor:pointer}
 .flip .in{position:relative;transition:transform .5s;transform-style:preserve-3d;min-height:124px}
 .flip.f .in{transform:rotateY(180deg)}
@@ -82,7 +84,7 @@ input[type=number],input[type=text]{width:100%;background:var(--card2);border:0;
 .opt{display:block;width:100%;text-align:left;background:var(--card2);border:2px solid transparent;color:var(--ink);padding:14px;border-radius:14px;margin:8px 0;font-size:15px;font-family:inherit;cursor:pointer}
 .opt.r{border-color:var(--lime);background:#c6ff3d22}.opt.w{border-color:var(--red);background:#ff5a5a22}
 .dots{display:flex;gap:6px;margin-bottom:8px}.dots i{flex:1;height:5px;border-radius:5px;background:var(--card2)}.dots i.d{background:var(--lime)}
-.toast{position:fixed;left:50%;bottom:30px;transform:translate(-50%,140px);background:var(--lime);color:#111;font-weight:800;padding:12px 20px;border-radius:99px;transition:.35s;z-index:20;box-shadow:0 10px 30px #0008;white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(140px + env(safe-area-inset-bottom));max-width:86vw;white-space:normal;text-align:center;transform:translate(-50%,140px);background:var(--lime);color:#111;font-weight:800;padding:12px 20px;border-radius:99px;transition:.35s;z-index:20;box-shadow:0 10px 30px #0008}
 .toast.s{transform:translate(-50%,0)}
 .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 .badge{background:var(--card2);border-radius:12px;padding:8px 10px;font-size:13px;opacity:.35}
@@ -459,10 +461,11 @@ const LEVELS=[
  {id:'l5',em:'🏠',t:'Je ouders',s:'Effect thuis'},
  {id:'l6',em:'📊',t:'Budget',s:'Kom je rond?'},
  {id:'l7',em:'👾',t:'Eindbaas',s:'3 levens · tegen de klok'}];
-const BADGES=[['l1','🎂 Volwassen-ready'],['l2','🏥 Zorg-checker'],['l3','🛡️ Klarna-proof'],['l4','💼 Belasting-baas'],['l5','🏠 Thuis-held'],['l6','📊 Budget-pro'],['l7','👑 Geld-legende'],['rk','🧮 Rekenwonder'],['th','🌍 Klaar voor het echte leven']];
+const BADGES=[['l1','🎂 Volwassen-ready'],['l2','🏥 Zorg-checker'],['l3','🛡️ Klarna-proof'],['l4','💼 Belasting-baas'],['l5','🏠 Thuis-held'],['l6','📊 Budget-pro'],['l7','👾 Baas-verslaander'],['rk','🧮 Rekenwonder'],['th','🌍 Klaar voor het echte leven']];
 const KEY='lvl18v2';
 let S={xp:0,done:{},checks:{},flips:{},stars:{},boss:0,rk:{},th:{},name:''};
 try{const s=localStorage.getItem(KEY);if(s)S=Object.assign(S,JSON.parse(s))}catch(e){}
+if(!S||typeof S!=='object')S={};S.xp=Math.max(0,+S.xp||0);['done','checks','flips','stars','rk','th'].forEach(k=>{if(!S[k]||typeof S[k]!=='object'||Array.isArray(S[k]))S[k]={}});if(!Array.isArray(S.wk))delete S.wk;if(S.wc&&typeof S.wc!=='object')delete S.wc;S.boss=+S.boss||0;if(typeof S.name!=='string')S.name='';
 if(S.xp>0)document.body.classList.add('played');
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 const eur=n=>'€ '+Math.round(n).toLocaleString('nl-NL');
@@ -475,12 +478,12 @@ function hud(){if(typeof updL1==='function'&&$('l1btn'))try{updL1()}catch(e){}co
  if(S.name)$('hi').innerHTML='Hé '+esc(S.name)+'!<br>Jouw geld, jouw game.';
  $('tiles').innerHTML=LEVELS.map((L,i)=>`<div class="tile ${S.done[L.id]?'done':''} ${L.id==='l7'?'boss':''}" onclick="go('${L.id}')"><span class="n">${L.id==='l7'?'BOSS':'LVL '+(i+1)}</span><div class="em">${L.em}</div><div><h3>${L.t}</h3><small>${L.s}</small>${CH[L.id]?'<div class="stars">'+starHTML(S.stars[L.id]||0)+'</div>':''}</div></div>`).join('');
  if($('rkTiles'))$('rkTiles').innerHTML=rkTiles();if($('thTiles'))$('thTiles').innerHTML=thTiles();$('badges').innerHTML=BADGES.map(([k,t])=>`<span class="badge ${S.done[k]?'got':''}">${t}</span>`).join('');
- const tot=Object.values(S.stars).reduce((a,b)=>a+b,0);$('certWrap').innerHTML=n===LEVELS.length?`<div class="cert"><div style="font-size:44px">👑</div><h2>Geld-legende</h2><p style="margin-top:6px"><b>${esc(S.name||'Jij')}</b> heeft alle 7 levels van Level 18 gehaald met <b>${S.xp} XP</b> en <b>${tot}/15 ⭐</b>.</p><button class="btn" onclick="L18X.diploma()">🎓 Download of deel je diploma</button></div>`:'';if(window.L18X)L18X.home();}
+ const tot=Object.values(S.stars).reduce((a,b)=>a+b,0);$('certWrap').innerHTML=n===LEVELS.length?`<div class="cert"><div style="font-size:44px">👑</div><h2>Geld-legende</h2><p style="margin-top:6px"><b>${S.name?esc(S.name):'Jij'}</b> ${S.name?'heeft':'hebt'} alle 7 levels van Level 18 gehaald met <b>${S.xp} XP</b> en <b>${tot}/15 ⭐</b>.</p><button class="btn" onclick="L18X.diploma()">🎓 Download of deel je diploma</button></div>`:'';if(window.L18X)L18X.home();}
 function finish(id,n){if(S.done[id]){toast('Al gehaald ✓');go('home');return}S.done[id]=1;addXP(n,'🏅 Badge + '+n+' XP');confetti();setTimeout(()=>go('home'),900)}
 function tab(id){go(id)}
-function go(id){document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===id||(id!=='start'&&id!=='hulp'&&b.dataset.t==='home')));document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$(id).classList.add('on');window.scrollTo(0,0);if(id==='l7')quiz();else clearInterval(tmr);if(id==='home')hud()}
+function go(id){document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===id||(id!=='start'&&id!=='hulp'&&b.dataset.t==='home')));document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));$(id).classList.add('on');window.scrollTo(0,0);if(id==='l7')bossStart();else clearInterval(tmr);if(id==='home')hud();const h=$(id).querySelector('h2');if(h&&id!=='start'){h.setAttribute('tabindex','-1');try{h.focus({preventScroll:true})}catch(e){}}}
 function resetAll(){if(!$('rs')){const d=document.createElement('div');d.id='rs';d.className='result warn';d.innerHTML='Alles wissen en opnieuw beginnen? <button class="btn small" onclick="doReset()">Ja, wissen</button><button class="btn small ghost" onclick="this.parentNode.remove()">Nee</button>';document.querySelector('#home .foot').before(d)}}
-function doReset(){S={xp:0,done:{},checks:{},flips:{},stars:{},boss:0,rk:{},th:{},name:''};save();location.reload()}
+function doReset(){S={xp:0,done:{},checks:{},flips:{},stars:{},boss:0,rk:{},th:{},name:''};save();try{localStorage.removeItem('lvl18org')}catch(e){}location.reload()}
 async function share(){const u=location.href.split('#')[0];try{if(navigator.share){await navigator.share({title:'Level 18',text:'Speel Level 18: alles over geld als je 18 wordt',url:u});return}}catch(e){}
  try{await navigator.clipboard.writeText(u);toast('🔗 Link gekopieerd!')}catch(e){toast('Kopieer de link uit je adresbalk')}}
 function startGame(){S.name=$('nm').value.trim().slice(0,20);save();$('intro').classList.remove('on');hud();toast('Let\'s go'+(S.name?', '+S.name:'')+'! 🚀')}
@@ -584,19 +587,23 @@ const CH={
 const CHT={l2:'Zorg-challenge',l3:'Klarna-challenge',l4:'Bijbaan-challenge',l5:'Ouders-challenge',l6:'Budget-challenge'};
 function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a}
 let C=null;
-function chal(id){C={id,queue:shuf(CH[id].map((_,i)=>i)),mist:0,done:0,missed:{}};$('chT').textContent=CHT[id];$('chBack').onclick=()=>go(id);go('ch');chQ()}
+function nextStep(){const L=LEVELS.filter(x=>x.id!=='l7').find(x=>!S.done[x.id])||LEVELS.filter(x=>CH[x.id]&&x.id!=='l7').sort((a,b)=>(S.stars[a.id]||0)-(S.stars[b.id]||0))[0];const left=LEVELS.filter(x=>!S.done[x.id]).length;
+ if(!left)return `<div class="card" style="background:var(--card2);margin-top:12px"><h3>🎓 Wat nu?</h3><p style="margin-top:6px">Alle 7 levels gehaald! Download je diploma of speel voor meer sterren.</p><button class="btn small" onclick="L18X.diploma()">🎓 Mijn diploma</button></div>`;
+ const nl=LEVELS.find(x=>!S.done[x.id]&&x.id!=='l7');const tgt=nl||(S.done.l7?L:LEVELS.find(x=>x.id==='l7'));
+ return `<div class="card" style="background:var(--card2);margin-top:12px"><h3>➡️ Wat nu?</h3><p style="margin-top:6px">Nog ${left} level${left===1?'':'s'} tot je diploma.</p><button class="btn small" onclick="go('${tgt.id}')">Speel nu: ${tgt.em} ${tgt.t}${S.stars[tgt.id]?' ('+S.stars[tgt.id]+' ⭐)':''} →</button></div>`}
+function chal(id){C={id,queue:shuf(CH[id].map((_,i)=>i)),mist:0,done:0,n:0,missed:{}};$('chT').textContent=CHT[id];$('chBack').onclick=()=>go(id);go('ch');chQ()}
 function chQ(){const el=$('chBox');
  if(!C.queue.length){const st=C.mist===0?3:C.mist===1?2:1,old=S.stars[C.id]||0,id=C.id;
   if(st>old){S.stars[id]=st;S.done[id]=1;addXP(20*(st-old),(old?'⬆️ Beter! +':'🏅 Badge + ')+20*(st-old)+' XP');confetti()}else{S.done[id]=1;save();hud()}
-  el.innerHTML=`<div style="text-align:center"><div class="stars" style="font-size:44px">${starHTML(st)}</div><h2 style="margin-top:8px">${st===3?'Perfect!':st===2?'Bijna perfect!':'Gehaald!'}</h2><p>${C.mist===0?'Alles in één keer goed.':C.mist+' fout'+(C.mist>1?'en':'')+'. Probeer het opnieuw voor ⭐⭐⭐.'}</p>${old&&st<=old?'<p class="tiny">Je beste score blijft '+old+' ⭐</p>':''}</div>${st<3?'<button class="btn" onclick="chal(\''+id+'\')">🔁 Nog een keer voor 3 sterren</button>':''}<button class="btn ${st<3?'ghost':''}" onclick="go('home')">Naar home</button>`;return}
+  el.innerHTML=`<div style="text-align:center"><div class="stars" style="font-size:44px">${starHTML(st)}</div><h2 style="margin-top:8px">${st===3?'Perfect!':st===2?'Bijna perfect!':Object.keys(C.missed).length>=CH[id].length?'Doorgekomen, maar nog niet sterk':'Gehaald, maar het kan beter'}</h2><p>${C.mist===0?'Alles in één keer goed.':C.mist+' fout'+(C.mist>1?'en':'')+'. Probeer het opnieuw voor ⭐⭐⭐.'}</p>${Object.keys(C.missed).length?'<div style="text-align:left;margin-top:10px"><p class="tiny"><b>Deze gingen eerst fout:</b></p>'+Object.keys(C.missed).map(k=>'<p class="tiny" style="margin-top:6px">❌ '+CH[id][k][0]+'<br>✅ '+CH[id][k][2]+'</p>').join('')+'</div>':''}${old&&st<=old?'<p class="tiny">Je beste score blijft '+old+' ⭐</p>':''}</div>${st<3?'<button class="btn" onclick="chal(\''+id+'\')">🔁 Nog een keer voor 3 sterren</button>':''}<button class="btn ${st<3?'ghost':''}" onclick="go('home')">Naar home</button>`+nextStep();return}
  const qi=C.queue[0],q=CH[C.id][qi],opts=shuf(q[1].map((t,k)=>({t,ok:k===0})));
- el.innerHTML=`<div class="dots">${CH[C.id].map((_,k)=>`<i class="${k<C.done?'d':''}"></i>`).join('')}</div><p class="tiny">${C.missed[qi]?'🔁 Herkansing':'Vraag '+(C.done+1)+' van '+CH[C.id].length}</p><div class="q">${q[0]}</div>`+
+ el.innerHTML=`<div class="dots">${CH[C.id].map((_,k)=>`<i class="${k<C.done?'d':''}"></i>`).join('')}</div><p class="tiny">${C.missed[qi]?'🔁 Herkansing':'Vraag '+(C.n+1)+' van '+CH[C.id].length}</p><div class="q">${q[0]}</div>`+
   opts.map(o=>`<button class="opt" data-ok="${o.ok?1:0}">${o.t}</button>`).join('')+'<div id="chx"></div>';
  el.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(b.disabled)return;el.querySelectorAll('.opt').forEach(x=>{x.disabled=true;if(x.dataset.ok==='1')x.classList.add('r')});
-  const ok=b.dataset.ok==='1';C.queue.shift();
+  const ok=b.dataset.ok==='1';C.queue.shift();if(!C.missed[qi])C.n++;
   if(ok){C.done++;toast('✅ Goed!')}else{b.classList.add('w');C.mist++;C.missed[qi]=1;C.queue.push(qi);toast('❌ Komt straks terug')}
-  $('chx').innerHTML=`<p style="margin-top:10px">${q[2]}</p><button class="btn" onclick="chQ()">${C.queue.length?'Volgende →':'Bekijk je sterren'}</button>`})}
-function starHTML(n){return [1,2,3].map(i=>i<=n?'★':'<span class="off">★</span>').join('')}
+  $('chx').innerHTML=`<p style="margin-top:10px">${q[2]}</p><button class="btn" onclick="chQ()">${C.queue.length?'Volgende →':'Bekijk je sterren'}</button>`;try{$('chx').scrollIntoView({block:'nearest',behavior:'smooth'})}catch(e){}})}
+function starHTML(n){return '<span role="img" aria-label="'+n+' van 3 sterren">'+[1,2,3].map(i=>i<=n?'<span aria-hidden="true">★</span>':'<span class="off" aria-hidden="true">★</span>').join('')+'</span>'}
 
 /* ===== EINDBAAS ===== */
 const Q=[
@@ -615,18 +622,21 @@ const Q=[
 ['Je verdient € 18.000 per jaar. Kun je zorgtoeslag krijgen?',['Waarschijnlijk wel, de grens is € 40.857','Nee, alleen zonder baan','Nee, pas vanaf 21'],'Onder de inkomens- en vermogensgrens kan het. Check het met een proefberekening.'],
 ['Je werkte tot maart bij baan A, vanaf april bij baan B. Korting bij allebei?',['Ja, want na elkaar','Nee, nooit','Alleen bij baan B'],'Alleen tegelijk mag het niet.']];
 const NQ=8,LIVES=3,TIME=20;let B=null,tmr=null;
-function quiz(){clearInterval(tmr);B={qs:shuf(Q.map((_,i)=>i)).slice(0,NQ),i:0,lives:LIVES,score:0,xp:0};bossQ()}
+function bossStart(){clearInterval(tmr);const el=$('quiz');el.innerHTML=`<div class="bossStart" style="text-align:center"><div style="font-size:54px">👾</div><h3>Klaar voor de eindbaas?</h3><p class="tiny" style="margin-top:6px">8 vragen · 3 ❤️ · 20 seconden per vraag. De klok start pas als jij op Start tikt.</p>${S.boss?'<p class="tiny">Jouw record: '+S.boss+' snelheidspunten</p>':''}<button class="btn" id="bossGo" onclick="quiz()">▶️ Start!</button><button class="btn ghost" onclick="quiz(true)">Zonder tijd spelen (geen snelheidspunten)</button></div>`}
+function quiz(noTime){clearInterval(tmr);B={qs:shuf(Q.map((_,i)=>i)).slice(0,NQ),i:0,lives:LIVES,score:0,xp:0,noTime:!!noTime};bossQ()}
 function bossQ(){clearInterval(tmr);const el=$('quiz');
- if(B.lives<=0||B.i>=NQ){const win=B.lives>0;el.innerHTML=`<div style="text-align:center"><div style="font-size:60px">${win?'👑':'💀'}</div><div class="big-n">${B.score}/${NQ}</div><p>${win?'Eindbaas verslagen met '+B.lives+' ❤️ over!':'Game over: je levens zijn op. Speel de challenges en probeer opnieuw.'}</p>${win?'<p class="tiny">Bonus voor snelheid: '+B.xp+' XP</p>':''}</div>${win?'<button class="btn" onclick="L18X.diploma()">🎓 Mijn diploma</button>':''}<button class="btn" onclick="quiz()">${win?'Nog een keer':'Opnieuw proberen'}</button><button class="btn ghost" onclick="go('home')">Naar home</button>`;
-  if(win){if(!S.done.l7){S.done.l7=1;addXP(100+B.xp,'👑 Eindbaas verslagen! +'+(100+B.xp)+' XP');confetti();if(window.L18X)setTimeout(L18X.diploma,1500)}else{const best=S.boss||0;if(B.xp>best)toast('Nieuw snelheidsrecord!');}S.boss=Math.max(S.boss||0,B.xp);save();hud()}return}
+ if(B.lives<=0||B.i>=NQ){const win=B.lives>0;el.innerHTML=`<div style="text-align:center"><div style="font-size:60px">${win?'👑':'💀'}</div><div class="big-n">${B.score}/${NQ}</div><p>${win?'Eindbaas verslagen met '+B.lives+' ❤️ over!':'Game over: je levens zijn op. Speel de challenges en probeer opnieuw.'}</p>${win?'<p class="tiny">Bonus voor snelheid: '+B.xp+' XP</p>':''}</div>${win?'<button class="btn" onclick="L18X.diploma()">🎓 Mijn diploma</button>':''}<button class="btn" onclick="bossStart()">${win?'Nog een keer':'Opnieuw proberen'}</button><button class="btn ghost" onclick="go('home')">Naar home</button><div id="bossNext"></div>`;
+  if(win){if(!S.done.l7){S.done.l7=1;addXP(100+B.xp,'👑 Eindbaas verslagen! +'+(100+B.xp)+' XP');confetti();if(window.L18X&&LEVELS.every(L=>S.done[L.id]))setTimeout(L18X.diploma,1500)}else{const best=S.boss||0;if(B.xp>best&&!B.noTime){addXP(10,'⚡ Nieuw snelheidsrecord! +10 XP')}}S.boss=Math.max(S.boss||0,B.xp);save();hud()}
+  const bn=$('bossNext');if(bn)bn.innerHTML=(win?'':'<p class="tiny" style="margin-top:10px">Tip: oefen eerst de levels, daar staan alle antwoorden in.</p>')+nextStep();return}
  const q=Q[B.qs[B.i]],opts=shuf(q[1].map((t,k)=>({t,ok:k===0})));let left=TIME*10;
- el.innerHTML=`<div class="hud2"><span class="hearts">${'❤️'.repeat(B.lives)}${'🖤'.repeat(LIVES-B.lives)}</span><span class="tiny">Vraag ${B.i+1}/${NQ}</span></div><div class="timer"><i id="tbar" style="width:100%"></i></div><div class="q">${q[0]}</div>`+opts.map(o=>`<button class="opt" data-ok="${o.ok?1:0}">${o.t}</button>`).join('')+'<div id="qx"></div>';
+ el.innerHTML=`<div class="hud2"><span class="hearts" role="img" aria-label="${B.lives} van ${LIVES} levens">${'❤️'.repeat(B.lives)}${'🖤'.repeat(LIVES-B.lives)}</span><span class="tiny">Vraag ${B.i+1}/${NQ}</span></div>${B.noTime?'<p class="tiny">⏸️ Zonder tijd</p>':'<div class="timer" role="timer" aria-label="20 seconden per vraag"><i id="tbar" style="width:100%"></i></div>'}<div class="q">${q[0]}</div>`+opts.map(o=>`<button class="opt" data-ok="${o.ok?1:0}">${o.t}</button>`).join('')+'<div id="qx"></div>';
  const btns=el.querySelectorAll('.opt');
  const done=(b)=>{clearInterval(tmr);if(btns[0].disabled)return;btns.forEach(x=>{x.disabled=true;if(x.dataset.ok==='1')x.classList.add('r')});
-  if(b&&b.dataset.ok==='1'){B.score++;const bonus=Math.round(left/(TIME*10)*10);B.xp+=bonus;toast('✅ Goed! +'+bonus+' snelheid')}else{if(b)b.classList.add('w');B.lives--;toast(b?'💔 Leven kwijt':'⏰ Te laat! Leven kwijt')}
-  const hs=document.querySelector('#quiz .hearts');if(hs)hs.innerHTML='❤️'.repeat(Math.max(0,B.lives))+'🖤'.repeat(LIVES-Math.max(0,B.lives));B.i++;$('qx').innerHTML=`<p style="margin-top:10px">${q[2]}</p><button class="btn" onclick="bossQ()">${B.lives<=0?'Bekijk resultaat':B.i<NQ?'Volgende →':'Bekijk resultaat'}</button>`};
+  if(b&&b.dataset.ok==='1'){B.score++;const bonus=B.noTime?0:Math.round(left/(TIME*10)*10);B.xp+=bonus;toast(B.noTime?'✅ Goed!':'✅ Goed! +'+bonus+' snelheid')}else{if(b)b.classList.add('w');B.lives--;toast(b?'💔 Leven kwijt':'⏰ Te laat! Leven kwijt')}
+  const hs=document.querySelector('#quiz .hearts');if(hs)hs.setAttribute('aria-label',Math.max(0,B.lives)+' van '+LIVES+' levens');if(hs)hs.innerHTML='❤️'.repeat(Math.max(0,B.lives))+'🖤'.repeat(LIVES-Math.max(0,B.lives));B.i++;$('qx').innerHTML=`<p style="margin-top:10px">${q[2]}</p><button class="btn" onclick="bossQ()">${B.lives<=0?'Bekijk resultaat':B.i<NQ?'Volgende →':'Bekijk resultaat'}</button>`;try{$('qx').scrollIntoView({block:'nearest',behavior:'smooth'})}catch(e){}};
  btns.forEach(b=>b.onclick=()=>done(b));
- tmr=setInterval(()=>{left--;const t=$('tbar');if(t)t.style.width=(left/(TIME*10)*100)+'%';if(left<=0)done(null)},100)}
+ try{el.scrollIntoView({block:'start',behavior:'smooth'})}catch(e){}
+ if(!B.noTime)tmr=setInterval(()=>{left--;const t=$('tbar');if(t)t.style.width=(left/(TIME*10)*100)+'%';if(left<=0)done(null)},100)}
 
 /* ===== REKENLAB: belasting & toeslagen 2026 ===== */
 const AHK=x=>x<=R.ahk_grens?R.ahk_max:x<R.s2?Math.max(0,R.ahk_max-R.ahk_af*(x-R.ahk_grens)):0;
@@ -865,10 +875,10 @@ const RK=[
 let RKcur=null;
 function openRK(id){RKcur=RK.find(r=>r.id===id);$('rkT').textContent=RKcur.em+' '+RKcur.t;$('rkBox').innerHTML=RKcur.html();
  $('rkBox').querySelectorAll('.seg').forEach(s=>s.querySelectorAll('button').forEach(b=>b.onclick=()=>{s.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');s.dataset.v=b.dataset.v;rkCalc()}));
- $('rkBox').querySelectorAll('input').forEach(i=>i.oninput=rkCalc);go('rk');rkCalc()}
+ $('rkBox').querySelectorAll('input').forEach(i=>i.oninput=()=>{rkTouch[RKcur.id]=1;rkCalc()});$('rkBox').querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{rkTouch[RKcur.id]=1}));go('rk');rkCalc()}
 let rkTouch={};
 function rkCalc(e){RKcur.calc();}
-function rkDone(){if(!S.rk)S.rk={};if(!S.rk[RKcur.id]){S.rk[RKcur.id]=1;addXP(15,'🧮 +15 XP');
+function rkDone(){if(!S.rk)S.rk={};if(S.rk[RKcur.id]){toast('Al gehaald ✓');go('home');return}if(!rkTouch[RKcur.id]){toast('Vul eerst iets van jezelf in ✍️');return}if(!S.rk[RKcur.id]){S.rk[RKcur.id]=1;addXP(15,'🧮 +15 XP');
  if(RK.every(r=>S.rk[r.id])){S.done.rk=1;save();setTimeout(()=>{toast('🏅 Badge: Rekenwonder!');confetti()},900)}}go('home')}
 function rkTiles(){if(!S.rk)S.rk={};return RK.map(r=>`<div class="tile ${S.rk[r.id]?'done':''}" onclick="openRK('${r.id}')"><div class="em">${r.em}</div><div><h3>${r.t}</h3><small>${r.s}</small></div></div>`).join('')}
 
@@ -1362,7 +1372,7 @@ function stukjes(s){const r=s.raw.toLowerCase();if(!/\?|kan ik|moet ik|hoe |wat 
 function vraagHTML(s){const Q=vragen(s);if(!Q.length)return '';const v=Q[0];
  return `<div class="vraag" id="vraag"><p class="tiny" style="color:var(--lime);font-weight:800">🎯 MAAK JE PLAN PRECIEZER${Q.length>1?' · nog '+Q.length+' vragen':''}</p><h3>${v.q}</h3>
  <div class="opts">${v.o.map(([l,a])=>`<button data-a="${a}">${l}</button>`).join('')}</div>
- <div class="own"><input id="ownIn" type="text" maxlength="120" placeholder="✍️ Of vul zelf in…"><button class="btn small" id="ownGo">OK</button></div>
+ <div class="own"><input id="ownIn" type="text" maxlength="120" aria-label="Eigen antwoord" placeholder="✍️ Of vul zelf in…"><button class="btn small" id="ownGo">OK</button></div>
  <button class="skip" id="skipQ" data-k="${v.k}">Overslaan →</button></div>`}
 function bindVraag(){const b=$('vraag');if(!b)return;
  const add=a=>{const t=$('sit').value.trim();$('sit').value=(t?(/[.!?]$/.test(t)?t:t+'.')+' ':'')+a.charAt(0).toUpperCase()+a.slice(1)+'.';runScan(null,true)};
@@ -1408,8 +1418,15 @@ function setSit(i){$('sit').value=MOMENTEN[i][2];runScan()}
  let o={org,hulp};if(!org){try{o=JSON.parse(localStorage.getItem('lvl18org')||'{}')}catch(e){o={}}}
  if(o&&o.org){const b=$('orgBanner');b.className='prog';b.innerHTML='<span class="tiny">Aangeboden door</span> <b></b>';b.querySelector('b').textContent=o.org;
   if(o.hulp){const a=document.createElement('a');a.className='link';a.href=o.hulp;a.target='_blank';a.rel='noopener';a.innerHTML='<span><span class="t"></span><small>Jouw hulp dichtbij: hier kun je terecht</small></span>→';a.querySelector('.t').textContent=o.org;a.style.border='2px solid var(--lime)';$('orgHulp').appendChild(a)}}}catch(e){}})();
-if('serviceWorker' in navigator){try{navigator.serviceWorker.register('sw.js',{scope:''}).catch(()=>{})}catch(e){}}
+if('serviceWorker' in navigator){try{navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}}
 
+/* toetsenbord en screenreader: tegels, kaarten en vinkjes bedienbaar maken */
+(function(){const SEL='.tile[onclick],.flip[onclick],.check[onclick],.check[data-i]';const fix=root=>{(root.querySelectorAll?root:document).querySelectorAll(SEL).forEach(el=>{if(el.tagName==='BUTTON'||el.dataset.kb)return;el.dataset.kb=1;if(!el.hasAttribute('tabindex'))el.setAttribute('tabindex','0');if(!el.hasAttribute('role'))el.setAttribute('role',el.classList.contains('check')?'checkbox':'button');if(el.classList.contains('check'))el.setAttribute('aria-checked',el.classList.contains('on')||el.classList.contains('ok')?'true':'false')})};
+ document.addEventListener('keydown',e=>{const t=e.target;if((e.key==='Enter'||e.key===' ')&&t&&t.matches&&t.matches(SEL)&&t.tagName!=='BUTTON'){e.preventDefault();t.click()}});
+ try{new MutationObserver(()=>{fix(document);document.querySelectorAll('.check[data-kb]').forEach(el=>el.setAttribute('aria-checked',el.classList.contains('on')||el.classList.contains('ok')?'true':'false'))}).observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:['class']})}catch(e){}
+ fix(document);
+ const lab=(id,t)=>{const e=$(id);if(e&&!e.getAttribute('aria-label'))e.setAttribute('aria-label',t)};lab('sit','Vertel je situatie');lab('nm','Je voornaam');
+ document.querySelectorAll('nav.tabs button').forEach(b=>b.addEventListener('click',()=>setTimeout(()=>document.querySelectorAll('nav.tabs button').forEach(x=>x.toggleAttribute('aria-current',x.classList.contains('on'))),0)));})();
 hud();
 
 </script>
@@ -1434,7 +1451,7 @@ hud();
   function stars() { var s = st().stars || {}, t = 0; for (var k in s) t += s[k]; return t; }
   function levelsDone() { var d = st().done || {}; return LEVELS.filter(function (L) { return d[L.id]; }).length; }
   function badgesGot() { var d = st().done || {}; return BADGES.filter(function (b) { return d[b[0]]; }).map(function (b) { return b[1]; }); }
-  function nameOf() { var n = (st().name || '').trim(); return n ? n.slice(0, 20) : 'Speler'; }
+  function nameOf() { var n = (st().name || '').trim(); return n ? n.slice(0, 30) : 'Speler'; }
 
   // ISO-weeknummer als oplopend getal (jaar*100+week), b.v. 202647
   function weekId(d) {
@@ -1501,12 +1518,12 @@ hud();
       '<div class="card" style="margin:0 0 14px">' +
       '<span class="tag" style="color:' + C.cyan + '">Week ' + (weekId() % 100) + '</span>' +
       '<h3 style="margin-top:6px">' + c[0] + ' Geldchallenge: ' + e(c[1]) + '</h3><p style="margin:6px 0 10px">' + e(c[2]) + '</p>' +
-      (done ? '<p class="tiny">✓ Gedaan' + (typeof done === 'string' ? ': <i>' + e(done) + '</i>' : '') + '. Volgende week een nieuwe.</p>'
-        : (c[1] === 'Weet waar hulp is' ? '<p style="margin:0 0 8px"><a class="btn small ghost" href="https://www.geldfit.nl/bij-jou-in-de-buurt/" target="_blank" rel="noopener">🔎 Zoek hulp in jouw gemeente</a></p>' : '') +
+      (done ? '<p class="tiny">✓ Gedaan' + (typeof done === 'string' ? ': <i>' + e(done) + '</i>' : '') + '. Volgende week een nieuwe.</p>' + (c[1] === 'Weet waar hulp is' ? '<p style="margin:0 0 8px"><a class="btn small ghost" href="https://geldfit.nl/bij-jou-in-de-buurt/" target="_blank" rel="noopener">🔎 Zoek hulp in jouw gemeente</a></p>' : '')
+        : (c[1] === 'Weet waar hulp is' ? '<p style="margin:0 0 8px"><a class="btn small ghost" href="https://geldfit.nl/bij-jou-in-de-buurt/" target="_blank" rel="noopener">🔎 Zoek hulp in jouw gemeente</a></p>' : '') +
           '<label class="tiny" for="l18wa" style="display:block;margin-bottom:4px"><b>' + e(c[3] || 'Wat heb je gedaan of ontdekt?') + '</b></label>' +
-          '<input id="l18wa" maxlength="80" placeholder="Typ je antwoord…" oninput="document.getElementById(\'l18wb\').disabled=this.value.trim().length<2" onkeydown="if(event.key===\'Enter\'){event.preventDefault();L18X.doWeek()}" enterkeyhint="done" style="width:100%;padding:10px;border-radius:10px;border:0;margin-bottom:8px;font-size:16px">' +
+          '<input id="l18wa" maxlength="80" placeholder="Typ je antwoord…" oninput="document.getElementById(\'l18wb\').disabled=this.value.trim().length<2" onkeydown="if(event.key===\'Enter\'){event.preventDefault();L18X.doWeek()}" enterkeyhint="done" style="width:100%;min-height:44px;padding:10px;border-radius:10px;border:0;margin-bottom:8px;font-size:16px">' +
           '<button id="l18wb" class="btn small" disabled onclick="L18X.doWeek()">Klaar! +10 XP</button><p class="tiny" style="margin-top:4px">Je antwoord blijft alleen op je eigen telefoon.</p>') +
-      '<p class="tiny" style="margin-top:10px">' + dots + '<br>🔥 ' + si.now + ' ' + (si.now === 1 ? 'week' : 'weken') + ' op rij · record ' + si.best +
+      '<p class="tiny" style="margin-top:10px">' + dots + '<br>' + (si.total ? '🔥 ' + si.now + ' ' + (si.now === 1 ? 'week' : 'weken') + ' op rij · record ' + si.best : '🔥 Start je reeks deze week!') +
       '<br>Eén week overslaan mag: je reeks blijft staan.</p>' +
       '<button class="btn small ghost" onclick="L18X.wrapped()">🎬 Mijn Level 18 Wrapped</button> ' +
       '<button class="btn small ghost" onclick="L18X.klas()">🏫 ' + (s.klas ? 'Klas ' + e(s.klas) : 'Klascode') + '</button>' +
@@ -1517,12 +1534,17 @@ hud();
   function modal(html) {
     close();
     var m = document.createElement('div'); m.id = 'l18m';
-    m.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#0f0d1a;overflow:auto;padding:20px 16px 40px;display:flex;flex-direction:column;align-items:center';
-    m.innerHTML = '<div style="width:100%;max-width:480px">' + html + '<button class="btn ghost" onclick="L18X.close()">Sluiten</button></div>';
+    m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true');
+    m.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#0f0d1a;overflow:auto;padding:20px 16px calc(100px + env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center';
+    m.innerHTML = '<div style="width:100%;max-width:480px;position:relative"><button aria-label="Sluiten" onclick="L18X.close()" style="position:sticky;top:0;float:right;width:44px;height:44px;border-radius:50%;border:0;background:#ffffff22;color:#fff;font-size:20px;cursor:pointer;z-index:2">✕</button>' + html + '<button class="btn ghost" onclick="L18X.close()">Sluiten</button></div>';
     m.addEventListener('click', function (ev) { if (ev.target === m) close(); });
+    lastFocus = document.activeElement;
     document.body.appendChild(m);
+    var h = m.querySelector('h2'); if (h) { h.setAttribute('tabindex', '-1'); h.setAttribute('id', 'l18mh'); m.setAttribute('aria-labelledby', 'l18mh'); try { h.focus({ preventScroll: true }); } catch (er) {} }
   }
-  function close() { var m = document.getElementById('l18m'); if (m) m.remove(); }
+  var lastFocus = null;
+  function close() { var m = document.getElementById('l18m'); if (m) { m.remove(); if (lastFocus && lastFocus.focus) try { lastFocus.focus(); } catch (er) {} } }
+  document.addEventListener('keydown', function (ev) { if (ev.key === 'Escape' && document.getElementById('l18m')) { ev.preventDefault(); close(); } });
 
   /* ---------- 3. Klassen-modus (geen server) ---------- */
   // FNV-1a 32-bit -> 4 tekens (zonder verwarrende 0/O/1/I)
@@ -1550,13 +1572,13 @@ hud();
     var s = st(), k = s.klas || '';
     modal('<h2>🏫 Klassen-modus</h2>' +
       '<p style="margin:8px 0">Leerling: vul de klascode van je docent in. Er wordt <b>niets</b> verstuurd; je krijgt straks een controlecode om te laten zien.</p>' +
-      '<input id="l18k" maxlength="12" value="' + e(k) + '" placeholder="b.v. 4HAVOB" style="width:100%;padding:12px;border-radius:12px;border:0;font-size:18px;margin-bottom:8px">' +
+      '<label for="l18k" class="tiny">Klascode van je docent</label>' + '<input id="l18k" aria-label="Klascode" maxlength="12" value="' + e(k) + '" placeholder="b.v. 4HAVOB" style="width:100%;padding:12px;border-radius:12px;border:0;font-size:18px;margin-bottom:8px">' +
       '<button class="btn" onclick="L18X.setKlas()">Opslaan</button>' +
       (k ? '<div class="card" style="text-align:center;margin:12px 0"><p class="tiny">Jouw controlecode (laat zien aan je docent)</p><div style="font:800 28px ' + FONT + ';color:' + C.lime + ';letter-spacing:2px">' + makeCode(k) + '</div><p class="tiny">' + levelsDone() + ' levels · ' + stars() + '/15 ⭐ · eindbaas ' + ((s.done || {}).l7 ? '✓' : '✗') + '</p></div>' : '') +
-      '<details style="margin:14px 0"><summary style="cursor:pointer;font-weight:700">Ik ben docent: code controleren</summary>' +
+      '<details style="margin:14px 0"><summary style="cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center">Ik ben docent: code controleren</summary>' +
       '<p class="tiny" style="margin:8px 0">Kies zelf een klascode en geef die aan de klas. Typ hieronder je klascode + de code van een leerling.</p>' +
-      '<input id="l18dk" placeholder="Klascode" style="width:100%;padding:10px;border-radius:10px;border:0;margin-bottom:6px">' +
-      '<input id="l18dc" placeholder="L18-7-15-1-XXXX" style="width:100%;padding:10px;border-radius:10px;border:0;margin-bottom:6px">' +
+      '<input id="l18dk" aria-label="Klascode (docent)" placeholder="Klascode" style="width:100%;padding:10px;border-radius:10px;border:0;margin-bottom:6px">' +
+      '<input id="l18dc" aria-label="Code van de leerling" placeholder="L18-7-15-1-XXXX" style="width:100%;padding:10px;border-radius:10px;border:0;margin-bottom:6px">' +
       '<button class="btn small" onclick="L18X.check()">Controleer</button><div id="l18dr" style="margin-top:8px"></div></details>');
   }
   function setKlas() { var v = normKlas(document.getElementById('l18k').value); st().klas = v; persist(); say(v ? 'Klascode opgeslagen' : 'Klascode gewist'); klas(); home(); }
@@ -1570,7 +1592,7 @@ hud();
   /* ---------- Wrapped ---------- */
   function wrapped() {
     var s = st(), si = streakInfo(), sr = stars(), lv = levelsDone();
-    var rk = Object.keys(s.rk || {}).length, th = Object.keys(s.th || {}).length, wc = Object.keys(s.wc || {}).length;
+    var rk = Object.keys(s.rk || {}).length, th = Object.keys(s.th || {}).filter(function (k) { return s.th[k]; }).length, wc = Object.keys(s.wc || {}).length;
     var bestL = null, bs = 0; LEVELS.forEach(function (L) { var v = (s.stars || {})[L.id] || 0; if (v > bs) { bs = v; bestL = L; } });
     var type = rk >= 3 ? ['🧮', 'De Rekenaar', 'Jij wilt het precies weten. Eerst rekenen, dan beslissen.']
       : th >= 6 ? ['🧭', 'De Ontdekker', 'Jij kijkt verder dan geld: wonen, werk, je rechten.']
@@ -1642,9 +1664,10 @@ hud();
   function diploma() {
     var cv = drawDiploma();
     modal('<h2 style="margin-bottom:10px">🎓 Jouw Level 18-diploma</h2>' +
-      '<label class="tiny">Naam op diploma (optioneel)</label>' +
-      '<input id="l18n" maxlength="20" value="' + e(st().name || '') + '" placeholder="Speler" style="width:100%;padding:10px;border-radius:10px;border:0;margin:4px 0 10px">' +
-      '<button class="btn small ghost" onclick="L18X.rename()">Naam aanpassen</button>' +
+      '<label class="tiny" for="l18n"><b>' + (st().name ? 'Naam op je diploma' : '✍️ Zet je naam op je diploma') + '</b></label>' +
+      '<input id="l18n" maxlength="30" value="' + e(st().name || '') + '" placeholder="Je voornaam" oninput="L18X.liveName()" onkeydown="if(event.key===\'Enter\'){event.preventDefault();L18X.rename()}" style="width:100%;padding:12px;border-radius:10px;border:0;margin:4px 0 10px;font-size:18px">' +
+      '<button class="btn small ghost" onclick="L18X.rename()">Naam opslaan</button>' +
+      '<p class="tiny" style="margin-top:6px">' + levelsDone() + '/7 levels · ' + stars() + '/15 ⭐' + (levelsDone() < 7 ? ' · speel alle levels voor een vol diploma' : '') + '</p>' +
       '<div id="l18c" style="margin:12px 0"></div>' +
       '<button class="btn" onclick="L18X.shareDiploma()">📲 Delen</button>' +
       '<button class="btn ghost" onclick="L18X.download()">⬇️ Download PNG</button>');
@@ -1652,9 +1675,12 @@ hud();
     document.getElementById('l18c').appendChild(cv);
     lastBlob = null; cv.toBlob(function (bl) { lastBlob = bl; }, 'image/png');
     if (typeof confetti === 'function') try { confetti(); } catch (er) {}
+    if (!st().name) { var ni = document.getElementById('l18n'); if (ni) try { ni.focus({ preventScroll: true }); } catch (er) {} }
   }
-  function rename() { st().name = document.getElementById('l18n').value.trim().slice(0, 20); persist(); if (typeof hud === 'function') try { hud(); } catch (er) {} diploma(); }
-  function getBlob(cb) { if (lastBlob) return cb(lastBlob); drawDiploma().toBlob(function (b) { lastBlob = b; cb(b); }, 'image/png'); }
+  var nmT = null;
+  function liveName() { clearTimeout(nmT); nmT = setTimeout(function () { var i = document.getElementById('l18n'); if (!i) return; st().name = i.value.trim().slice(0, 30); persist(); var box = document.getElementById('l18c'); if (box) { var cv = drawDiploma(); cv.style.cssText = 'width:100%;height:auto;border-radius:16px;display:block'; box.innerHTML = ''; box.appendChild(cv); lastBlob = null; cv.toBlob(function (bl) { lastBlob = bl; }, 'image/png'); } if (typeof hud === 'function') try { hud(); } catch (er) {} }, 350); }
+  function rename() { st().name = document.getElementById('l18n').value.trim().slice(0, 30); persist(); if (typeof hud === 'function') try { hud(); } catch (er) {} diploma(); say('Naam opgeslagen ✓'); }
+  function getBlob(cb) { var i = document.getElementById('l18n'); if (i && i.value.trim().slice(0, 30) !== (st().name || '')) { st().name = i.value.trim().slice(0, 30); persist(); lastBlob = null; } if (lastBlob) return cb(lastBlob); drawDiploma().toBlob(function (b) { lastBlob = b; cb(b); }, 'image/png'); }
   function download() {
     getBlob(function (b) {
       var u = URL.createObjectURL(b), a = document.createElement('a');
@@ -1677,7 +1703,7 @@ hud();
   }
 
   window.L18X = {
-    diploma: diploma, download: download, shareDiploma: shareDiploma, rename: rename,
+    diploma: diploma, download: download, shareDiploma: shareDiploma, rename: rename, liveName: liveName,
     active: active, doWeek: doWeek, home: home, wrapped: wrapped, wrappedText: wrappedText, shareText: shareText,
     klas: klas, setKlas: setKlas, check: check, verify: verify, makeCode: makeCode,
     streakInfo: streakInfo, weekId: weekId, close: close
