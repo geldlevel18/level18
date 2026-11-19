@@ -256,8 +256,8 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:30}
   <h2>Zorgverzekering & eigen risico</h2>
   <p>Vanaf je 18e betaal je zelf. En de eerste zorgkosten van het jaar ook.</p>
   <div class="card">
-    <label>Hoeveel zorgkosten maak je dit jaar?</label>
-    <input type="range" id="zk" min="0" max="2000" step="25" value="300" oninput="zorg()">
+    <label for="zk">Hoeveel zorgkosten maak je dit jaar?</label>
+    <input type="range" id="zk" min="0" max="2000" step="5" value="300" oninput="zorg()">
     <div class="val">€ <span id="zkv"></span></div>
     <p class="tiny" style="margin-top:4px">Bijv. medicijnen, ziekenhuis, bloedonderzoek. Huisarts telt níet mee.</p>
     <label>Vrijwillig eigen risico erbij (lagere premie, meer risico)</label>
@@ -280,13 +280,13 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:30}
   <h2>Achteraf betalen: de echte prijs</h2>
   <p>Klarna, Riverty, in3… Voelt gratis. Tot je één keer vergeet te betalen.</p>
   <div class="card">
-    <label>Hoeveel aankopen staan er open?</label>
+    <label for="kn">Hoeveel aankopen staan er open?</label>
     <input type="range" id="kn" min="1" max="8" value="3" oninput="klarna()">
     <div class="val"><span id="knv"></span> aankopen</div>
-    <label>Gemiddeld bedrag per aankoop</label>
+    <label for="kb">Gemiddeld bedrag per aankoop</label>
     <input type="range" id="kb" min="20" max="300" step="5" value="60" oninput="klarna()">
     <div class="val">€ <span id="kbv"></span></div>
-    <label>Hoeveel ben je vergeten te betalen?</label>
+    <label for="km">Hoeveel ben je vergeten te betalen?</label>
     <input type="range" id="km" min="0" max="8" value="1" oninput="klarna()">
     <div class="val"><span id="kmv"></span> vergeten</div>
     <div class="stack" id="kstack"></div>
@@ -328,7 +328,7 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:30}
   <h2>Jouw geld raakt ook je ouders</h2>
   <p>Woon je thuis en krijgen je ouders huurtoeslag? Dan telt jouw inkomen boven een grens mee (ben je 23 of ouder, dan je hele inkomen).</p>
   <div class="card">
-    <label>Wat verdien jij per jaar (bruto)?</label>
+    <label for="oi">Wat verdien jij per jaar (bruto)?</label>
     <input type="range" id="oi" min="0" max="15000" step="100" value="4000" oninput="ouders()">
     <div class="val">€ <span id="oiv"></span></div>
     <div class="meter"><div class="fill" id="ofill"></div><div class="mark" id="omark">grens € 6.218</div></div>
@@ -349,18 +349,18 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:30}
   <p>Vul je eigen bedragen in (per maand). Zie meteen of je rondkomt.</p>
   <div class="card">
     <h3 style="color:var(--lime)">Erin 💚</h3>
-    <label>Loon bijbaan (netto)</label><input type="number" inputmode="numeric" id="b1" value="450" oninput="budget()">
-    <label>Zorgtoeslag <small style="color:var(--mut)">(proefberekening op toeslagen.nl)</small></label><input type="number" inputmode="numeric" id="b2" value="0" oninput="budget()">
-    <label>Zakgeld / studiefinanciering / overig</label><input type="number" inputmode="numeric" id="b3" value="0" oninput="budget()">
+    <label for="b1">Loon bijbaan (netto)</label><input type="text" inputmode="decimal" autocomplete="off" id="b1" value="450" oninput="budget()">
+    <label for="b2">Zorgtoeslag <small style="color:var(--mut)">(proefberekening op toeslagen.nl)</small></label><input type="text" inputmode="decimal" autocomplete="off" id="b2" value="0" oninput="budget()">
+    <label for="b3">Zakgeld / studiefinanciering / overig</label><input type="text" inputmode="decimal" autocomplete="off" id="b3" value="0" oninput="budget()">
   </div>
   <div class="card">
     <h3 style="color:var(--pink)">Eruit 💸</h3>
-    <label>Zorgverzekering (premie)</label><input type="number" inputmode="numeric" id="c1" value="150" oninput="budget()">
-    <label>Telefoon</label><input type="number" inputmode="numeric" id="c2" value="20" oninput="budget()">
-    <label>Streaming / abonnementen / gym</label><input type="number" inputmode="numeric" id="c3" value="35" oninput="budget()">
-    <label>Vervoer</label><input type="number" inputmode="numeric" id="c4" value="40" oninput="budget()">
-    <label>Eten, kleding, uitgaan</label><input type="number" inputmode="numeric" id="c5" value="150" oninput="budget()">
-    <label>Afbetalen (Klarna e.d.)</label><input type="number" inputmode="numeric" id="c6" value="0" oninput="budget()">
+    <label for="c1">Zorgverzekering (premie)</label><input type="text" inputmode="decimal" autocomplete="off" id="c1" value="150" oninput="budget()">
+    <label for="c2">Telefoon</label><input type="text" inputmode="decimal" autocomplete="off" id="c2" value="20" oninput="budget()">
+    <label for="c3">Streaming / abonnementen / gym</label><input type="text" inputmode="decimal" autocomplete="off" id="c3" value="35" oninput="budget()">
+    <label for="c4">Vervoer</label><input type="text" inputmode="decimal" autocomplete="off" id="c4" value="40" oninput="budget()">
+    <label for="c5">Eten, kleding, uitgaan</label><input type="text" inputmode="decimal" autocomplete="off" id="c5" value="150" oninput="budget()">
+    <label for="c6">Afbetalen (Klarna e.d.)</label><input type="text" inputmode="decimal" autocomplete="off" id="c6" value="0" oninput="budget()">
   </div>
   <div class="card">
     <div class="row"><span>Erin</span><span id="tin"></span></div>
@@ -546,12 +546,13 @@ function ouders(){const v=+$('oi').value;$('oiv').textContent=v.toLocaleString('
 ouders();
 
 /* L6 budget */
-function budget(){const g=id=>Math.max(0,+$(id).value||0);
+function numNL(v){v=String(v==null?'':v).replace(/[€\s]/g,'').replace(/^\+/,'');if(!v)return NaN;if(/,/.test(v))v=v.replace(/\./g,'').replace(',','.');else if(/^-?\d{1,3}(\.\d{3})+$/.test(v))v=v.replace(/\./g,'');return parseFloat(v)}
+function budget(){const g=id=>Math.max(0,numNL($(id).value)||0);
  const i=g('b1')+g('b2')+g('b3'),o=['c1','c2','c3','c4','c5','c6'].reduce((a,c)=>a+g(c),0),d=i-o;
  $('tin').textContent=eur(i);$('tout').textContent=eur(o);
  const cols=['var(--pink)','var(--cyan)','var(--orange)','#9b7bff','#ffd23d','var(--red)'];
  $('bstack').innerHTML=['c1','c2','c3','c4','c5','c6'].map((c,k)=>g(c)?`<div style="flex:${g(c)};background:${cols[k]}"></div>`:'').join('')+(d>0?`<div style="flex:${d};background:var(--lime)">over</div>`:'');
- {const parts=['c1','c2','c3','c4','c5','c6'].map((c,k)=>[g(c),cols[k]]).filter(x=>x[0]>0);if(d>0)parts.push([d,'var(--lime)']);const T=parts.reduce((a,x)=>a+x[0],0);let acc=0;const pie=$('bpie');if(pie){pie.style.background=T?`conic-gradient(${parts.map(([v,c])=>{const a=acc/T*360;acc+=v;return c+' '+a+'deg '+(acc/T*360)+'deg'}).join(',')})`:'var(--card2)';pie.innerHTML=`<span>${i?Math.round(o/i*100):0}%<small>uitgegeven</small></span>`}}
+ {const parts=['c1','c2','c3','c4','c5','c6'].map((c,k)=>[g(c),cols[k]]).filter(x=>x[0]>0);if(d>0)parts.push([d,'var(--lime)']);const T=parts.reduce((a,x)=>a+x[0],0);let acc=0;const pie=$('bpie');if(pie){pie.style.background=T?`conic-gradient(${parts.map(([v,c])=>{const a=acc/T*360;acc+=v;return c+' '+a+'deg '+(acc/T*360)+'deg'}).join(',')})`:'var(--card2)';pie.innerHTML=i?`<span>${Math.round(o/i*100)}%<small>uitgegeven</small></span>`:(o?`<span>∞<small>geen inkomen</small></span>`:`<span>0%<small>uitgegeven</small></span>`)}}
  $('bres').innerHTML=i===0&&o===0?'':d<0?`<div class="result bad">Je komt <b>${eur(-d)}</b> per maand tekort. Zo beginnen schulden. Wat kan eruit? Kijk eerst naar abonnementen en afbetalingen. En check of je zorgtoeslag krijgt!</div>`:
  d<100?`<div class="result warn">Je houdt ${eur(d)} over. Krap! Eén onverwachte rekening (bijv. eigen risico) en je zit rood.</div>`:
  `<div class="result good">Je houdt <b>${eur(d)}</b> per maand over. Top! Zet een deel meteen apart als buffer, vóór je het uitgeeft. In een jaar is dat ${eur(d*12)}.</div>`}
@@ -637,9 +638,11 @@ const ZT=x=>x>R.zt_grens?0:Math.max(0,R.zt_standaardpremie-R.zt_normpremie_dremp
 const SF=R.sf;
 const OVPB=R.ov_pb;
 
-function fld(id,label,val,hint,step){return `<label>${label}</label><input type="number" inputmode="decimal" id="${id}" value="${val}" ${step?'step="'+step+'"':''}>${hint?`<p class="tiny" style="margin-top:4px">${hint}</p>`:''}`}
+function fld(id,label,val,hint,step){return `<label for="${id}">${label}</label><input type="text" inputmode="decimal" autocomplete="off" id="${id}" value="${String(val).replace('.',',')}">${hint?`<p class="tiny" style="margin-top:4px">${hint}</p>`:''}`}
 function sg(id,opts,val){return `<div class="seg" id="${id}" data-v="${val}">${opts.map(([v,t])=>`<button data-v="${v}" class="${v==val?'on':''}">${t}</button>`).join('')}</div>`}
-const n=id=>{const e=$(id);return e?Math.max(0,parseFloat(e.value)||0):0};
+const n=id=>{const e=$(id);return e?Math.max(0,numNL(e.value)||0):0};
+const raw0=id=>{const e=$(id);return e?numNL(e.value):NaN};
+const mnd=(x,def)=>{const v=Math.round(x);return v>12?12:v>=1?v:def};
 const sv=id=>$(id)?$(id).dataset.v:'';
 function rowsHTML(rows){return rows.map(([l,v,c])=>`<div class="row"><span>${l}</span><span style="color:${c||'var(--ink)'}">${v}</span></div>`).join('')}
 function sign(v){return Math.abs(v)<0.5?'€ 0':(v>0?'+ ':'− ')+eur(Math.abs(v))}
@@ -705,13 +708,13 @@ const RK=[
  <div id="huurBox">${fld('H','Huur kamer (kaal)',0)}</div></div>
  <div class="card" id="out"></div>`,
  calc(){const thuis=sv('w')==='thuis',o=sv('o');$('huurBox').style.display=thuis?'none':'block';
-  let a1=+sv('A1'),a2=+sv('A2');if(a2<=a1){a2=a1>=21?25:a1>=18?21:18}
+  let a1=+sv('A1'),a2=+sv('A2');if(a2<=a1){a2=a1>=21?25:a1>=18?21:18;const g=$('A2');if(g){g.dataset.v=String(a2);g.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===String(a2)))}}
   const U=n('U1')+n('U2')+n('U3')+n('U4');
   const maand=(age,B,Z,later)=>{const jaar=B*12,netto=B-DUE(jaar)/12,vol=age>=18;
    const zt=vol?ZT(jaar*1.08)/12:0;
-   const bb=(age<30&&((o==='mbo'&&vol)||o==='hbo'))?SF[o][(later?thuis:true)?'thuis':'uit']:0;
+   const bb=(age<30&&((o==='mbo'&&vol)||o==='hbo'))?SF[o][(later?thuis:true)?'thuis':'uit']:0,tg=(o==='vo'&&vol)?((later?thuis:true)?R.tgs_thuis:R.tgs_uit):0;
    const pr=vol?n('P'):0,er=vol?R.er/12:0,k=later?n('K'):0,h=(later&&!thuis)?n('H'):0;
-   return {age,netto,Z,zt,bb,pr,er,k,h,tot:netto+Z+zt+bb-U-pr-er-k-h}};
+   return {age,netto,Z,zt,bb,tg,pr,er,k,h,tot:netto+Z+zt+bb+tg-U-pr-er-k-h}};
   const A=maand(a1,n('B'),n('Z'),false),Bm=maand(a2,n('B2'),n('Z2'),true);
   const box=(m,lab)=>`<div style="background:var(--card2);border-radius:14px;padding:12px"><p class="tiny">${lab} (${m.age})</p><div class="big-n" style="font-size:28px;color:${m.tot<0?'var(--red)':'var(--lime)'}">${m.tot<0?'−':''}${eur(Math.abs(m.tot))}</div><p class="tiny">over per maand</p></div>`;
   const r=(t,x,y,c)=>`<div class="row"><span>${t}</span><b style="${c?'color:'+c:''}">${x} → ${y}</b></div>`;
@@ -721,7 +724,7 @@ const RK=[
    ['Netto loon',eur(A.netto)+' → '+eur(Bm.netto)],
    ['Zakgeld',eur(A.Z)+' → '+eur(Bm.Z),Bm.Z<A.Z?'var(--red)':''],
    ['+ Zorgtoeslag',eur(A.zt)+' → '+eur(Bm.zt),'var(--lime)'],
-   ['+ Basisbeurs',eur(A.bb)+' → '+eur(Bm.bb),'var(--lime)'],
+   o==='vo'?['+ Tegemoetkoming scholieren (DUO)',eur(A.tg)+' → '+eur(Bm.tg),'var(--lime)']:['+ Basisbeurs',eur(A.bb)+' → '+eur(Bm.bb),'var(--lime)'],
    ['− Zorgpremie',eur(A.pr)+' → '+eur(Bm.pr),'var(--red)'],
    ['− Eigen risico apart zetten',eur(A.er)+' → '+eur(Bm.er),'var(--orange)'],
    ['− Kostgeld',eur(A.k)+' → '+eur(Bm.k),'var(--red)'],
@@ -737,8 +740,8 @@ const RK=[
  ${fld('M','Aantal maanden zorgtoeslag dat jaar (1–12)',12)}
  <p class="tiny">Tip: verschuif "écht verdiend" naar 30.000 en 42.000 en kijk wat er gebeurt.</p></div>
  <div class="card" id="out"></div>`,
- calc(){const E=n('E'),W=n('W'),M=Math.min(12,Math.max(1,Math.round(n('M'))||12));const v=ZT(E)/12*M,d=ZT(W)/12*M,diff=d-v;
-  $('out').innerHTML=`${rowsHTML([['Voorschot ontvangen',eur(v)],['Recht volgens echt inkomen',eur(d)],['Per maand recht',eur(ZT(W)/12)]])}
+ calc(){const E=n('E'),W=n('W'),Mr=raw0('M'),M=mnd(Mr,12);const v=ZT(E)/12*M,d=ZT(W)/12*M,diff=d-v;
+  $('out').innerHTML=`${Mr!==M&&!isNaN(Mr)?'<p class="tiny" style="color:var(--orange)">Aantal maanden moet 1 tot 12 zijn: we rekenen met '+M+'.</p>':''}${rowsHTML([['Voorschot ontvangen',eur(v)],['Recht volgens echt inkomen',eur(d)],['Per maand recht',eur(ZT(W)/12)]])}
   <div class="result ${diff<-R.terug_drempel?'bad':diff<0?'warn':'good'}">${Math.abs(diff)<1?'Precies goed geschat 👍':diff<0&&-diff<=R.terug_drempel?`Je kreeg ${eur(-diff)} te veel. Maar een terugvordering van € 121 of minder hoef je niet terug te betalen (definitieve berekening, per toeslag).`:diff<0?`Je moet <span style="font-size:22px">${eur(-diff)}</span> terugbetalen.<br>${W>R.zt_grens?'Je kwam boven de grens van € 40.857: dan heb je over het hele jaar <b>geen</b> recht, dus alles terug.':'Je verdiende meer dan je opgaf.'}`:`Je krijgt nog <span style="font-size:22px">${eur(diff)}</span> bij.`}</div>
   <div class="card" style="background:var(--card2)"><h3>💡 Zo voorkom je een terugbetaling</h3><p style="margin-top:6px">Ga je meer werken, een fulltime baan na je studie, of krijg je een loonsverhoging? Pas meteen je inkomen aan in <b>Mijn toeslagen</b> (toeslagen.nl). Dan wordt je voorschot direct lager en schrik je volgend jaar niet.</p></div>
   <p class="tiny">Maximaal € 129 per maand (alleenstaand, 2026). Inkomensgrens € 40.857. Vermogensgrens geldt ook.</p>`}},
@@ -751,13 +754,13 @@ const RK=[
  <label>Loonheffingskorting bij baan 2</label>${sg('LB',[['1','Aan'],['0','Uit']],'1')}
  ${fld('Mm','Hoeveel maanden werk je bij allebei?',12)}</div>
  <div class="card" id="out"></div>`,
- calc(){const m=Math.min(12,Math.max(1,n('Mm')||12)),a=n('A'),b=n('Bb');
+ calc(){const Mr=raw0('Mm'),m=mnd(Mr,12),a=n('A'),b=n('Bb');
   const ia=WH(a*12,sv('LA')==='1')/12*m,ib=WH(b*12,sv('LB')==='1')/12*m,ink=(a+b)*m,due=DUE(ink),diff=due-(ia+ib);
   const scen=[[1,1],[1,0],[0,0]].map(([x,y])=>{const w=WH(a*12,x)/12*m+WH(b*12,y)/12*m;return [x&&y?'Korting bij allebei':x?'Korting alleen bij baan 1':'Nergens korting',due-w]});
   $('out').innerHTML=`${rowsHTML([['Ingehouden door baan 1',eur(ia)],['Ingehouden door baan 2',eur(ib)],['Totaal ingehouden',eur(ia+ib)],['Echt te betalen over '+eur(ink),eur(due)]])}
-  <div class="result ${diff>100?'bad':diff>0?'warn':'good'}">${diff>0?`Je moet later <span style="font-size:22px">${eur(diff)}</span> bijbetalen aan de Belastingdienst.`:`Je krijgt <span style="font-size:22px">${eur(-diff)}</span> terug via je aangifte.`}</div>
-  <h3 style="margin-top:14px">Vergelijk de 3 keuzes</h3>${scen.map(([t,d])=>`<div class="row"><span>${t}</span><span style="color:${d>0?'var(--red)':'var(--lime)'}">${d>0?'bijbetalen '+eur(d):'terug '+eur(-d)}</span></div>`).join('')}
-  <div class="card" style="background:var(--card2)"><h3>🧠 Wat zie je?</h3><p style="margin-top:6px">Verdien je samen weinig? Dan is de korting dubbel aan vaak geen ramp: je betaalt bijna niks. Verdien je samen meer (probeer € 1.500 + € 1.000), dan loopt de rekening snel op naar <b>honderden euro's</b>. Korting bij één baan is meestal het eerlijkst: je krijgt achteraf hooguit wat terug.</p></div>
+  ${Mr!==m&&!isNaN(Mr)?'<p class="tiny" style="color:var(--orange)">Aantal maanden moet 1 tot 12 zijn: we rekenen met '+m+'.</p>':''}<div class="result ${diff>100?'bad':diff>=0.5?'warn':'good'}">${Math.abs(diff)<0.5?'Precies goed: je hoeft niets bij te betalen en krijgt niets terug.':diff>0?`Je moet later <span style="font-size:22px">${eur(diff)}</span> bijbetalen aan de Belastingdienst.`:`Je krijgt <span style="font-size:22px">${eur(-diff)}</span> terug via je aangifte.`}</div>
+  <h3 style="margin-top:14px">Vergelijk de 3 keuzes</h3>${scen.map(([t,d])=>`<div class="row"><span>${t}</span><span style="color:${d>=0.5?'var(--red)':'var(--lime)'}">${Math.abs(d)<0.5?'precies goed':d>0?'bijbetalen '+eur(d):'terug '+eur(-d)}</span></div>`).join('')}
+  <div class="card" style="background:var(--card2)"><h3>🧠 Wat zie je?</h3><p style="margin-top:6px">Verdien je samen weinig? Dan is de korting dubbel aan vaak geen ramp: je betaalt bijna niks. Verdien je samen meer (probeer € 1.500 + € 1.000), dan loopt de rekening snel op: bij € 1.500 + € 1.000 al naar <b>ruim € 1.600</b>. Korting bij één baan is meestal het eerlijkst: je krijgt achteraf hooguit wat terug.</p></div>
   <p class="tiny">Benadering met de tarieven en heffingskortingen van 2026 (35,75%, algemene heffingskorting max € 3.115, arbeidskorting max € 5.685). Echte loonbelastingtabellen wijken iets af.</p>`}},
 
 {id:'r4',em:'🧾',t:'Vakantiewerk & aangifte',s:'Geld terug van de Belastingdienst',
@@ -770,8 +773,8 @@ const RK=[
  <div class="check"><div class="box" style="background:var(--cyan);border-color:var(--cyan)">2</div><span><b>Check je jaaropgaven</b><small>Je loon staat al vooringevuld. Klopt het met je loonstroken?</small></span></div>
  <div class="check"><div class="box" style="background:var(--cyan);border-color:var(--cyan)">3</div><span><b>Verstuur vóór 1 mei</b><small>Te laat kan een boete opleveren als je een brief kreeg</small></span></div>
  <div class="check"><div class="box" style="background:var(--cyan);border-color:var(--cyan)">4</div><span><b>Geld terug? Tot 5 jaar terug!</b><small>Ook als je geen brief kreeg mag je aangifte doen</small></span></div></div>`,
- calc(){const v=n('V'),m=Math.min(12,Math.max(1,n('Vm')||1));const inh=WH(v*12,sv('VL')==='1')/12*m,due=DUE(v*m),ter=inh-due;
-  $('out').innerHTML=`${rowsHTML([['Totaal verdiend',eur(v*m)],['Ingehouden door werkgever',eur(inh)],['Echt te betalen',eur(due)]])}
+ calc(){const Mr=raw0('Vm'),v=n('V'),m=mnd(Mr,1);const inh=WH(v*12,sv('VL')==='1')/12*m,due=DUE(v*m),ter=inh-due;
+  $('out').innerHTML=`${Mr!==m&&!isNaN(Mr)?'<p class="tiny" style="color:var(--orange)">Aantal maanden moet 1 tot 12 zijn: we rekenen met '+m+'.</p>':''}${rowsHTML([['Totaal verdiend',eur(v*m)],['Ingehouden door werkgever',eur(inh)],['Echt te betalen',eur(due)]])}
   <div class="result ${ter>0?'good':'warn'}">${ter>0?`Via je aangifte krijg je ca. <span style="font-size:22px">${eur(ter)}</span> terug! 💸`:`Je krijgt niets terug${ter<0?' en moet je '+eur(-ter)+' bijbetalen':''}.`}</div>
   <p class="tiny" style="margin-top:8px">Probeer de korting op "Uit": dan wordt er veel meer ingehouden, maar krijg je dat ook terug. Alleen moet je er wel op wachten.</p>`}},
 
@@ -784,15 +787,15 @@ const RK=[
  calc(){const t=n('K1')+n('K2')+n('K3')+n('K4')+n('K5'),N=n('KN'),p=N?t/N*100:0;
   $('out').innerHTML=`<div class="big-n">${eur(t)}<span style="font-size:16px;color:var(--mut)"> per maand</span></div>
   <div class="meter"><div class="fill" style="width:${Math.min(100,p)}%;background:${p>35?'var(--red)':p>25?'var(--orange)':'var(--lime)'}"></div><div class="mark" style="left:25%">25%</div></div>
-  <div class="result ${p>35?'bad':p>25?'warn':'good'}">Dat is <b>${Math.round(p)}%</b> van je netto inkomen. ${p>35?'Erg zwaar: je houdt weinig over om te sparen. Bespreek het samen.':p>25?'Stevig, maar te doen als je weinig andere vaste lasten hebt.':'Goed te dragen. Zet wat je overhoudt deels apart voor later (eigen kamer!).'}<br>Je houdt over: ${eur(N-t)}</div>
-  <p class="tiny" style="margin-top:8px">Bonus: kostgeld betalen is oefenen voor op jezelf wonen. Op kamers kost alleen al de huur vaak meer.</p>`}},
+  ${!N?'<div class="result warn">Vul je netto inkomen in, dan zie je of dit te dragen is.</div>':t>N?`<div class="result bad">Dit is meer dan je verdient: je komt <b>${eur(t-N)}</b> per maand tekort. Bespreek samen een lager bedrag.</div>`:`<div class="result ${p>35?'bad':p>25?'warn':'good'}">Dat is <b>${Math.round(p)}%</b> van je netto inkomen. ${p>35?'Erg zwaar: je houdt weinig over om te sparen. Bespreek het samen.':p>25?'Stevig, maar te doen als je weinig andere vaste lasten hebt.':'Goed te dragen. Zet wat je overhoudt deels apart voor later (eigen kamer!).'}<br>Je houdt over: ${eur(N-t)}</div>`}
+  <p class="tiny" style="margin-top:8px">De grenzen van 25% en 35% zijn een vuistregel van Level 18, geen officiële norm. Bonus: kostgeld betalen is oefenen voor op jezelf wonen. Op kamers kost alleen al de huur vaak meer.</p>`}},
 
 {id:'r6',em:'🎓',t:'Studiefinanciering & ov',s:'Beurs, lenen en je studentenkaart',
  html:()=>`<p>Mbo: studiefinanciering vanaf het kwartaal na je 18e. Hbo/wo: vanaf de start van je studie, ook onder de 18 (voltijd of duaal). Bedragen 2026 (DUO).</p>
  <div class="card"><label>Opleiding</label>${sg('so',[['mbo12','Mbo 1–2'],['mbo34','Mbo 3–4'],['hbo','Hbo/wo']],'mbo34')}
  <label>Woonsituatie</label>${sg('sw',[['thuis','Thuis'],['uit','Uitwonend']],'thuis')}
- <label>Aanvullende beurs (hangt af van inkomen ouders)</label><input type="range" id="sa" min="0" max="100" value="0"><div class="val"><span id="sav"></span></div>
- <label>Hoeveel wil je lenen per maand?</label><input type="range" id="sl" min="0" max="100" value="0"><div class="val"><span id="slv"></span></div>
+ <label for="sa">Aanvullende beurs (hangt af van inkomen ouders)</label><input type="range" id="sa" min="0" max="100" value="0"><div class="val"><span id="sav"></span></div>
+ <label for="sl">Hoeveel wil je lenen per maand?</label><input type="range" id="sl" min="0" max="100" value="0"><div class="val"><span id="slv"></span></div>
  <label>Hoe lang (jaren)?</label>${sg('sj',[['2','2'],['3','3'],['4','4']],'4')}</div>
  <div class="card" id="out"></div>
  <div class="card"><h3>🚆 Studentenreisproduct</h3><p style="margin-top:6px">Kies een <b>week</b>- of <b>weekend</b>abonnement: dan reis je gratis of met korting. Mbo'ers onder de 18 kunnen het ook krijgen, maar moeten het apart aanvragen bij DUO. Mbo 1–2: gift. Mbo 3–4, hbo en wo: prestatiebeurs van € 110,95 per maand, die alleen een gift wordt als je binnen 10 jaar je diploma haalt.</p></div>`,
@@ -817,12 +820,12 @@ const RK=[
  <div class="card"><h3>🛵 Scooter?</h3><p style="margin-top:6px">Rijbewijs: gemiddeld ruim € 400. Maar de verzekering is de klapper: een 16-jarige betaalt voor een WA-scooterverzekering zo'n € 128 (Dronten) tot € 278 (Amsterdam) <b>per maand</b>. Een 30-jarige ca. € 20–40.</p></div>
  <div class="card"><h3>🛡️ Welke verzekeringen heb je nodig?</h3>
  ${[['Zorgverzekering','Verplicht voor iedereen. Vanaf 18 betaal je zelf'],['WA auto/scooter','Verplicht zodra je er één hebt'],['Aansprakelijkheid (AVP)','Sterk aangeraden. Thuiswonend vaak meeverzekerd bij ouders: check de polis'],['Inboedel','Op kamers? Check of de polis van je ouders je spullen nog dekt'],['Reisverzekering','Handig, niet verplicht. Je zorgverzekering dekt in het buitenland niet alles']].map(([a,b])=>`<div class="row"><span><b>${a}</b><br><small class="tiny">${b}</small></span></div>`).join('')}</div>`,
- calc(){const tot=n('RL')*n('RP')+n('RT')*R.cbr_theorie+n('RE')*R.cbr_praktijk,m=Math.max(1,n('RS')||1);
+ calc(){const tot=n('RL')*n('RP')+n('RT')*R.cbr_theorie+n('RE')*R.cbr_praktijk,m=Math.round(n('RS'));
   $('out').innerHTML=`<div class="big-n">${eur(tot)}</div><p class="tiny">totaal voor je rijbewijs</p>
-  <div class="result good">Spaarplan: zet <span style="font-size:22px">${eur(tot/m)}</span> per maand opzij, ${m} maanden lang.</div>`;
+  <div class="result good">${m<1?`Je wilt meteen beginnen: dan heb je <span style="font-size:22px">${eur(tot)}</span> nodig.`:`Spaarplan: zet <span style="font-size:22px">${eur(tot/m)}</span> per maand opzij, ${m} ${m===1?'maand':'maanden'} lang.`}</div>`;
   const a=n('A1')+n('A2')+n('A3')+n('A4'),N=n('AN'),p=N?a/N*100:0;
   $('out2').innerHTML=`<div class="big-n">${eur(a)}<span style="font-size:16px;color:var(--mut)"> per maand</span></div>
-  <div class="result ${p>50?'bad':p>30?'warn':'good'}">Dat is <b>${Math.round(p)}%</b> van je inkomen. ${p>50?'Meer dan de helft! Een auto is nu waarschijnlijk niet haalbaar. Rij mee op de polis van je ouders als bestuurder, of wacht tot je meer verdient.':p>30?'Fors. Weet je zeker dat het past naast je andere vaste lasten?':'Dat lijkt haalbaar. Vergeet de aanschaf niet!'}</div>`}},
+  ${!N?'<div class="result warn">Vul je netto inkomen in, dan zie je of een auto past.</div>':''}<div class="result ${p>50?'bad':p>30?'warn':'good'}" style="${N?'':'display:none'}">Dat is <b>${Math.round(p)}%</b> van je inkomen. ${p>50?'Meer dan de helft! Een auto is nu waarschijnlijk niet haalbaar. Rij mee op de polis van je ouders als bestuurder, of wacht tot je meer verdient.':p>30?'Fors. Weet je zeker dat het past naast je andere vaste lasten?':'Dat lijkt haalbaar. Vergeet de aanschaf niet!'}</div>`}},
 
 {id:'r8',em:'🫙',t:'Mijn potjes',s:'Hoeveel naar sparen, leefgeld en vaste lasten?',
  html:()=>`<p>Verdeel je geld over 3 potjes: <b>vaste lasten</b> (zonder pinpas), <b>leefgeld</b> (met pinpas) en <b>sparen</b>. Zet het automatisch op de dag na je loondag.</p>
@@ -844,7 +847,7 @@ const RK=[
    ['1️⃣ Vaste-lastenrekening',eur(VL)],[a18?'   waarvan eigen risico apart (€ '+R.er+'/12)':'',a18?eur(ER):''],
    ['2️⃣ Leefgeld (pinrekening)',eur(LG)],['   dat is per week',eur(LGw)],
    ['3️⃣ Sparen',eur(SP),'var(--lime)']].filter(r=>r[0]))}
-  <div class="result good">Je spaart <b>${Math.round(SP/N*100)}%</b> van je inkomen. ${M===0?'Je buffer van '+eur(B)+' is al rond. Nu kun je sparen voor een doel.':M?'Zo heb je over ca. <b>'+M+' maanden</b> een buffer van '+eur(B)+'.':''}</div>
+  <div class="result good">Je spaart <b>${Math.round(SP/N*100)}%</b> van je inkomen. ${M===0?'Je buffer van '+eur(B)+' is al rond. Nu kun je sparen voor een doel.':M?'Zo heb je over ca. <b>'+M+(M===1?' maand':' maanden')+'</b> een buffer van '+eur(B)+'.':''}${SP<Math.round(pp*N/5)*5?' We hebben sparen begrensd, zodat je genoeg leefgeld houdt.':''}</div>
   <p class="tiny" style="margin-top:8px">Bufferdoel: ${thuis?'€ 1.000 als je thuis woont':'ca. 3 maanden vaste lasten'}. Dit is een startpunt, geen vaste regel. Precies uitrekenen: de BufferBerekenaar van het Nibud.</p>`}},
 
 {id:'r9',em:'🩺',t:'Welke zorgverzekering past bij mij?',s:'7 vragen, jouw advies',
