@@ -92,6 +92,8 @@ input.f{width:100%;padding:12px;border-radius:12px;border:1px solid #3a3360;back
 footer{background:var(--bg);color:#9a94b8;font-size:13px;padding:36px 0 48px}
 footer a{color:#cfc9ea}
 .copy{margin-top:8px}
+@media(max-width:480px){.stats{gap:10px}.stat{padding:16px}.stat .n{font-size:30px;white-space:nowrap}}
+h1,h2,h3{text-wrap:balance}p,li{text-wrap:pretty}.nw{white-space:nowrap}
 </style>
 </head>
 <body>
@@ -224,6 +226,27 @@ const CONTACT={{js:contact_email}};
   on.oninput=upd;oh.oninput=upd;upd();
   document.getElementById('cp').onclick=async()=>{try{await navigator.clipboard.writeText(code.textContent);document.getElementById('cpm').textContent='✓ Gekopieerd! Plak de code op je website.'}catch(e){document.getElementById('cpm').textContent='Selecteer de code hierboven en kopieer hem.'}};
 
+})();
+</script>
+<script>
+/* Typografie: geen losse "€", nummers of tekens aan het eind van een regel, telefoonnummers niet afbreken.
+   Verandert alleen spaties in vaste spaties (zelfde tekst). Draait ook op alles wat later in beeld komt. */
+(function(){
+ var NB=' ',SKIP={SCRIPT:1,STYLE:1,TEXTAREA:1,INPUT:1,CANVAS:1,svg:1,SVG:1,CODE:1,PRE:1};
+ var RX=[[/€ (?=[−\-–]?\d)/g,'€'+NB],[/([−+=]) (?=€)/g,'$1'+NB],[/(^|[\s(€ ·])(\d[\d.,]*) (?=[a-zA-Zéë%(])/g,'$1$2'+NB],[/ ([→=+·]) /g,NB+'$1 '],[/ ([–−]) (?=€)/g,NB+'$1 ']];
+ var TEL=/(\b0800-\d{4}\b|\b0\d{2,3}-\d{6,7}\b|\b113\.nl\b)/;
+ function fixText(n){var t=n.data,o=t;for(var i=0;i<RX.length;i++)t=t.replace(RX[i][0],RX[i][1]);if(t!==o)n.data=t;
+  var pe=n.parentNode;if(!pe||(pe.classList&&pe.classList.contains('nw'))||pe.closest&&pe.closest('a[href^="tel:"] .nw'))return;
+  var m=TEL.exec(t);if(!m)return;
+  var a=n.splitText(m.index);a.splitText(m[0].length);var sp=document.createElement('span');sp.className='nw';pe.replaceChild(sp,a);sp.appendChild(a);}
+ function walk(el){if(!el)return;if(el.nodeType===3){if(el.data.trim())fixText(el);return}
+  if(el.nodeType!==1||SKIP[el.tagName])return;
+  if(el.classList&&el.classList.contains('seg'))segV(el);
+  var kids=[].slice.call(el.childNodes);for(var i=0;i<kids.length;i++)walk(kids[i]);
+  if(el.querySelectorAll)[].forEach.call(el.querySelectorAll('.seg'),segV)}
+ function segV(sg){var b=sg.querySelectorAll('button');if(b.length>=3&&[].some.call(b,function(x){return x.textContent.trim().length>20}))sg.classList.add('v')}
+ function start(){walk(document.body);new MutationObserver(function(ms){ms.forEach(function(m){[].forEach.call(m.addedNodes,function(x){if(x.nodeType===1&&x.classList&&x.classList.contains('nw'))return;walk(x)})})}).observe(document.body,{childList:true,subtree:true})}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();
 </script>
 </body>

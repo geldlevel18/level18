@@ -28,7 +28,7 @@ b,strong{color:var(--ink)}
 .hero .big{font-size:56px;position:absolute;right:14px;top:6px;opacity:.9}
 .prog{display:flex;align-items:center;gap:12px;background:var(--card);border-radius:var(--r);padding:14px 16px;margin-bottom:14px}
 .prog .bar{flex:1;width:auto;height:10px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.tile h3{overflow-wrap:break-word;hyphens:auto}
 .tile{background:var(--card);border-radius:var(--r);padding:16px;cursor:pointer;border:2px solid transparent;transition:.2s;position:relative;min-height:128px;display:flex;flex-direction:column;justify-content:space-between}
 .tile:active{transform:scale(.97)}
 .tile .em{font-size:30px}
@@ -89,7 +89,7 @@ input[type=number],input[type=text]{width:100%;background:var(--card2);border:0;
 .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
 .badge{background:var(--card2);border-radius:12px;padding:8px 10px;font-size:13px;opacity:.35}
 .badge.got{opacity:1;background:#c6ff3d22;border:1px solid var(--lime)}
-.link{display:flex;justify-content:space-between;align-items:center;background:var(--card2);border-radius:14px;padding:14px;margin:8px 0;color:var(--ink);text-decoration:none;font-weight:600}
+.link{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--card2);border-radius:14px;padding:14px;margin:8px 0;color:var(--ink);text-decoration:none;font-weight:600}
 .link small{display:block;color:var(--mut);font-weight:400;font-size:13px}
 .big-n{font-family:'Space Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:40px;font-weight:700}
 .row{display:flex;justify-content:space-between;padding:6px 0;font-size:15px}
@@ -158,6 +158,25 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:30}
 .tiny{font-size:12px;color:var(--mut)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 #l18wa,#l18wb{min-height:44px}
+/* ===== Layout & leesbaarheid (nov 2026) ===== */
+.toast:not(.s){visibility:hidden;opacity:0}
+h1:focus,h2:focus,h3:focus,[tabindex="-1"]:focus{outline:none}
+h1,h2,h3{text-wrap:balance}
+p,.ct,li,.link small,.check small{text-wrap:pretty}
+.nw{white-space:nowrap}
+.ct{line-height:1.55;color:var(--mut);font-size:15px;margin-top:6px}
+.ct p+p,.ct p+ol,.ct p+ul,.ct ol+p,.ct ul+p{margin-top:8px}
+ol.nl,ul.nl{list-style:none;margin:8px 0 2px;padding:0;counter-reset:nl}
+ol.nl>li,ul.nl>li{position:relative;padding:9px 0 9px 36px;border-top:1px solid #ffffff10;line-height:1.5}
+ol.nl>li:first-child,ul.nl>li:first-child{border-top:0;padding-top:4px}
+ol.nl>li:before{counter-increment:nl;content:counter(nl);position:absolute;left:0;top:7px;width:24px;height:24px;border-radius:50%;background:#c6ff3d22;color:var(--lime);font:800 13px/24px 'Space Grotesk',system-ui,sans-serif;text-align:center}
+ol.nl>li:first-child:before{top:2px}
+ul.nl>li:before{content:'';position:absolute;left:9px;top:17px;width:7px;height:7px;border-radius:50%;background:var(--lime)}
+ul.nl>li:first-child:before{top:12px}
+.seg.v{flex-direction:column}.seg.v button{text-align:left;padding:10px 14px}
+#skipQ{min-height:44px}
+#l18m h2{padding-right:54px;line-height:1.15}
+.card>h3+p{margin-top:6px}
 </style>
 </head>
 <body>
@@ -940,7 +959,7 @@ const TH=[
 {id:'t7',em:'🧠',t:'Slim met je geld',s:'Potjes, buffer, sparen zonder stress',
  intro:'Geld regelen is geen talent. Het is een <b>systeem</b>. Zet het één keer goed neer, dan werkt het elke maand voor je. Ook met een klein inkomen.',
  kaarten:[
-  ['🫙 Drie rekeningen, drie potjes','<b>1. Vaste-lastenrekening</b> (zonder pinpas): hier komt je loon, studiefinanciering of toeslag binnen. Huur, zorgpremie, telefoon en abonnementen gaan er automatisch af. <b>2. Leefgeldrekening</b> (mét pinpas): boodschappen, uitgaan, kleding. Leeg = klaar tot de volgende maand. <b>3. Spaarrekening</b>: je buffer en je doelen. Een tweede betaalrekening kost soms een paar euro per maand. Vraag je bank naar een jongerenrekening of gebruik spaarpotjes in je app.'],
+  ['🫙 Drie rekeningen, drie potjes','<ol class="nl"><li><b>Vaste-lastenrekening</b> (zonder pinpas): hier komt je loon, studiefinanciering of toeslag binnen. Huur, zorgpremie, telefoon en abonnementen gaan er automatisch af.</li><li><b>Leefgeldrekening</b> (mét pinpas): boodschappen, uitgaan, kleding. Leeg = klaar tot de volgende maand.</li><li><b>Spaarrekening</b>: je buffer en je doelen.</li></ol><p>Een tweede betaalrekening kost soms een paar euro per maand. Vraag je bank naar een jongerenrekening of gebruik spaarpotjes in je app.</p>'],
   ['📅 Loondag = regeldag','Zet <b>vaste overboekingen</b> in je bankapp op de dag ná je loondag: eerst naar sparen, dan naar je leefgeldrekening. Wat overblijft, staat klaar voor je vaste lasten. Geen loondag? Pak de dag dat je studiefinanciering of toeslag binnenkomt.'],
   ['💸 Betaal jezelf eerst','Spaar niet "wat overblijft", want dat is meestal niks. Spaar <b>meteen</b> als je geld binnenkomt, automatisch. Begin klein: € 10 per maand is ook goed. Lukt het? Zet het bedrag elk half jaar iets hoger.'],
   ['🛟 Je buffer','Een buffer is geld voor pech: kapotte telefoon, eigen risico, een hoge eindafrekening. Hoeveel je nodig hebt, hangt af van je situatie. Reken het uit met de <b>BufferBerekenaar van het Nibud</b>. Woon je thuis? Begin met € 500 en daarna € 1.000. Woon je zelfstandig? Een veelgebruikte vuistregel is <b>3 maanden vaste lasten</b>.'],
@@ -958,7 +977,7 @@ const TH=[
  intro:'De grootste schulden bij jongeren beginnen klein: een abonnement, een boete, een "makkelijke klus".',
  kaarten:[
   ['📱 Abonnementen','Een telefoon met abonnement is een lening. Betaal je niet, dan volgt incasso en soms een BKR-registratie.'],
-  ['📮 Het incassotraject','1) Herinnering → 2) <b>Aanmaning</b> met 14 dagen om te betalen → 3) incassokosten (bij kleine rekeningen tot € 40) → 4) deurwaarder: nóg meer kosten. Hoe eerder je reageert, hoe goedkoper.'],
+  ['📮 Het incassotraject','<ol class="nl"><li>Herinnering</li><li><b>Aanmaning</b> met 14 dagen om te betalen</li><li>Incassokosten (bij kleine rekeningen tot € 40)</li><li>Deurwaarder: nóg meer kosten</li></ol><p>Hoe eerder je reageert, hoe goedkoper.</p>'],
   ['🚨 Geldezel? Nooit doen','"Mag ik even je pinpas lenen voor een klus? Je krijgt € 100." Dat is witwassen, en <b>jij</b> bent strafbaar. Je bankrekening kan worden afgesloten en je kunt jarenlang moeilijk een rekening krijgen.'],
   ['🎣 Phishing','Banken en de Belastingdienst vragen nooit per sms of WhatsApp om je inloggegevens of een betaling via een link. Twijfel? Bel zelf het officiële nummer.'],
   ['🚆 Boetes','Zwartrijden, verkeersboetes of te laat terugbrengen: boetes lopen op als je niet betaalt. Kun je niet betalen? Vraag op tijd een betalingsregeling.']],
@@ -973,18 +992,23 @@ const TH=[
   ['🎓 Studiefinanciering & ov','Mbo: vanaf het kwartaal na je 18e. Hbo/wo: vanaf de start van je studie, ook onder de 18 (voltijd of duaal). Zie het Rekenlab.'],
   ['⚠️ Voorschot = misschien terugbetalen','Toeslagen krijg je vooraf, op basis van wat jij <b>denkt</b> te verdienen. Verdien je meer? Dan betaal je achteraf terug, soms honderden euro\'s. Geef wijzigingen in je inkomen <b>meteen</b> door.'],
   ['🏃 Sport, cultuur & meedoen','Veel gemeenten hebben een meedoenregeling of stadspas voor mensen met een laag inkomen (bijvoorbeeld korting op sport of cultuur). Jonger dan 18? Kijk ook bij het Jeugdfonds Sport & Cultuur. Vraag het wijkteam of je gemeente wat er bij jou kan.'],
-  ['🏛️ Extra geld van je gemeente','Laag inkomen? Vraag je gemeente naar <b>bijzondere bijstand</b> (onverwachte kosten), de <b>individuele inkomenstoeslag</b> (vanaf 21), <b>kwijtschelding</b> van gemeentebelastingen en de <b>gemeentepolis</b> (zorgverzekering). Wat je krijgt verschilt per gemeente.'],
+  ['🏛️ Extra geld van je gemeente','<p>Laag inkomen? Vraag je gemeente naar:</p><ul class="nl"><li><b>bijzondere bijstand</b> (onverwachte kosten)</li><li>de <b>individuele inkomenstoeslag</b> (vanaf 21)</li><li><b>kwijtschelding</b> van gemeentebelastingen</li><li>de <b>gemeentepolis</b> (zorgverzekering)</li></ul><p>Wat je krijgt verschilt per gemeente.</p>'],
   ['🤝 Hulp in je wijk','Het wijkteam van je gemeente helpt gratis met geld, wonen, werk en zorg. Vul je postcode in op <a href="https://geldfit.nl/bij-jou-in-de-buurt/" target="_blank" rel="noopener" style="color:var(--lime)">geldfit.nl/bij-jou-in-de-buurt</a> en zie waar je terechtkunt.']],
  checks:[['Ik heb gecheckt op welke toeslagen ik recht heb','Proefberekening op toeslagen.nl'],['Ik weet dat toeslagen voorschotten zijn','Inkomen veranderd? Direct doorgeven'],['Ik heb gevraagd naar regelingen in mijn gemeente','Sport, cultuur, kwijtschelding']],
  links:[['Toeslagen.nl','https://www.toeslagen.nl','Aanvragen en wijzigen'],['Jeugdfonds Sport & Cultuur','https://www.jeugdfondssportencultuur.nl','Tot 18 jaar'],['Wijzer in geldzaken – 18 worden','https://www.wijzeringeldzaken.nl/18-worden','Wat je moet regelen']]}];
 
 let THcur=null;
+/* lange kaarttekst zonder lijst: in twee korte alinea's knippen op een zinsgrens (tekst blijft gelijk) */
+function splitP(b){if(/<(ol|ul|p|select|div)\b/.test(b)||b.replace(/<[^>]+>/g,'').length<300)return b;
+ const parts=b.split(/(?<=[.!?])\s+(?=(?:<b>)?[A-Z"])/);if(parts.length<3)return b;
+ let tot=parts.reduce((a,x)=>a+x.length,0),acc=0,k=0;for(;k<parts.length-1;k++){acc+=parts[k].length;if(acc>=tot/2)break}
+ return '<p>'+parts.slice(0,k+1).join(' ')+'</p><p>'+parts.slice(k+1).join(' ')+'</p>'}
 function openTH(id){THcur=TH.find(t=>t.id===id);if(!S.th)S.th={};
  const done=THcur.checks.filter((_,i)=>S.th[id+'_'+i]).length,pct=Math.round(done/THcur.checks.length*100);
  $('thT').textContent=THcur.em+' '+THcur.t;
  $('thBox').innerHTML=`<p>${THcur.intro}</p>
  <div class="prog" style="margin-top:12px"><span style="font-weight:800">${pct}%</span><div class="bar"><i style="width:${pct}%"></i></div><span class="tiny">geregeld</span></div>
- ${THcur.kaarten.map(([a,b])=>`<div class="card"><h3>${a}</h3><p style="margin-top:6px">${b}</p></div>`).join('')}
+ ${THcur.kaarten.map(([a,b])=>`<div class="card"><h3>${a}</h3><div class="ct">${splitP(b)}</div></div>`).join('')}
  <div class="card"><h3>✅ Jouw checklist</h3><p class="tiny">+10 XP per taak die je echt hebt gedaan</p>
  ${THcur.checks.map(([a,b],i)=>`<div class="check ${S.th[id+'_'+i]?'ok':''}" onclick="thTick(${i})"><div class="box"></div><span><b>${a}</b><small>${b}</small></span></div>`).join('')}</div>
  ${THcur.links.map(([a,u,b])=>`<a class="link" href="${u}" target="_blank" rel="noopener"><span>${a}<small>${b}</small></span>→</a>`).join('')}`;
@@ -1576,7 +1600,7 @@ hud();
       '<p style="margin:8px 0">Leerling: vul de klascode van je docent in. Er wordt <b>niets</b> verstuurd; je krijgt straks een controlecode om te laten zien.</p>' +
       '<label for="l18k" class="tiny">Klascode van je docent</label>' + '<input id="l18k" aria-label="Klascode" maxlength="12" value="' + e(k) + '" placeholder="b.v. 4HAVOB" style="width:100%;padding:12px;border-radius:12px;border:0;font-size:18px;margin-bottom:8px">' +
       '<button class="btn" onclick="L18X.setKlas()">Opslaan</button>' +
-      (k ? '<div class="card" style="text-align:center;margin:12px 0"><p class="tiny">Jouw controlecode (laat zien aan je docent)</p><div style="font:800 28px ' + FONT + ';color:' + C.lime + ';letter-spacing:2px">' + makeCode(k) + '</div><p class="tiny">' + levelsDone() + ' levels · ' + stars() + '/15 ⭐ · eindbaas ' + ((s.done || {}).l7 ? '✓' : '✗') + '</p></div>' : '') +
+      (k ? '<div class="card" style="text-align:center;margin:12px 0"><p class="tiny">Jouw controlecode (laat zien aan je docent)</p><div style="font:800 28px ' + FONT + ';color:' + C.lime + ';letter-spacing:2px">' + makeCode(k) + '</div><p class="tiny">' + levelsDone() + (levelsDone() === 1 ? ' level' : ' levels') + ' · ' + stars() + '/15 ⭐ · eindbaas ' + ((s.done || {}).l7 ? '✓' : '✗') + '</p></div>' : '') +
       '<details style="margin:14px 0"><summary style="cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center">Ik ben docent: code controleren</summary>' +
       '<p class="tiny" style="margin:8px 0">Kies zelf een klascode en geef die aan de klas. Typ hieronder je klascode + de code van een leerling.</p>' +
       '<input id="l18dk" aria-label="Klascode (docent)" placeholder="Klascode" style="width:100%;padding:10px;border-radius:10px;border:0;margin-bottom:6px">' +
@@ -1652,7 +1676,7 @@ hud();
     // badges
     var b = badgesGot(); x.fillStyle = C.ink; x.font = '700 34px ' + FONT; x.fillText('Behaalde badges (' + b.length + '/' + BADGES.length + ')', W / 2, 950);
     x.font = '500 30px ' + FONT + ',"Apple Color Emoji","Segoe UI Emoji"'; x.fillStyle = C.ink;
-    var y = wrapText(x, b.length ? b.join('  ·  ') : 'Nog geen badges', W / 2, 1000, 900, 46);
+    var y = wrapText(x, b.length ? b.map(function (t) { return t.replace(/ /g, '\u00a0'); }).join(' \u00a0·  ') : 'Nog geen badges', W / 2, 1000, 900, 46);
     // footer
     var d = new Date().toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
     x.fillStyle = C.mut; x.font = '400 28px ' + FONT; x.fillText(d + ((s.done || {}).l7 ? '  ·  Eindbaas verslagen' : ''), W / 2, Math.max(y + 30, 1190));
@@ -1712,6 +1736,27 @@ hud();
   };
 })();
 
+</script>
+<script>
+/* Typografie: geen losse "€", nummers of tekens aan het eind van een regel, telefoonnummers niet afbreken.
+   Verandert alleen spaties in vaste spaties (zelfde tekst). Draait ook op alles wat later in beeld komt. */
+(function(){
+ var NB=' ',SKIP={SCRIPT:1,STYLE:1,TEXTAREA:1,INPUT:1,CANVAS:1,svg:1,SVG:1,CODE:1,PRE:1};
+ var RX=[[/€ (?=[−\-–]?\d)/g,'€'+NB],[/([−+=]) (?=€)/g,'$1'+NB],[/(^|[\s(€ ·])(\d[\d.,]*) (?=[a-zA-Zéë%(])/g,'$1$2'+NB],[/ ([→=+·]) /g,NB+'$1 '],[/ ([–−]) (?=€)/g,NB+'$1 ']];
+ var TEL=/(\b0800-\d{4}\b|\b0\d{2,3}-\d{6,7}\b|\b113\.nl\b)/;
+ function fixText(n){var t=n.data,o=t;for(var i=0;i<RX.length;i++)t=t.replace(RX[i][0],RX[i][1]);if(t!==o)n.data=t;
+  var pe=n.parentNode;if(!pe||(pe.classList&&pe.classList.contains('nw'))||pe.closest&&pe.closest('a[href^="tel:"] .nw'))return;
+  var m=TEL.exec(t);if(!m)return;
+  var a=n.splitText(m.index);a.splitText(m[0].length);var sp=document.createElement('span');sp.className='nw';pe.replaceChild(sp,a);sp.appendChild(a);}
+ function walk(el){if(!el)return;if(el.nodeType===3){if(el.data.trim())fixText(el);return}
+  if(el.nodeType!==1||SKIP[el.tagName])return;
+  if(el.classList&&el.classList.contains('seg'))segV(el);
+  var kids=[].slice.call(el.childNodes);for(var i=0;i<kids.length;i++)walk(kids[i]);
+  if(el.querySelectorAll)[].forEach.call(el.querySelectorAll('.seg'),segV)}
+ function segV(sg){var b=sg.querySelectorAll('button');if(b.length>=3&&[].some.call(b,function(x){return x.textContent.trim().length>20}))sg.classList.add('v')}
+ function start(){walk(document.body);new MutationObserver(function(ms){ms.forEach(function(m){[].forEach.call(m.addedNodes,function(x){if(x.nodeType===1&&x.classList&&x.classList.contains('nw'))return;walk(x)})})}).observe(document.body,{childList:true,subtree:true})}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
 </script>
 <!-- Anonieme bezoekersteller (GoatCounter): geen cookies, geen persoonsgegevens -->
 <script data-goatcounter="https://geldlevel18.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>

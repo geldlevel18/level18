@@ -78,6 +78,19 @@
   .ground .g{display:flex;gap:12px;align-items:center;background:var(--bg);border-radius:12px;padding:10px 12px}
   .ground .n{font-size:22px;font-weight:800;width:28px;text-align:center;color:var(--teal)}
   .door-ic{font-size:26px;float:left;margin-right:12px;line-height:1.2}
+    .nw{white-space:nowrap}
+  /* layout nov 2026: tikdoelen ≥44px, ruimte boven de Netlify-badge, rustiger koppen */
+  .back{width:44px;height:44px}
+  .btn,.call a{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+  #v-start > p:first-child a{display:inline-flex;align-items:center;min-height:44px}
+  .sos{padding-bottom:calc(68px + env(safe-area-inset-bottom));flex-wrap:wrap;row-gap:4px}
+  .sos a{display:inline-flex;align-items:center;min-height:44px;margin:-12px 0}
+  .wrap{padding-bottom:170px}
+  h1,h3{text-wrap:balance} p,li,.choice span{text-wrap:pretty}
+  .num,.sos{font-variant-numeric:tabular-nums}
+  .call .num{white-space:nowrap}
+  .choice:has(.door-ic){padding-left:60px}
+  .door-ic{position:absolute;left:16px;top:14px;float:none;width:32px;text-align:center;margin:0}
 </style>
 </head>
 <body>
@@ -480,6 +493,27 @@
     document.getElementById("wipeConfirm").style.display="none"; flash("Alles gewist");
   });
   route();
+})();
+</script>
+<script>
+/* Typografie: geen losse "€", nummers of tekens aan het eind van een regel, telefoonnummers niet afbreken.
+   Verandert alleen spaties in vaste spaties (zelfde tekst). Draait ook op alles wat later in beeld komt. */
+(function(){
+ var NB=' ',SKIP={SCRIPT:1,STYLE:1,TEXTAREA:1,INPUT:1,CANVAS:1,svg:1,SVG:1,CODE:1,PRE:1};
+ var RX=[[/€ (?=[−\-–]?\d)/g,'€'+NB],[/([−+=]) (?=€)/g,'$1'+NB],[/(^|[\s(€ ·])(\d[\d.,]*) (?=[a-zA-Zéë%(])/g,'$1$2'+NB],[/ ([→=+·]) /g,NB+'$1 '],[/ ([–−]) (?=€)/g,NB+'$1 ']];
+ var TEL=/(\b0800-\d{4}\b|\b0\d{2,3}-\d{6,7}\b|\b113\.nl\b)/;
+ function fixText(n){var t=n.data,o=t;for(var i=0;i<RX.length;i++)t=t.replace(RX[i][0],RX[i][1]);if(t!==o)n.data=t;
+  var pe=n.parentNode;if(!pe||(pe.classList&&pe.classList.contains('nw'))||pe.closest&&pe.closest('a[href^="tel:"] .nw'))return;
+  var m=TEL.exec(t);if(!m)return;
+  var a=n.splitText(m.index);a.splitText(m[0].length);var sp=document.createElement('span');sp.className='nw';pe.replaceChild(sp,a);sp.appendChild(a);}
+ function walk(el){if(!el)return;if(el.nodeType===3){if(el.data.trim())fixText(el);return}
+  if(el.nodeType!==1||SKIP[el.tagName])return;
+  if(el.classList&&el.classList.contains('seg'))segV(el);
+  var kids=[].slice.call(el.childNodes);for(var i=0;i<kids.length;i++)walk(kids[i]);
+  if(el.querySelectorAll)[].forEach.call(el.querySelectorAll('.seg'),segV)}
+ function segV(sg){var b=sg.querySelectorAll('button');if(b.length>=3&&[].some.call(b,function(x){return x.textContent.trim().length>20}))sg.classList.add('v')}
+ function start(){walk(document.body);new MutationObserver(function(ms){ms.forEach(function(m){[].forEach.call(m.addedNodes,function(x){if(x.nodeType===1&&x.classList&&x.classList.contains('nw'))return;walk(x)})})}).observe(document.body,{childList:true,subtree:true})}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();
 </script>
 </body>
