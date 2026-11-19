@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zorgkaart</title>
+<style>
+  :root{
+    --bg:#F7F5F2; --card:#FFFFFF; --ink:#1F2328; --muted:#5B6370; --line:#E4E0DA;
+    --red:#B3261E; --red-bg:#FCECEA; --orange:#B45309; --orange-bg:#FEF3E2;
+    --green:#1E6B4A; --green-bg:#E8F4EE; --blue:#1F5A99; --blue-bg:#E9F1FA;
+    --purple:#5B3A8C; --purple-bg:#F1ECF8; --teal:#0F6670; --teal-bg:#E6F3F4;
+    --radius:16px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#15171A; --card:#1E2125; --ink:#ECEDEE; --muted:#A3A9B3; --line:#2E3238;
+      --red-bg:#3A1D1B; --orange-bg:#3A2A14; --green-bg:#16301F; --blue-bg:#16263A; --purple-bg:#271E36; --teal-bg:#13302F;
+      --red:#F2A39C; --orange:#F5C07A; --green:#8FD3AE; --blue:#9CC2F0; --purple:#C7B1EC; --teal:#86D0D6;}
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.5}
+  .wrap{max-width:560px;margin:0 auto;padding:16px 16px 100px}
+  header.top{display:flex;align-items:center;gap:10px;margin:4px 0 14px}
+  header.top h1{font-size:20px;margin:0;font-weight:700;letter-spacing:-.01em}
+  .back{border:0;background:var(--card);color:var(--ink);border-radius:999px;width:40px;height:40px;font-size:22px;border:1px solid var(--line);cursor:pointer;flex:none}
+  .lead{color:var(--muted);margin:0 0 16px}
+  h3{font-size:17px;margin:18px 0 8px}
+  .card{background:var(--card);border-radius:var(--radius);padding:16px;margin:0 0 12px;border:1px solid var(--line)}
+  .card > :first-child{margin-top:0}
+  .choice{display:block;width:100%;text-align:left;border:0;border-radius:var(--radius);padding:16px 40px 16px 18px;margin:0 0 12px;cursor:pointer;color:var(--ink);font:inherit;position:relative}
+  .choice b{display:block;font-size:18px;margin-bottom:2px}
+  .choice span{color:var(--muted);font-size:15px}
+  .choice::after{content:"›";position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:26px;color:var(--muted)}
+  .c-red{background:var(--red-bg);border-left:6px solid var(--red)}
+  .c-orange{background:var(--orange-bg);border-left:6px solid var(--orange)}
+  .c-green{background:var(--green-bg);border-left:6px solid var(--green)}
+  .c-blue{background:var(--blue-bg);border-left:6px solid var(--blue)}
+  .c-purple{background:var(--purple-bg);border-left:6px solid var(--purple)}
+  .c-teal{background:var(--teal-bg);border-left:6px solid var(--teal)}
+  .call{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;margin:0 0 10px}
+  .call .num{font-size:20px;font-weight:700}
+  .call .who{color:var(--muted);font-size:14px}
+  .call a{background:var(--ink);color:var(--bg);text-decoration:none;border-radius:999px;padding:10px 16px;font-weight:600;white-space:nowrap}
+  .steps{counter-reset:s;list-style:none;padding:0;margin:0}
+  .steps li{counter-increment:s;position:relative;padding:0 0 12px 40px}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--bg);font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  ul.dots{padding-left:20px;margin:6px 0}
+  ul.dots li{margin:0 0 6px}
+  .script{background:var(--bg);border:1px dashed var(--line);border-radius:12px;padding:12px;font-style:italic}
+  .btn{border:0;border-radius:999px;padding:10px 16px;font:inherit;font-weight:600;cursor:pointer;background:var(--ink);color:var(--bg);margin-top:10px}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .note{font-size:14px;color:var(--muted)}
+  .tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px;margin-bottom:8px}
+  .t-red{background:var(--red-bg);color:var(--red)} .t-orange{background:var(--orange-bg);color:var(--orange)}
+  .t-green{background:var(--green-bg);color:var(--green)} .t-purple{background:var(--purple-bg);color:var(--purple)}
+  .t-blue{background:var(--blue-bg);color:var(--blue)} .t-teal{background:var(--teal-bg);color:var(--teal)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;text-align:left;font:inherit;color:var(--ink);cursor:pointer;min-height:86px}
+  .tile .ic{font-size:22px;display:block;margin-bottom:6px}
+  .tile b{display:block;font-size:15px}
+  label{display:block;font-size:14px;color:var(--muted);margin:12px 0 4px}
+  input,textarea{width:100%;font:inherit;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+  textarea{min-height:70px}
+  .check{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line)}
+  .check input{width:22px;height:22px;flex:none;margin-top:2px}
+  .check label{margin:0;color:var(--ink);font-size:16px}
+  .sos{position:fixed;left:0;right:0;bottom:0;background:var(--red);color:#fff;display:flex;justify-content:center;gap:18px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));font-weight:700;z-index:5;font-size:15px}
+  .sos a{color:#fff}
+  .toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:999px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:6}
+  .toast.on{opacity:1}
+  details{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;margin:0 0 10px}
+  summary{font-weight:700;cursor:pointer}
+  .view{display:none}.view.on{display:block}
+  .breath{display:flex;flex-direction:column;align-items:center;padding:10px 0}
+  .circle{width:150px;height:150px;border-radius:50%;background:var(--teal-bg);border:3px solid var(--teal);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--teal);transform:scale(.6);transition:transform 4s ease-in-out}
+  .circle.in{transform:scale(1)}
+  .ground{display:flex;flex-direction:column;gap:8px}
+  .ground .g{display:flex;gap:12px;align-items:center;background:var(--bg);border-radius:12px;padding:10px 12px}
+  .ground .n{font-size:22px;font-weight:800;width:28px;text-align:center;color:var(--teal)}
+  .door-ic{font-size:26px;float:left;margin-right:12px;line-height:1.2}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ================= START ================= -->
+<section class="view" id="v-start">
+  <p style="margin:0 0 8px"><a href="/" style="color:var(--muted);text-decoration:none">← Terug naar Level 18</a></p>
+  <header class="top"><h1>Zorgkaart</h1></header>
+  <p class="lead">Voor iedereen die geraakt wordt door gedachten aan zelfdoding. Bij jezelf of bij iemand anders. Kies wat bij je past.</p>
+
+  <button class="choice c-blue" data-go="zelf"><span class="door-ic">🫂</span><b>Ik denk zelf aan zelfdoding</b><span>Hulp nu, je veiligheidsplan, wat je kunt zeggen</span></button>
+  <button class="choice c-orange" data-go="naaste"><span class="door-ic">👀</span><b>Ik maak me zorgen om iemand</b><span>Wie bel ik, wat zeg ik, wat gebeurt er dan</span></button>
+  <button class="choice c-purple" data-go="verlies"><span class="door-ic">🕯️</span><b>Ik heb iemand verloren</b><span>De eerste weken, rouw, slapen, steun</span></button>
+
+  <h3>Altijd handig</h3>
+  <div class="grid">
+    <button class="tile" data-go="wachtkamer"><span class="ic">⏳</span><b>In de wacht bij 113?</b></button>
+    <button class="tile" data-go="wat-gebeurt"><span class="ic">🔁</span><b>Wat gebeurt er als ik bel?</b></button>
+    <button class="tile" data-go="nummers"><span class="ic">☎️</span><b>Alle nummers</b></button>
+    <button class="tile" data-go="over"><span class="ic">ℹ️</span><b>Over deze app</b></button>
+  </div>
+</section>
+
+<!-- ================= ZELF ================= -->
+<section class="view" id="v-zelf">
+  <header class="top"><button class="back" data-go="start" aria-label="Terug">‹</button><h1>Ik denk aan zelfdoding</h1></header>
+  <div class="card" style="background:var(--blue-bg);border-color:transparent">
+    <p style="margin:0">Fijn dat je hier bent. Gedachten aan zelfdoding komen vaak in golven. Ze kunnen heel sterk zijn en ook weer zakken. Je hoeft er niet alleen mee te blijven.</p>
+  </div>
+  <p style="margin:0 0 10px"><b>Ben je in direct gevaar? Bel 112.</b></p>
+  <h3>Nu praten</h3>
+  <div class="call"><div><div class="num">113 / 0800-0113</div><div class="who">24/7 · gratis · anoniem</div></div><a href="tel:08000113">Bel</a></div>
+  <div class="call"><div><div class="num">Chat met 113</div><div class="who">Als praten niet lukt · 113.nl</div></div><a href="https://www.113.nl" target="_blank" rel="noopener">Chat</a></div>
+  <div class="call"><div><div class="num">112</div><div class="who">Als je jezelf nu iets wilt aandoen</div></div><a href="tel:112">Bel</a></div>
+  <p class="note">Lukt bellen niet of moet je wachten? Ga naar de <a href="#wachtkamer">wachtkamer</a>. Heb je een huisarts? Die kun je ook bellen, ’s avonds de huisartsenpost.</p>
+
+  <button class="choice c-teal" data-go="plan"><b>Mijn veiligheidsplan</b><span>Zes stappen voor als het zwaar wordt</span></button>
+  <button class="choice c-green" data-go="wachtkamer"><b>Even rustiger worden</b><span>Ademhaling en terug naar het nu</span></button>
+
+  <div class="card">
+    <h3>Wat kun je zeggen tegen de huisarts?</h3>
+    <div class="script" id="s-zelf-ha">Ik denk aan zelfdoding en ik merk dat ik het niet meer alleen kan. Ik heb hulp nodig. Kunnen we bespreken wat er mogelijk is, ook terwijl ik op een wachtlijst sta?</div>
+    <button class="btn ghost" data-copy="s-zelf-ha">Kopieer tekst</button>
+  </div>
+  <div class="card">
+    <h3>Wat kun je zeggen tegen iemand die je vertrouwt?</h3>
+    <div class="script" id="s-zelf-vriend">Het gaat niet goed met me. Ik heb soms gedachten dat ik niet meer wil leven. Wil je er voor me zijn en misschien meegaan naar de huisarts?</div>
+    <button class="btn ghost" data-copy="s-zelf-vriend">Kopieer tekst</button>
+  </div>
+</section>
+
+<!-- ================= VEILIGHEIDSPLAN ================= -->
+<section class="view" id="v-plan">
+  <header class="top"><button class="back" data-go="zelf" aria-label="Terug">‹</button><h1>Mijn veiligheidsplan</h1></header>
+  <p class="lead">Vul dit in op een rustiger moment. Bekijk het als het zwaar wordt. Het wordt alleen op dit toestel bewaard.</p>
+  <div class="card">
+    <label for="p1">1. Mijn waarschuwingssignalen (gedachten, gevoelens, situaties)</label><textarea id="p1" data-store></textarea>
+    <label for="p2">2. Wat ik zelf kan doen om rustiger te worden</label><textarea id="p2" data-store></textarea>
+    <label for="p3">3. Mensen en plekken die me afleiden</label><textarea id="p3" data-store></textarea>
+    <label for="p4">4. Wie ik om hulp kan vragen (naam + nummer)</label><textarea id="p4" data-store></textarea>
+    <label for="p5">5. Professionals: huisarts, behandelaar, 113, 112</label><textarea id="p5" data-store placeholder="Huisarts: ...&#10;113 / 0800-0113&#10;112"></textarea>
+    <label for="p6">6. Hoe ik mijn omgeving veiliger maak</label><textarea id="p6" data-store></textarea>
+    <label for="p7">Waar ik voor wil leven</label><textarea id="p7" data-store></textarea>
+  </div>
+  <button class="btn" data-copyplan="plan">Kopieer mijn plan</button>
+  <p class="note">Tip: deel je plan met iemand die je vertrouwt en met je huisarts of behandelaar. Dit plan volgt de opbouw van het veiligheidsplan van 113. Liever een officiële app? 113 heeft de gratis BackUp-app.</p>
+</section>
+
+<!-- ================= WACHTKAMER ================= -->
+<section class="view" id="v-wachtkamer">
+  <header class="top"><button class="back" data-go="start" aria-label="Terug">‹</button><h1>Wachtkamer</h1></header>
+  <p class="lead">Sta je in de wacht? Blijf in de rij. Ondertussen kun je dit doen.</p>
+  <div class="card">
+    <h3>Ademen: 4 in, 6 uit</h3>
+    <div class="breath"><div class="circle" id="circle">Start</div>
+      <button class="btn" id="breathBtn">Start ademhaling</button>
+      <p class="note" id="breathCount" style="margin-top:8px"></p></div>
+  </div>
+  <div class="card">
+    <h3>Terug naar het nu (5-4-3-2-1)</h3>
+    <div class="ground">
+      <div class="g"><span class="n">5</span><span>dingen die je ziet</span></div>
+      <div class="g"><span class="n">4</span><span>dingen die je voelt (stoel, kleding, je voeten)</span></div>
+      <div class="g"><span class="n">3</span><span>geluiden die je hoort</span></div>
+      <div class="g"><span class="n">2</span><span>dingen die je ruikt</span></div>
+      <div class="g"><span class="n">1</span><span>ding dat je proeft</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Duurt het te lang?</h3>
+    <ul class="dots">
+      <li><b>Probeer het andere kanaal</b>: <a href="https://www.113.nl" target="_blank" rel="noopener">chat op 113.nl</a> als bellen druk is, of andersom.</li>
+      <li><b>Ernstig?</b> Overdag je eigen huisarts, ’s avonds en in het weekend de huisartsenpost (Eindhoven 088 876 5151).</li>
+      <li><b>Bel 112</b> als er direct gevaar is.</li>
+      <li><b>Laat iemand bij je komen</b>: stuur een vriend of familielid een bericht.</li>
+    </ul>
+    <div class="script" id="s-help">Kun je nu naar me toe komen of me bellen? Het gaat niet goed en ik wil even niet alleen zijn.</div>
+    <button class="btn ghost" data-copy="s-help">Kopieer bericht</button>
+  </div>
+  <button class="choice c-teal" data-go="plan"><b>Open mijn veiligheidsplan</b><span>Als je er een hebt ingevuld</span></button>
+</section>
+
+<!-- ================= NAASTE ================= -->
+<section class="view" id="v-naaste">
+  <header class="top"><button class="back" data-go="start" aria-label="Terug">‹</button><h1>Zorgen om iemand</h1></header>
+  <p class="lead">Kies wat er nú speelt. Twijfel je of het acuut is? Bel toch: 113 of de huisartsenpost denkt met je mee.</p>
+  <button class="choice c-red" data-go="acuut"><b>Er is direct gevaar</b><span>Plan of middelen, zegt het nu te doen, onbereikbaar na een afscheidsbericht</span></button>
+  <button class="choice c-orange" data-go="ernstig"><b>Ik maak me ernstige zorgen</b><span>Heeft gezegd dood te willen, geen direct gevaar</span></button>
+  <button class="choice c-green" data-go="twijfel"><b>Ik twijfel of wil advies</b><span>Meedenken, of mijn eigen zorgen kwijt</span></button>
+  <button class="choice c-purple" data-go="wil-niet"><b>Hij/zij wil geen hulp</b><span>Wat kan ik dan nog doen?</span></button>
+  <div class="grid">
+    <button class="tile" data-go="praten"><span class="ic">💬</span><b>Hoe praat ik erover?</b></button>
+    <button class="tile" data-go="zelfzorg"><span class="ic">🫶</span><b>Zorg voor jezelf</b></button>
+    <button class="tile" data-go="wonen"><span class="ic">🏠</span><b>Dakloosheid dreigt</b></button>
+    <button class="tile" data-go="mijn-plan"><span class="ic">📝</span><b>Mijn notities</b></button>
+  </div>
+</section>
+
+<section class="view" id="v-acuut">
+  <header class="top"><button class="back" data-go="naaste" aria-label="Terug">‹</button><h1>Direct gevaar</h1></header>
+  <span class="tag t-red">Nu handelen</span>
+  <div class="call"><div><div class="num">112</div><div class="who">Politie / ambulance</div></div><a href="tel:112">Bel</a></div>
+  <div class="card">
+    <h3>Zeg dit</h3>
+    <div class="script" id="s-112">Ik bel omdat [naam] zegt nu een einde aan het leven te maken. Adres: [adres]. Ik maak me direct zorgen om de veiligheid.</div>
+    <button class="btn ghost" data-copy="s-112">Kopieer tekst</button>
+  </div>
+  <div class="card">
+    <h3>Ondertussen</h3>
+    <ul class="dots">
+      <li>Blijf bij de persoon of in contact, als dat veilig is voor jou.</li>
+      <li>Haal gevaarlijke middelen weg als dat veilig kan.</li>
+      <li>Je hebt geen toestemming nodig om te bellen.</li>
+    </ul>
+  </div>
+  <button class="choice c-blue" data-go="wat-gebeurt"><b>Wat gebeurt er hierna?</b><span>Politie, crisisdienst, mogelijke uitkomsten</span></button>
+</section>
+
+<section class="view" id="v-ernstig">
+  <header class="top"><button class="back" data-go="naaste" aria-label="Terug">‹</button><h1>Ernstige zorgen</h1></header>
+  <span class="tag t-orange">Vandaag nog</span>
+  <p class="lead">Alleen een (huis)arts of de politie kan de crisisdienst inschakelen. Bel dus de arts.</p>
+  <div class="call"><div><div class="num">088 876 5151</div><div class="who">Huisartsenpost Eindhoven · avond, nacht, weekend</div></div><a href="tel:0888765151">Bel</a></div>
+  <div class="call"><div><div class="num">Eigen huisarts</div><div class="who">Werkdagen overdag</div></div><a href="#" id="callHa">Bel</a></div>
+  <div class="card">
+    <h3>Zeg dit</h3>
+    <div class="script" id="s-hap">Ik bel over [naam, adres, geboortedatum als je die weet]. Hij/zij heeft gezegd een einde aan het leven te willen maken. [Wat speelt er: bv. verliest woning, geen behandelaar, recent verlies.] Ik maak me ernstige zorgen. Kunnen jullie de crisisdienst inschakelen of contact opnemen?</div>
+    <button class="btn ghost" data-copy="s-hap">Kopieer tekst</button>
+  </div>
+  <button class="choice c-blue" data-go="wat-gebeurt"><b>Wat gebeurt er dan?</b><span>Triage, terugbellen, crisisdienst</span></button>
+</section>
+
+<section class="view" id="v-twijfel">
+  <header class="top"><button class="back" data-go="naaste" aria-label="Terug">‹</button><h1>Twijfel of advies</h1></header>
+  <div class="call"><div><div class="num">113 / 0800-0113</div><div class="who">24/7 · gratis · ook voor naasten · chat 113.nl</div></div><a href="tel:08000113">Bel</a></div>
+  <div class="call"><div><div class="num">0800-1205</div><div class="who">Meldpunt Zorgwekkend Gedrag · werkdagen overdag · online melden altijd via ggdbzo.nl/meldzorgwekkendgedrag</div></div><a href="tel:08001205">Bel</a></div>
+  <div class="card">
+    <h3>Vraag concreet</h3>
+    <p style="margin-top:0">Je krijgt betere hulp als je zegt wat je nodig hebt. Bijvoorbeeld:</p>
+    <div class="script" id="s-113-naaste">Ik bel als naaste. Iemand in mijn omgeving heeft gezegd niet meer te willen leven. Ik wil weten: welke stap moet ik nu zetten, en hoe praat ik met hem/haar?</div>
+    <button class="btn ghost" data-copy="s-113-naaste">Kopieer tekst</button>
+    <p class="note">Krijg je algemene tips terwijl je een plan zoekt? Zeg dat gerust: “Ik zoek vooral wat ik concreet kan doen.”</p>
+  </div>
+</section>
+
+<section class="view" id="v-wil-niet">
+  <header class="top"><button class="back" data-go="naaste" aria-label="Terug">‹</button><h1>“Ik wil geen hulp”</h1></header>
+  <div class="card">
+    <p><b>Hulp is vrijwillig, maar jij mag altijd bellen.</b> Privacyregels gelden voor hulpverleners: zij mogen jou weinig vertellen, jij mag hun alles vertellen.</p>
+    <ul class="dots">
+      <li><b>Acuut gevaar?</b> Dan kan via de wet (Wvggz) zorg ook zonder toestemming. De lat ligt hoog.</li>
+      <li><b>Niet acuut?</b> Meld bij 0800-1205. Bemoeizorg gaat actief op iemand af.</li>
+      <li><b>Politie al langs geweest?</b> Vraag de wijkagent of er een zorgmelding is gedaan.</li>
+      <li><b>Bied iets kleins aan</b>: “Zal ik donderdag met je meegaan naar de huisarts?”</li>
+    </ul>
+  </div>
+</section>
+
+<section class="view" id="v-praten">
+  <header class="top"><button class="back" data-go="naaste" aria-label="Terug">‹</button><h1>Hoe praat ik erover?</h1></header>
+  <div class="card">
+    <h3>Vraag het direct</h3>
+    <div class="script">Denk je eraan om een einde aan je leven te maken?</div>
+    <p class="note">Ernaar vragen brengt iemand niet op ideeën. Het geeft juist ruimte.</p>
+  </div>
+  <div class="card">
+    <h3>Wat helpt</h3>
+    <ul class="dots"><li>Luisteren zonder meteen op te lossen.</li><li>“Ik ben blij dat je het me vertelt.”</li><li>Samen één kleine volgende stap kiezen.</li><li>Samen een veiligheidsplan maken (zie de ingang “Ik denk zelf aan zelfdoding”).</li></ul>
+    <h3>Wat niet helpt</h3>
+    <ul class="dots"><li>Geheimhouding beloven.</li><li>Schuld aanpraten (“denk aan je familie”).</li><li>Discussiëren over of het “echt” is.</li></ul>
+  </div>
+</section>
+
+<section class="view" id="v-zelfzorg">
+  <header class="top"><button class="back" data-go="naaste" aria-label="Terug">‹</button><h1>Zorg voor jezelf</h1></header>
+  <div class="card" style="background:var(--teal-bg);border-color:transparent"><p style="margin:0"><b>Jij bent niet verantwoordelijk voor iemands leven.</b> Zorgen doorgeven aan 112, de huisartsenpost, 113 of 0800-1205 is genoeg.</p></div>
+  <div class="card">
+    <h3>Grens stellen</h3>
+    <p class="note" style="margin-top:0">Voor familie of vrienden, niet voor [naam] zelf.</p>
+    <div class="script" id="s-grens">Ik maak me zorgen om [naam], maar ik kan dit niet alleen dragen. Wil jij de huisarts(enpost) bellen? Ik heb zelf ook steun nodig.</div>
+    <button class="btn ghost" data-copy="s-grens">Kopieer tekst</button>
+  </div>
+  <div class="card">
+    <h3>Let op jezelf</h3>
+    <p style="margin:0">Trek je je terug, eet of slaap je niet, of worden je gedachten donkerder? Bel dezelfde dag je huisarts of 113.</p>
+  </div>
+</section>
+
+<section class="view" id="v-wonen">
+  <header class="top"><button class="back" data-go="naaste" aria-label="Terug">‹</button><h1>Dakloosheid dreigt</h1></header>
+  <p class="lead">Geen uitzicht op een woning is een grote bron van wanhoop. Regel een vangnet vóór de datum.</p>
+  <div class="call"><div><div class="num">06 21409533</div><div class="who">Springplank040 · opvang · 24/7</div></div><a href="tel:0621409533">Bel</a></div>
+  <div class="call"><div><div class="num">14040</div><div class="who">Gemeente Eindhoven · Regieteam opvang</div></div><a href="tel:14040">Bel</a></div>
+  <div class="card">
+    <ul class="dots" style="margin:0">
+      <li><b>Uitkering blijft</b>: zonder adres kan een briefadres bij de gemeente.</li>
+      <li><b>Centrale inloop</b>: Fuutlaan 10, Eindhoven.</li>
+      <li><b>Urgentie afgewezen?</b> Maak bezwaar; een brief van de huisarts helpt.</li>
+      <li><b>Op een ggz-wachtlijst?</b> Vraag de zorgverzekeraar om wachtlijstbemiddeling.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="view" id="v-mijn-plan">
+  <header class="top"><button class="back" data-go="naaste" aria-label="Terug">‹</button><h1>Mijn notities</h1></header>
+  <p class="note">Alleen op dit toestel bewaard.</p>
+  <div class="card">
+    <label for="f-naam">Om wie maak ik me zorgen?</label><input id="f-naam" data-store>
+    <label for="f-adres">Adres</label><input id="f-adres" data-store>
+    <label for="f-ha">Zijn/haar huisarts + nummer</label><input id="f-ha" data-store>
+    <label for="f-mijn">Mijn eigen steun (wie bel ik?)</label><input id="f-mijn" data-store>
+    <label for="f-notitie">Wat speelt er? (voor als je moet bellen)</label><textarea id="f-notitie" data-store></textarea>
+  </div>
+  <div class="card">
+    <h3>Checklist</h3>
+    <div class="check"><input type="checkbox" id="c1" data-store><label for="c1">Huisarts ingelicht</label></div>
+    <div class="check"><input type="checkbox" id="c2" data-store><label for="c2">Zorgmelding gecheckt (wijkagent / 0800-1205)</label></div>
+    <div class="check"><input type="checkbox" id="c3" data-store><label for="c3">Veiligheidsplan besproken</label></div>
+    <div class="check"><input type="checkbox" id="c4" data-store><label for="c4">Woonsituatie: vangnet geregeld</label></div>
+    <div class="check"><input type="checkbox" id="c5" data-store><label for="c5">Steun voor mijzelf geregeld</label></div>
+  </div>
+  <button class="btn" data-copyplan="notities">Kopieer mijn notities</button>
+</section>
+
+<!-- ================= VERLIES ================= -->
+<section class="view" id="v-verlies">
+  <header class="top"><button class="back" data-go="start" aria-label="Terug">‹</button><h1>Ik heb iemand verloren</h1></header>
+  <div class="card" style="background:var(--purple-bg);border-color:transparent">
+    <p style="margin:0">Het spijt me. Verlies door zelfdoding is anders dan ander verlies: er komen vaak schuld, boosheid, vragen en schrik bij. Al die gevoelens mogen er zijn. <b>Het is niet jouw schuld.</b></p>
+  </div>
+  <div class="card">
+    <h3>De eerste weken</h3>
+    <ul class="dots">
+      <li>Slaap, eten en concentratie zijn vaak van slag. Dat is normaal na een schok.</li>
+      <li>Nachtmerries en beelden die terugkomen komen veel voor. Noem ze bij de huisarts.</li>
+      <li>Vertel op werk of school wat er is gebeurd, zodat er rekening met je wordt gehouden.</li>
+      <li>Je hoeft het “waarom” niet nu te begrijpen.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3>Steun zonder lange wachtlijst</h3>
+    <ul class="dots">
+      <li><b>Huisarts of POH-GGZ</b>: vertel dat het een verlies door zelfdoding is. Bij traumatisch verlies kan EMDR helpen.</li>
+      <li><b>Rouwbegeleider of rouwtherapeut</b> in eigen praktijk, via <a href="https://www.steunbijverlies.nl" target="_blank" rel="noopener">steunbijverlies.nl</a>. Soms vergoed via aanvullende verzekering.</li>
+      <li><b>113</b> kun je ook bellen als je na een verlies zelf aan de dood denkt, dag en nacht.</li>
+    </ul>
+    <div class="script" id="s-verlies-ha">Mijn [relatie, bv. vriend/broer] is overleden door zelfdoding. Ik slaap slecht en heb nachtmerries. Ik zoek hulp bij rouw en wil weten wat er zonder lange wachtlijst kan.</div>
+    <button class="btn ghost" data-copy="s-verlies-ha">Kopieer tekst</button>
+  </div>
+  <div class="card">
+    <h3>Pas extra op jezelf</h3>
+    <p style="margin:0">Na een zelfdoding in je omgeving ben je kwetsbaarder. Merk je dat je zelf aan de dood denkt? Bel 113 of je huisarts, dezelfde dag.</p>
+  </div>
+</section>
+
+<!-- ================= WAT GEBEURT ================= -->
+<section class="view" id="v-wat-gebeurt">
+  <header class="top"><button class="back" data-go="start" aria-label="Terug">‹</button><h1>Wat gebeurt er als ik bel?</h1></header>
+  <details open><summary>112</summary>
+    <ol class="steps" style="margin-top:10px"><li>De meldkamer stuurt politie en/of ambulance.</li><li>Zij kijken of de persoon veilig is.</li><li>Bij acuut gevaar komt de crisisdienst van de GGZ.</li><li>Die voert een gesprek en beoordeelt.</li></ol>
+  </details>
+  <details><summary>Huisartsenpost</summary>
+    <ol class="steps" style="margin-top:10px"><li>Een triagist stelt vragen.</li><li>Een arts belt terug of komt langs.</li><li>Is het ernstig, dan schakelt de arts de crisisdienst in.</li><li>De eigen huisarts krijgt bericht.</li></ol>
+  </details>
+  <details><summary>113</summary>
+    <ol class="steps" style="margin-top:10px"><li>Je praat anoniem met een hulpverlener. Een zelfverzonnen naam is genoeg.</li><li>Het gesprek gaat over jouw situatie en wat je nu kunt doen.</li><li>Als het druk is, kan het gesprek korter zijn.</li><li>113 kan je wijzen op vervolghulp en biedt ook online therapie.</li></ol>
+    <p class="note">Zeg vooraf wat je zoekt: luisteren, een plan, of advies als naaste.</p>
+  </details>
+  <details><summary>Meldpunt 0800-1205</summary>
+    <ol class="steps" style="margin-top:10px"><li>Een deskundige luistert en geeft advies.</li><li>Zo nodig gaat de melding naar bemoeizorg of een wijk-GGD’er.</li><li>Zij zoeken de persoon actief op.</li></ol>
+  </details>
+  <div class="card">
+    <h3>Mogelijke uitkomsten van een beoordeling</h3>
+    <ul class="dots"><li>Geen acuut gevaar: thuis, huisarts wordt ingelicht.</li><li>Een paar weken intensieve begeleiding thuis.</li><li>Vrijwillige opname (komt weinig voor).</li><li>Bij ernstig gevaar en weigering: crisismaatregel, max. 3 dagen; daarna beslist de rechter over verlenging.</li></ul>
+    <p class="note"><b>Eerlijk:</b> vaak blijft iemand thuis. Dat is geen falen. De melding staat in het dossier en de volgende stap gaat sneller.</p>
+  </div>
+</section>
+
+<!-- ================= NUMMERS ================= -->
+<section class="view" id="v-nummers">
+  <header class="top"><button class="back" data-go="start" aria-label="Terug">‹</button><h1>Alle nummers</h1></header>
+  <div class="call"><div><div class="num">112</div><div class="who">Direct gevaar</div></div><a href="tel:112">Bel</a></div>
+  <div class="call"><div><div class="num">0800-0113</div><div class="who">113 · 24/7 · gratis · ook 113 en chat 113.nl</div></div><a href="tel:08000113">Bel</a></div>
+  <div class="call"><div><div class="num">088 876 5151</div><div class="who">Huisartsenpost Eindhoven</div></div><a href="tel:0888765151">Bel</a></div>
+  <div class="call"><div><div class="num">0800-1205</div><div class="who">Meldpunt Zorgwekkend Gedrag · werkdagen</div></div><a href="tel:08001205">Bel</a></div>
+  <div class="call"><div><div class="num">06 21409533</div><div class="who">Springplank040 opvang · 24/7</div></div><a href="tel:0621409533">Bel</a></div>
+  <div class="call"><div><div class="num">14040</div><div class="who">Gemeente Eindhoven · Regieteam opvang</div></div><a href="tel:14040">Bel</a></div>
+  <div class="call"><div><div class="num">0800-2000</div><div class="who">Veilig Thuis · huiselijk geweld · 24/7 · gratis</div></div><a href="tel:08002000">Bel</a></div>
+  <p class="note">Werkt “Bel” niet? Tik het nummer zelf in. Nummers gecontroleerd: 16 november 2026.</p>
+</section>
+
+<section class="view" id="v-over">
+  <header class="top"><button class="back" data-go="start" aria-label="Terug">‹</button><h1>Over deze app</h1></header>
+  <div class="card">
+    <p>De Zorgkaart is een wegwijzer. Hij vervangt geen hulpverlener en geeft geen medisch advies.</p>
+    <ul class="dots">
+      <li>Er wordt niets naar een server gestuurd. Wat je invult, blijft op dit toestel.</li>
+      <li>Er zit bewust geen AI-chat in: in een crisis wil je een mens spreken.</li>
+      <li>Lokale nummers gelden voor regio Eindhoven.</li>
+    </ul>
+    <p class="note">Gebruik je een gedeelde telefoon? Wis na gebruik.</p>
+    <button class="btn ghost" id="wipe">Wis alles op dit toestel</button>
+    <p class="note" id="wipeConfirm" style="display:none">Zeker weten? <button class="btn" id="wipeYes" style="margin:0 0 0 8px;padding:6px 12px">Ja, wis</button></p>
+    <p class="note">Versie 0.3 · prototype · november 2026</p>
+  </div>
+</section>
+
+</div>
+
+<div class="sos"><span>Direct gevaar: <a href="tel:112">112</a></span><span>Praten: <a href="tel:08000113">0800-0113</a></span></div>
+<div class="toast" id="toast">Gekopieerd</div>
+
+<script>
+(function(){
+  var views=[].map.call(document.querySelectorAll(".view"),function(v){return v.id.slice(2)});
+  function show(name){
+    if(views.indexOf(name)<0) name="start";
+    document.querySelectorAll(".view").forEach(function(v){v.classList.remove("on")});
+    document.getElementById("v-"+name).classList.add("on");
+    window.scrollTo(0,0);
+    if(name!=="wachtkamer") stopBreath();
+  }
+  function route(){ show((location.hash||"#start").slice(1)); }
+  document.addEventListener("click",function(e){
+    var g=e.target.closest("[data-go]");
+    if(g){ e.preventDefault(); var n=g.getAttribute("data-go"); if(location.hash!=="#"+n){location.hash=n;} else {show(n);} }
+    var c=e.target.closest("[data-copy]");
+    if(c){ copy(document.getElementById(c.getAttribute("data-copy")).innerText); }
+    var p=e.target.closest("[data-copyplan]");
+    if(p){ copy(p.getAttribute("data-copyplan")==="plan"?planText():notesText()); }
+  });
+  window.addEventListener("hashchange",route);
+
+  var toast=document.getElementById("toast");
+  function flash(t){ toast.textContent=t; toast.classList.add("on"); setTimeout(function(){toast.classList.remove("on")},1400); }
+  function copy(text){
+    try{ navigator.clipboard.writeText(text).then(function(){flash("Gekopieerd")},function(){flash("Kopiëren lukt hier niet")}); }
+    catch(e){ flash("Kopiëren lukt hier niet"); }
+  }
+
+  var KEY="zorgkaart-v1", data={};
+  try{ data=JSON.parse(localStorage.getItem(KEY)||"{}")||{}; }catch(e){ data={}; }
+  document.querySelectorAll("[data-store]").forEach(function(el){
+    if(data[el.id]!==undefined){ if(el.type==="checkbox") el.checked=!!data[el.id]; else el.value=data[el.id]; }
+    el.addEventListener("input",save); el.addEventListener("change",save);
+  });
+  function save(){
+    document.querySelectorAll("[data-store]").forEach(function(el){ data[el.id]= el.type==="checkbox"?el.checked:el.value; });
+    try{ localStorage.setItem(KEY,JSON.stringify(data)); }catch(e){}
+  }
+  function val(id){ var el=document.getElementById(id); return (el && el.value) ? el.value : "-"; }
+  function planText(){
+    return "Mijn veiligheidsplan\n\n1. Waarschuwingssignalen: "+val("p1")+"\n2. Zelf rustiger worden: "+val("p2")+"\n3. Afleiding (mensen/plekken): "+val("p3")+"\n4. Om hulp vragen: "+val("p4")+"\n5. Professionals: "+val("p5")+"\n6. Omgeving veiliger: "+val("p6")+"\nWaar ik voor wil leven: "+val("p7")+"\n\n113 / 0800-0113 · 112";
+  }
+  function notesText(){
+    var c=function(id){return document.getElementById(id).checked?"✓":"○"};
+    return "Mijn notities (Zorgkaart)\n\nOm wie: "+val("f-naam")+"\nAdres: "+val("f-adres")+"\nHuisarts: "+val("f-ha")+"\nMijn steun: "+val("f-mijn")+"\nWat speelt er: "+val("f-notitie")+
+      "\n\n"+c("c1")+" Huisarts ingelicht\n"+c("c2")+" Zorgmelding gecheckt\n"+c("c3")+" Veiligheidsplan besproken\n"+c("c4")+" Vangnet woning\n"+c("c5")+" Steun voor mijzelf\n\n112 · HAP 088 876 5151 · 113/0800-0113 · 0800-1205";
+  }
+
+  // breathing 4 in / 6 out
+  var circle=document.getElementById("circle"), bBtn=document.getElementById("breathBtn"), bCount=document.getElementById("breathCount");
+  var timer=null, rounds=0;
+  function phaseIn(){ circle.style.transitionDuration="4s"; circle.classList.add("in"); circle.textContent="Adem in"; timer=setTimeout(phaseOut,4000); }
+  function phaseOut(){ circle.style.transitionDuration="6s"; circle.classList.remove("in"); circle.textContent="Adem uit"; timer=setTimeout(function(){ rounds++; bCount.textContent="Ronde "+rounds; phaseIn(); },6000); }
+  function stopBreath(){ if(timer){clearTimeout(timer);timer=null;} if(circle){circle.classList.remove("in");circle.textContent="Start";} if(bBtn) bBtn.textContent="Start ademhaling"; rounds=0; if(bCount) bCount.textContent=""; }
+  bBtn.addEventListener("click",function(){ if(timer){ stopBreath(); } else { bBtn.textContent="Stop"; phaseIn(); } });
+
+  document.getElementById("callHa").addEventListener("click",function(e){
+    e.preventDefault();
+    var t=(document.getElementById("f-ha").value||"").replace(/[^0-9+]/g,"");
+    if(t.length>=8){ location.href="tel:"+t; } else { location.hash="mijn-plan"; flash("Vul eerst het nummer van de huisarts in"); }
+  });
+  document.getElementById("wipe").addEventListener("click",function(){ document.getElementById("wipeConfirm").style.display="block"; });
+  document.getElementById("wipeYes").addEventListener("click",function(){
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    data={};
+    document.querySelectorAll("[data-store]").forEach(function(el){ if(el.type==="checkbox") el.checked=false; else el.value=""; });
+    document.getElementById("wipeConfirm").style.display="none"; flash("Alles gewist");
+  });
+  route();
+})();
+</script>
+</body>
+</html>
