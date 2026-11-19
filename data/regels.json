@@ -1,0 +1,155 @@
+{
+ "jaar": 2026,
+ "gecontroleerd": "2026-11-19",
+ "geldig_tot": "2026-12-31",
+ "er": 385,
+ "premie_1825": 159,
+ "premie_laag": 142,
+ "zt_max_mnd": 129,
+ "zt_grens": 40857,
+ "zt_standaardpremie": 2119,
+ "zt_drempel": 29736,
+ "zt_normpremie_drempel": 568.55,
+ "zt_afbouw": 0.1373,
+ "ht_vrij": 6218,
+ "t1": 0.3575,
+ "s1": 38883,
+ "t2": 0.3756,
+ "s2": 78426,
+ "t3": 0.495,
+ "ahk_max": 3115,
+ "ahk_grens": 29736,
+ "ahk_af": 0.06398,
+ "ak_k1": 11965,
+ "ak_p1": 0.08324,
+ "ak_k2": 25845,
+ "ak_b2": 996,
+ "ak_p2": 0.31009,
+ "ak_k3": 45592,
+ "ak_b3": 5300,
+ "ak_p3": 0.0195,
+ "ak_max": 5685,
+ "ak_af": 0.0651,
+ "ak_k4": 132920,
+ "wik_min": 40,
+ "wik_pct": 0.15,
+ "bnpl_datum": "naar verwachting 2027",
+ "sf": {
+  "mbo": {
+   "thuis": 107.26,
+   "uit": 350.03,
+   "aanv": {
+    "thuis": 442.5,
+    "uit": 470.82
+   },
+   "lening": 233.65
+  },
+  "hbo": {
+   "thuis": 130.21,
+   "uit": 324.52,
+   "aanv": {
+    "thuis": 491.08,
+    "uit": 491.08
+   },
+   "lening": 315.17
+  }
+ },
+ "ov_pb": 110.95,
+ "collegegeld": 2694,
+ "rb_gem": 3625,
+ "rb_lessen": 42.5,
+ "cbr_praktijk": 143.5,
+ "cbr_theorie": 50.5,
+ "bronnen": [
+  {
+   "t": "Belastingdienst – tarieven en heffingskortingen 2026",
+   "u": "https://www.belastingdienst.nl/wps/wcm/connect/nl/voorlopige-aanslag/content/voorlopige-aanslag-tarieven-en-heffingskortingen",
+   "voor": "t1 t2 t3 s1 s2 ahk_*"
+  },
+  {
+   "t": "Belastingdienst – arbeidskorting 2026",
+   "u": "https://www.belastingdienst.nl/wps/wcm/connect/fisin/fisin2026/heffingskortingen",
+   "voor": "ak_*"
+  },
+  {
+   "t": "Wijzer in geldzaken – veranderingen zorg 2026",
+   "u": "https://www.wijzeringeldzaken.nl/actueel/veranderingen-rondom-de-zorg-in-2026/veranderingen-rondom-de-zorg-in-2026.pdf",
+   "voor": "zt_max_mnd er"
+  },
+  {
+   "t": "Staatscourant – standaardpremie zorgtoeslag 2026",
+   "u": "https://zoek.officielebekendmakingen.nl/stcrt-2025-40022.pdf",
+   "voor": "zt_*"
+  },
+  {
+   "t": "Wet op de zorgtoeslag, art. 2 – normpremie",
+   "u": "https://wetten.overheid.nl/BWBR0018451/",
+   "voor": "zt_drempel zt_afbouw"
+  },
+  {
+   "t": "Geld.nl – zorgpremie naar leeftijd 2026",
+   "u": "https://www.geld.nl/zorgverzekering/nieuws/zorgverzekering-overstappers-kunnen-meer-besparen",
+   "voor": "premie_1825"
+  },
+  {
+   "t": "Zorgwijzer – premies 2026",
+   "u": "https://www.zorgwijzer.nl/zorgverzekering-2026/zorgverzekering-2026-alle-premies-bekend-overzicht",
+   "voor": "premie_laag"
+  },
+  {
+   "t": "Huurtoeslag 2026 – vrijstelling inwonend kind",
+   "u": "https://woneninbeaufort.nl/blog/post/32194/de-revolutie-van-2026-een-expert-analyse-van-de-huurtoeslagwijzigingen-voor-jongeren-en-ouders/",
+   "voor": "ht_vrij"
+  },
+  {
+   "t": "DUO – bedragen studiefinanciering",
+   "u": "https://duo.nl/particulier/studiefinanciering/bedragen.jsp",
+   "voor": "sf collegegeld"
+  },
+  {
+   "t": "DUO – studentenreisproduct",
+   "u": "https://duo.nl/particulier/studiefinanciering/ov.jsp",
+   "voor": "ov_pb"
+  },
+  {
+   "t": "CBR – kosten rijbewijs (via TopGear, 2026)",
+   "u": "https://topgear.nl/autonieuws/rijbewijs-kosten-stijging-benzineprijzen-rijlessen-nederland/",
+   "voor": "rb_gem rb_lessen"
+  },
+  {
+   "t": "CBR-tarieven 2026 (via AutoRAI)",
+   "u": "https://autorai.nl/dit-kost-je-rijbewijs-halen-in-2026",
+   "voor": "cbr_praktijk"
+  },
+  {
+   "t": "Banken.nl – nieuwe regels achteraf betalen",
+   "u": "https://www.banken.nl/nieuws/27181/jongvolwassenen-lenen-minder-maar-hebben-de-hoogste-betalingsachterstanden",
+   "voor": "bnpl_datum"
+  },
+  {
+   "t": "Zorgwijzer – Miljoenennota 2027: eigen risico € 400, premie € 169",
+   "u": "https://www.zorgwijzer.nl/zorgverzekering-2027/miljoenennota-2027-zorgpremie-hard-omhoog-toch-stijging-eigen-risico",
+   "voor": "er_volgend premie_volgend"
+  },
+  {
+   "t": "Volkshuisvesting Nederland – huurtoeslag jongeren 2026",
+   "u": "https://www.volkshuisvestingnederland.nl/onderwerpen/huren-en-wonen/huurtoeslag/wijzigingen-huurtoeslag",
+   "voor": "ht_jong_grens"
+  },
+  {
+   "t": "Aedes – socialehuurwoning.nl wijst de weg naar je regio",
+   "u": "https://aedes.nl/woonruimteverdeling/landelijke-website-helpt-woningzoekenden-naar-juiste-verhuurwebsite",
+   "voor": "wonen"
+  },
+  {
+   "t": "Leegstandwet: geen huurbescherming bij tijdelijke verhuur",
+   "u": "https://www.volkshuisvestingnederland.nl/onderwerpen/huren-en-wonen/huurbescherming-en-huurcontracten/tijdelijke-verhuur-op-grond-van-leegstandwet-geen-huurbescherming",
+   "voor": "wonen"
+  }
+ ],
+ "contact_email": "",
+ "er_volgend": 400,
+ "premie_volgend": 173,
+ "jaar_volgend": 2027,
+ "ht_jong_grens": 498.2
+}

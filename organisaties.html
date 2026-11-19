@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Level 18 – voor organisaties</title>
+<meta name="description" content="Gratis geldgame en rekenlab voor jongeren die 18 worden: zorgverzekering, toeslagen, bijbaan, studiefinanciering, kostgeld en je eerste budget. Met een gratis plug-in voor organisaties.">
+<meta property="og:title" content="Level 18 – jouw geld, jouw game">
+<meta property="og:description" content="Gratis geldgame voor jongeren die 18 worden. Met eigen bedragen, altijd actueel.">
+<link rel="icon" href="app/icon-192.png">
+<style>
+:root{--bg:#0f0d1a;--ink:#1a1530;--soft:#f6f3ff;--mut:#6b6589;--lime:#c6ff3d;--pink:#ff4fa3;--violet:#6a2bd9;--cyan:#3de0ff;--r:22px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:#fff;line-height:1.55;padding-bottom:env(safe-area-inset-bottom)}
+h1,h2,h3{font-family:'Space Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;line-height:1.08;letter-spacing:-.01em}
+a{color:var(--violet)}
+.w{max-width:1100px;margin:0 auto;padding:0 20px}
+nav{position:sticky;top:0;z-index:5;background:rgba(15,13,26,.92);backdrop-filter:blur(8px);padding-top:env(safe-area-inset-top)}
+nav .w{display:flex;align-items:center;justify-content:space-between;height:58px}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-family:'Space Grotesk',system-ui,-apple-system,sans-serif;font-weight:700;font-size:18px}
+.logo i{width:34px;height:34px;border-radius:50%;background:var(--lime);color:var(--ink);display:grid;place-items:center;font-style:normal;font-weight:800;font-size:14px}
+nav .links a{color:#d9d4f2;text-decoration:none;font-size:14px;margin-left:18px;font-weight:600}
+nav .links a.cta{background:var(--lime);color:var(--ink);padding:8px 14px;border-radius:12px}
+@media(max-width:700px){nav .links a:not(.cta){display:none}}
+.hero{background:radial-gradient(1200px 500px at 80% -10%,#c2187a 0,transparent 60%),linear-gradient(160deg,#1d0f4a,#0f0d1a 70%);color:#fff;padding:72px 0 80px;overflow:hidden}
+.hero .w{display:grid;grid-template-columns:1.2fr .8fr;gap:40px;align-items:center}
+@media(max-width:860px){.hero .w{grid-template-columns:1fr}.phone{display:none}}
+.kick{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--lime)}
+.hero h1{font-size:clamp(40px,7vw,72px);margin:12px 0 18px}
+.hero h1 span{color:var(--lime)}
+.hero p{font-size:19px;color:#e2dcff;max-width:560px}
+.btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.btn{display:inline-block;padding:15px 22px;border-radius:16px;font-weight:800;text-decoration:none;font-size:16px;border:0;cursor:pointer;font-family:inherit}
+.btn.l{background:var(--lime);color:var(--ink)}.btn.o{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.25)}
+.btn.d{background:var(--ink);color:#fff}
+.ask{display:flex;gap:8px;margin-top:26px;max-width:560px;background:#fff;border-radius:18px;padding:6px}.ask input{flex:1;border:0;outline:none;font-size:16px;padding:10px 12px;border-radius:12px;font-family:inherit;min-width:0}.ask .btn{padding:12px 16px}
+.momlinks{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.momlinks a{color:#fff;text-decoration:none;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:99px;padding:8px 12px;font-size:14px;font-weight:600}
+.trust{margin-top:22px;font-size:13px;color:#b9b2df}
+.phone{justify-self:center;width:280px;height:560px;border-radius:44px;background:#0f0d1a;border:10px solid #2a2445;box-shadow:0 40px 80px rgba(0,0,0,.5);overflow:hidden;position:relative}
+.phone .scr{padding:22px 16px}
+.phone .hc{background:linear-gradient(135deg,#3b1d8f,#c2187a);border-radius:20px;padding:16px;color:#fff;font-family:'Space Grotesk';font-weight:700;font-size:22px}
+.phone .g{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.phone .t{background:#1b1830;border-radius:14px;padding:12px;color:#fff;font-size:12px;font-weight:700;min-height:74px}
+.phone .t b{display:block;font-size:20px}
+section{padding:80px 0}
+.sec-h{max-width:720px;margin-bottom:36px}
+.sec-h h2{font-size:clamp(30px,4.5vw,46px);margin:8px 0 12px}
+.sec-h p{color:var(--mut);font-size:17px}
+.kick.v{color:var(--pink)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:860px){.stats{grid-template-columns:1fr 1fr}}
+.stat{background:var(--soft);border-radius:var(--r);padding:22px}
+.stat .n{font-family:'Space Grotesk';font-weight:700;font-size:40px;color:var(--violet);line-height:1}
+.stat p{font-size:14px;margin-top:8px}
+.stat a{font-size:12px;color:var(--mut)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:860px){.grid3{grid-template-columns:1fr}}
+.feat{border:1.5px solid #ebe6fb;border-radius:var(--r);padding:22px;background:#fff}
+.feat .e{font-size:30px}
+.feat h3{font-size:19px;margin:10px 0 6px}
+.feat p{color:var(--mut);font-size:15px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:18px}
+.tl{background:var(--soft);border-radius:16px;padding:14px;font-weight:700;font-size:14px}
+.tl small{display:block;font-weight:400;color:var(--mut);font-size:12px;margin-top:2px}
+.dark{background:var(--bg);color:#fff}
+.dark .sec-h p,.dark p{color:#cfc9ea}
+.org{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+@media(max-width:860px){.org{grid-template-columns:1fr}}
+.steps{counter-reset:s;list-style:none}
+.steps li{position:relative;padding:0 0 18px 48px}
+.steps li:before{counter-increment:s;content:counter(s);position:absolute;left:0;top:0;width:32px;height:32px;border-radius:50%;background:var(--lime);color:var(--ink);font-weight:800;display:grid;place-items:center}
+.steps b{display:block;color:#fff}
+pre{background:#1b1830;border:1px solid #2e2850;color:#e6ffb0;border-radius:16px;padding:16px;font-size:12.5px;white-space:pre-wrap;word-break:break-all;margin-top:10px}
+label.f{display:block;font-size:13px;font-weight:700;margin:14px 0 6px;color:#fff}
+input.f{width:100%;padding:12px;border-radius:12px;border:1px solid #3a3360;background:#1b1830;color:#fff;font-size:15px;font-family:inherit}
+.prev{background:#fff;border-radius:var(--r);padding:22px;color:var(--ink)}
+.prev .lbl{font-size:12px;color:var(--mut);margin-bottom:10px;font-weight:700}
+.chk{display:flex;gap:10px;margin:8px 0;color:#e2dcff;font-size:15px}
+.chk:before{content:'✓';color:var(--lime);font-weight:900}
+.upd{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:10px}
+@media(max-width:860px){.upd{grid-template-columns:1fr 1fr}}
+.u{background:var(--soft);border-radius:18px;padding:18px}
+.u b{display:block;font-family:'Space Grotesk';font-size:17px;margin:6px 0 4px}
+.u p{font-size:14px;color:var(--mut)}
+.badge{display:inline-flex;align-items:center;gap:8px;background:#effbd6;border:1.5px solid var(--lime);border-radius:99px;padding:8px 14px;font-weight:700;font-size:14px}
+.src{columns:2;column-gap:28px;margin-top:16px;font-size:14px}
+@media(max-width:700px){.src{columns:1}}
+.src li{margin:0 0 8px 18px;break-inside:avoid}
+.help a{display:flex;justify-content:space-between;background:var(--soft);border-radius:16px;padding:16px;margin:8px 0;text-decoration:none;color:var(--ink);font-weight:700}
+.help small{display:block;font-weight:400;color:var(--mut)}
+footer{background:var(--bg);color:#9a94b8;font-size:13px;padding:36px 0 48px}
+footer a{color:#cfc9ea}
+.copy{margin-top:8px}
+</style>
+</head>
+<body>
+
+<nav><div class="w">
+  <a class="logo" href="index.html"><i>18</i>Level 18</a>
+  <div class="links"><a href="#wat">Wat zit erin</a><a href="#plugin">Plug-in</a><a href="#bronnen">Bronnen</a><a class="cta" href="index.html">Naar Level 18</a></div>
+</div></nav>
+
+<header class="hero"><div class="w">
+  <div>
+    <div class="kick">Voor organisaties · gratis</div>
+    <h1>Level 18 op <span>jouw</span> website.</h1>
+    <p>Level 18 helpt jongeren en ouders in 1 minuut met hun eigen geldplan: zorgverzekering, toeslagen, bijbaan, wonen, studie en schulden. Gratis, anoniem, altijd actueel. Zet het op je eigen website of deel de link, met jullie eigen hulplink erin.</p>
+    <div class="btns"><a class="btn l" href="#plugin">Zo zet je het erop →</a><a class="btn o" href="index.html">Bekijk Level 18</a></div>
+    <div class="trust">Bedragen gecontroleerd op 19 november 2026 · bronnen: Belastingdienst, DUO, Nibud, CBR</div>
+  </div>
+  <div class="phone" aria-hidden="true"><div class="scr">
+    <div class="hc">Jouw geld.<br>Jouw game.</div>
+    <div class="g"><div class="t"><b>🎂</b>18 worden</div><div class="t"><b>🏥</b>Zorg</div><div class="t"><b>🛍️</b>Klarna-check</div><div class="t"><b>💼</b>Bijbaan</div><div class="t"><b>🔄</b>Nu vs. later</div><div class="t"><b>👾</b>Eindbaas</div></div>
+  </div></div>
+</div></header>
+
+<section><div class="w">
+  <div class="sec-h"><div class="kick v">Waarom</div><h2>Op je 18e verandert alles. Niemand legt het uit.</h2>
+  <p>Vandaag nog kind, morgen zelf verantwoordelijk voor premies, toeslagen en belasting. En thuis valt tegelijk geld weg.</p></div>
+  <div class="stats">
+    <div class="stat"><div class="n">40%</div><p>van de 18- tot 30-jarigen heeft moeite met rondkomen.</p><a href="https://www.rijksoverheid.nl/actueel/nieuws/2026/02/02/10-miljoen-euro-voor-geldlessen-op-basis--en-middelbare-scholen-en-mbos" target="_blank" rel="noopener">Nibud via Rijksoverheid</a></div>
+    <div class="stat"><div class="n">36%</div><p>van de 18- en 19-jarigen had het afgelopen jaar problemen met geldzaken (16–17 jaar: 23%).</p><a href="https://www.wijzeringeldzaken.nl/platform-wijzeringeldzaken/publicaties/onderzoek-hoe-blijf-jij-je-geld-de-baas-11-3-2024.pdf" target="_blank" rel="noopener">Wijzer in geldzaken, 2024</a></div>
+    <div class="stat"><div class="n">€ 300–700</div><p>per maand kan een gezin aan inkomen verliezen als een thuiswonend kind 18 wordt.</p><a href="https://nos.nl/l/2598288" target="_blank" rel="noopener">Nibud via NOS</a></div>
+    <div class="stat"><div class="n">3%</div><p>van de jongeren van 16 tot 25 heeft problematische schulden.</p><a href="https://www.rijksoverheid.nl/actueel/nieuws/2026/02/02/10-miljoen-euro-voor-geldlessen-op-basis--en-middelbare-scholen-en-mbos" target="_blank" rel="noopener">CBS via Rijksoverheid</a></div>
+  </div>
+</div></section>
+
+<section id="wat" style="background:var(--soft)"><div class="w">
+  <div class="sec-h"><div class="kick v">Wat zit erin</div><h2>Spelen, rekenen, snappen.</h2>
+  <p>Geen lappen tekst, maar levels met challenges, sterren, een eindbaas tegen de klok en een Rekenlab met eigen bedragen.</p></div>
+  <div class="grid3">
+    <div class="feat"><div class="e">🎮</div><h3>7 levels + eindbaas</h3><p>Van 18 worden tot Klarna en loonheffingskorting. Pas een badge als je de challenge haalt: alles goed in één keer = 3 sterren.</p>
+      <div class="tiles"><div class="tl">🎂 18 worden</div><div class="tl">🏥 Zorg</div><div class="tl">🛍️ Klarna</div><div class="tl">💼 Bijbaan</div><div class="tl">🏠 Je ouders</div><div class="tl">📊 Budget</div></div></div>
+    <div class="feat"><div class="e">🧮</div><h3>Rekenlab</h3><p>Jouw situatie doorgerekend met de officiële bedragen en formules van 2026. Thuis of op kamers, school, mbo, hbo of werk.</p>
+      <div class="tiles"><div class="tl">🔄 Nu vs. later</div><div class="tl">💶 Zorgtoeslag<small>voorschot</small></div><div class="tl">⚖️ Twee werkgevers</div><div class="tl">🧾 Aangifte</div><div class="tl">🏠 Kostgeld</div><div class="tl">🎓 Studiefinanciering</div><div class="tl">🚗 Rijbewijs & auto</div></div></div>
+    <div class="feat"><div class="e">📲</div><h3>Overal, ook offline</h3><p>Werkt in elke browser. Met één tik op je beginscherm, als een echte app. Geen account, geen app store, geen cookies, geen tracking.</p>
+      <div class="tiles"><div class="tl">iPhone<small>Delen → Zet op beginscherm</small></div><div class="tl">Android<small>Menu → App installeren</small></div></div></div>
+  </div>
+</div></section>
+
+<section style="padding-top:0;background:var(--soft)"><div class="w">
+  <div class="grid3">
+    <div class="feat" style="grid-column:span 3"><div class="e">📚</div><h3>5 thema's voor het echte leven</h3><p>Met per thema een checklist en voortgang in procenten.</p>
+      <div class="tiles"><div class="tl">🏠 Wonen<small>Inschrijven, elk jaar verlengen, dossier klaarzetten, samen of tijdelijk wonen</small></div><div class="tl">💼 Werken<small>Contract, loonstrook, jeugdloon</small></div><div class="tl">❤️ Gezondheid<small>Zorg, eigen risico 2027: € 400, huisarts</small></div><div class="tl">⚖️ Contracten & fraude<small>Incasso, geldezels, phishing, boetes</small></div><div class="tl">🎁 Waar heb je recht op?<small>Toeslagen (voorschot!), meedoenregelingen</small></div></div></div>
+  </div>
+</div></section>
+
+<section id="docenten"><div class="w">
+  <div class="sec-h"><div class="kick v">Voor docenten</div><h2>Werkt naast je eigen lesmethode.</h2>
+  <p>Heb je al vast lesmateriaal? Level 18 is geen vervanging, maar de oefening erbij: na elke les spelen leerlingen het onderdeel dat erbij past, met hun eigen bedragen.</p></div>
+  <div class="tiles" style="grid-template-columns:repeat(auto-fill,minmax(230px,1fr))">
+    <div class="tl">18 jaar worden<small>→ Level 1 + Rekenlab "Nu vs. later"</small></div>
+    <div class="tl">Handtekening & contracten<small>→ Thema's Contracten en Werken</small></div>
+    <div class="tl">Boetes & incasso<small>→ Level 3 Klarna-check + thema Contracten</small></div>
+    <div class="tl">Fraude<small>→ Thema Contracten: geldezel & phishing</small></div>
+    <div class="tl">Zorgverzekering<small>→ Level 2 + Rekenlab zorgtoeslag-voorschot</small></div>
+    <div class="tl">Studiefinanciering<small>→ Rekenlab Studiefinanciering & ov</small></div>
+    <div class="tl">Bijbaan & belasting<small>→ Level 4 + Rekenlab Twee werkgevers & Aangifte</small></div>
+    <div class="tl">Wonen<small>→ Thema Wonen + Rekenlab Kostgeld</small></div>
+  </div>
+</div></section>
+
+
+<section id="plugin" class="dark"><div class="w">
+  <div class="sec-h"><div class="kick">Voor organisaties · gratis</div><h2>Zet Level 18 op je eigen website. In 2 minuten.</h2>
+  <p>Voor wijkteams, gemeenten, GGD, scholen, jongerenwerk, schuldhulp, zorginstellingen en de opvang. Jouw organisatie verschijnt in de game, met een directe link naar jullie eigen hulp.</p></div>
+  <div class="org">
+    <div>
+      <ol class="steps">
+        <li><b>Vul je gegevens in</b>Naam en de pagina waar jongeren bij jullie hulp vinden.</li>
+        <li><b>Kopieer de code</b>Plak hem op je website, net als een YouTube-video.</li>
+        <li><b>Klaar</b>Updates van bedragen en regels komen automatisch mee. Je hoeft zelf niets bij te houden.</li>
+      </ol>
+      <label class="f" for="on">Naam organisatie</label><input class="f" id="on" value="" placeholder="Bijv. Wijkteam Noord" maxlength="60">
+      <label class="f" for="oh">Link naar jullie hulp (https)</label><input class="f" id="oh" value="" placeholder="https://www.jouw-organisatie.nl/hulp">
+      <pre id="code"></pre>
+      <div class="btns" style="margin-top:12px"><button class="btn l" id="cp">📋 Kopieer code</button><a class="btn o" id="lnk" target="_blank" rel="noopener">Of deel deze link →</a></div>
+      <p class="copy" id="cpm" style="font-size:13px"></p>
+      <div style="margin-top:22px">
+        <div class="chk">Gratis voor iedere organisatie in Nederland</div>
+        <div class="chk">Geen persoonsgegevens: voortgang blijft op de telefoon van de jongere</div>
+        <div class="chk">Ook als losse link voor WhatsApp, Instagram of een QR-code op een flyer</div>
+      </div>
+    </div>
+    <div class="prev"><div class="lbl">VOORBEELD: zo ziet het eruit op jullie website</div><div id="preview"></div>
+      <p style="color:var(--mut);font-size:13px;margin-top:14px">Liever de game direct in je pagina? Voeg <code>data-mode="iframe"</code> toe.</p></div>
+  </div>
+  </div></section>
+
+<section id="bronnen"><div class="w">
+  <div class="sec-h"><div class="kick v">Betrouwbaar</div><h2>Officiële bedragen, elke maand gecontroleerd.</h2>
+  <p>Alle bedragen komen van de Belastingdienst, Toeslagen, DUO, CBR en Nibud. Nieuwe regels of bedragen worden doorgevoerd in Level 18 én in alle plug-ins tegelijk.</p>
+  <p style="margin-top:14px"><span class="badge">✓ Bedragen gecontroleerd op 19 november 2026</span></p></div>
+  <ul class="src"><li><a href="https://www.belastingdienst.nl/wps/wcm/connect/nl/voorlopige-aanslag/content/voorlopige-aanslag-tarieven-en-heffingskortingen" target="_blank" rel="noopener">Belastingdienst – tarieven en heffingskortingen 2026</a></li><li><a href="https://www.belastingdienst.nl/wps/wcm/connect/fisin/fisin2026/heffingskortingen" target="_blank" rel="noopener">Belastingdienst – arbeidskorting 2026</a></li><li><a href="https://www.wijzeringeldzaken.nl/actueel/veranderingen-rondom-de-zorg-in-2026/veranderingen-rondom-de-zorg-in-2026.pdf" target="_blank" rel="noopener">Wijzer in geldzaken – veranderingen zorg 2026</a></li><li><a href="https://zoek.officielebekendmakingen.nl/stcrt-2025-40022.pdf" target="_blank" rel="noopener">Staatscourant – standaardpremie zorgtoeslag 2026</a></li><li><a href="https://wetten.overheid.nl/BWBR0018451/" target="_blank" rel="noopener">Wet op de zorgtoeslag, art. 2 – normpremie</a></li><li><a href="https://www.geld.nl/zorgverzekering/nieuws/zorgverzekering-overstappers-kunnen-meer-besparen" target="_blank" rel="noopener">Geld.nl – zorgpremie naar leeftijd 2026</a></li><li><a href="https://www.zorgwijzer.nl/zorgverzekering-2026/zorgverzekering-2026-alle-premies-bekend-overzicht" target="_blank" rel="noopener">Zorgwijzer – premies 2026</a></li><li><a href="https://woneninbeaufort.nl/blog/post/32194/de-revolutie-van-2026-een-expert-analyse-van-de-huurtoeslagwijzigingen-voor-jongeren-en-ouders/" target="_blank" rel="noopener">Huurtoeslag 2026 – vrijstelling inwonend kind</a></li><li><a href="https://duo.nl/particulier/studiefinanciering/bedragen.jsp" target="_blank" rel="noopener">DUO – bedragen studiefinanciering</a></li><li><a href="https://duo.nl/particulier/studiefinanciering/ov.jsp" target="_blank" rel="noopener">DUO – studentenreisproduct</a></li><li><a href="https://topgear.nl/autonieuws/rijbewijs-kosten-stijging-benzineprijzen-rijlessen-nederland/" target="_blank" rel="noopener">CBR – kosten rijbewijs (via TopGear, 2026)</a></li><li><a href="https://autorai.nl/dit-kost-je-rijbewijs-halen-in-2026" target="_blank" rel="noopener">CBR-tarieven 2026 (via AutoRAI)</a></li><li><a href="https://www.banken.nl/nieuws/27181/jongvolwassenen-lenen-minder-maar-hebben-de-hoogste-betalingsachterstanden" target="_blank" rel="noopener">Banken.nl – nieuwe regels achteraf betalen</a></li><li><a href="https://www.zorgwijzer.nl/zorgverzekering-2027/miljoenennota-2027-zorgpremie-hard-omhoog-toch-stijging-eigen-risico" target="_blank" rel="noopener">Zorgwijzer – Miljoenennota 2027: eigen risico € 400, premie € 169</a></li><li><a href="https://www.volkshuisvestingnederland.nl/onderwerpen/huren-en-wonen/huurtoeslag/wijzigingen-huurtoeslag" target="_blank" rel="noopener">Volkshuisvesting Nederland – huurtoeslag jongeren 2026</a></li><li><a href="https://aedes.nl/woonruimteverdeling/landelijke-website-helpt-woningzoekenden-naar-juiste-verhuurwebsite" target="_blank" rel="noopener">Aedes – socialehuurwoning.nl wijst de weg naar je regio</a></li><li><a href="https://www.volkshuisvestingnederland.nl/onderwerpen/huren-en-wonen/huurbescherming-en-huurcontracten/tijdelijke-verhuur-op-grond-van-leegstandwet-geen-huurbescherming" target="_blank" rel="noopener">Leegstandwet: geen huurbescherming bij tijdelijke verhuur</a></li></ul>
+</div></section>
+
+<section style="background:var(--soft)"><div class="w help">
+  <div class="sec-h"><div class="kick v">Nu al geldzorgen?</div><h2>Je bent niet de enige. Hulp is gratis.</h2></div>
+  <a href="https://www.geldfit.nl" target="_blank" rel="noopener"><span>Geldfit<small>Gratis test en hulp, ook via chat of telefoon</small></span>→</a>
+  <a href="https://www.wijzeringeldzaken.nl/18-worden" target="_blank" rel="noopener"><span>Wijzer in geldzaken<small>Wat je moet regelen als je 18 wordt</small></span>→</a>
+  <a href="https://www.toeslagen.nl" target="_blank" rel="noopener"><span>Toeslagen.nl<small>Proefberekening zorgtoeslag</small></span>→</a>
+</div></section>
+
+<footer><div class="w">
+  <p><b style="color:#fff">Level 18</b> · De geldgame voor jongeren die 18 worden.</p>
+  <p style="margin-top:8px">Level 18 geeft algemene uitleg en voorbeeldberekeningen, geen persoonlijk financieel advies. Bedragen en regels: stand 19 november 2026. Check je eigen situatie altijd bij de Belastingdienst, Toeslagen of DUO.</p>
+  <p style="margin-top:8px">Privacy: Level 18 heeft geen accounts, cookies of advertentie-tracking. Wat je intypt wordt niet opgeslagen. Je naam en voortgang blijven op je eigen apparaat.</p>
+</div></footer>
+
+<script>
+const CONTACT="";
+(function(){
+  const on=document.getElementById('on'),oh=document.getElementById('oh'),code=document.getElementById('code'),pv=document.getElementById('preview'),lnk=document.getElementById('lnk');
+  const base=new URL('./',location.href).href;
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  function upd(){
+    const n=on.value.trim().slice(0,60);let h='';try{const u=new URL(oh.value.trim());if(u.protocol==='https:')h=u.href}catch(e){}
+    code.textContent='<div data-level18 data-org="'+n.replace(/"/g,'')+'"'+(h?' data-hulp="'+h+'"':'')+'></div>\n<script src="'+base+'embed/level18.js" defer><\/script>';
+    const q=new URLSearchParams();if(n)q.set('org',n);if(h)q.set('hulp',h);lnk.href=base+'index.html'+(q.toString()?'?'+q:'');
+    pv.innerHTML='<div data-level18 data-org="'+esc(n)+'"'+(h?' data-hulp="'+esc(h)+'"':'')+'></div>';
+    const s=document.createElement('script');s.src='embed/level18.js?'+Date.now();pv.appendChild(s);
+  }
+  on.oninput=upd;oh.oninput=upd;upd();
+  document.getElementById('cp').onclick=async()=>{try{await navigator.clipboard.writeText(code.textContent);document.getElementById('cpm').textContent='✓ Gekopieerd! Plak de code op je website.'}catch(e){document.getElementById('cpm').textContent='Selecteer de code hierboven en kopieer hem.'}};
+
+})();
+</script>
+</body>
+</html>

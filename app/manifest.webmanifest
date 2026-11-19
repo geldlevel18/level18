@@ -1,0 +1,16 @@
+{
+  "name": "Level 18 – jouw geld, jouw game",
+  "short_name": "Level 18",
+  "description": "De geldgame voor jongeren die 18 worden: zorg, toeslagen, bijbaan, studiefinanciering en je eerste budget.",
+  "lang": "nl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f0d1a",
+  "theme_color": "#0f0d1a",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
