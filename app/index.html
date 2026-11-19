@@ -154,6 +154,8 @@ nav.tabs button{flex:1;max-width:160px;background:none;border:0;color:var(--mut)
 nav.tabs button.on{color:var(--lime)}
 canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:30}
 .tiny{font-size:12px;color:var(--mut)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+#l18wa,#l18wb{min-height:44px}
 </style>
 </head>
 <body>
@@ -324,7 +326,7 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:30}
   <button class="back" onclick="go('home')">← Terug</button>
   <span class="tag">Level 5</span>
   <h2>Jouw geld raakt ook je ouders</h2>
-  <p>Woon je thuis en krijgen je ouders huurtoeslag? Dan telt jouw inkomen boven een grens mee.</p>
+  <p>Woon je thuis en krijgen je ouders huurtoeslag? Dan telt jouw inkomen boven een grens mee (ben je 23 of ouder, dan je hele inkomen).</p>
   <div class="card">
     <label>Wat verdien jij per jaar (bruto)?</label>
     <input type="range" id="oi" min="0" max="15000" step="100" value="4000" oninput="ouders()">
@@ -563,7 +565,7 @@ const CH={
   ['Wanneer is vrijwillig eigen risico slim?',['Als je weinig zorg verwacht én een buffer hebt','Altijd, want je premie wordt lager','Als je vaak medicijnen nodig hebt'],'Lagere premie, maar je moet het hele bedrag kunnen betalen als het misgaat.'],
   ['Je wordt op 10 maart 18. Vanaf wanneer betaal je zelf zorgpremie?',['1 april','10 maart','1 januari volgend jaar'],'Vanaf de 1e van de maand na je verjaardag. Je blijft automatisch verzekerd bij de verzekeraar van je ouders, tenzij je zelf iets anders kiest.']],
  l3:[['Lisa vergeet 2 rekeningen van € 25. Wat betaalt ze minimaal extra aan incassokosten?',['€ 80','€ 50','€ 7,50'],'Minimaal € 40 per rekening: 2 × € 40 = € 80. Meer dan wat ze kocht!'],
-  ['Je vergeet één rekening van € 300. Wat zijn de incassokosten minimaal?',['€ 45','€ 40','€ 300'],'15% van € 300 = € 45. Dat is meer dan het minimum van € 40, dus € 45.'],
+  ['Je vergeet één rekening van € 300. Hoeveel incassokosten mogen ze maximaal rekenen?',['€ 45','€ 40','€ 300'],'15% van € 300 = € 45. Dat is meer dan het minimumbedrag van € 40, dus mogen ze tot € 45 rekenen.'],
   ['Wat verandert er met de nieuwe wet voor achteraf betalen?',['Aanbieders moeten checken of je kunt betalen en worden aangesloten bij BKR','Achteraf betalen wordt verboden','Er verandert niks'],'De wet is nog niet ingegaan, maar komt eraan: een kredietcheck en BKR. Een achterstand kan je later dus achtervolgen.'],
   ['Wat is de enige goede reden om achteraf te betalen?',['Je wil het pakket eerst checken en het geld staat al klaar','Je hebt nu geen geld, volgende maand misschien wel','Het voelt goedkoper'],'Gebruik het als controle-tool, nooit als lening.']],
  l4:[['Je werkt bij de supermarkt (€ 600 p/m) en in de horeca (€ 150 p/m), tegelijk. Waar zet je de korting aan?',['Bij de supermarkt','Bij de horeca','Bij allebei'],'Eén werkgever: die waar je het meest verdient.'],
@@ -889,7 +891,7 @@ const TH=[
   ['✍️ Je handtekening telt','Vanaf 18 ben je zelf aansprakelijk voor alles wat je tekent: arbeidscontract, telefoonabonnement, huur, sportschool. <b>Lees vóór je tekent</b> hoe lang het loopt en hoe je opzegt.'],
   ['📈 Jeugdloon','Je minimumloon hangt af van je leeftijd en stijgt tot je 21e. Controleer op je loonstrook of je verjaardag is verwerkt.'],
   ['🧾 Je loonstrook lezen','Bruto = wat je verdient. Netto = wat er op je rekening komt. Check ook: loonheffingskorting (bij maar 1 werkgever!), vakantiegeld en je uren.'],
-  ['🏠 Thuiswonend en meer verdienen?','Verdien je meer dan € 6.218 per jaar en krijgen je ouders huurtoeslag? Dan telt het meer verdiende deel mee voor hún toeslag. Zie level 5.']],
+  ['🏠 Thuiswonend en meer verdienen?','Verdien je meer dan € 6.218 per jaar en krijgen je ouders huurtoeslag? Dan telt het meer verdiende deel mee voor hún toeslag (vanaf 23 jaar telt je hele inkomen). Zie level 5.']],
  checks:[['Ik weet hoe lang mijn contracten lopen','Telefoon, sportschool, streaming'],['Loonheffingskorting staat bij maar 1 werkgever aan','Check je loonstroken'],['Ik bewaar mijn loonstroken en jaaropgaven','Nodig voor aangifte, toeslag en woning']],
  links:[['Belastingdienst jongeren','https://www.belastingdienst.nl/jongeren','Bijbaan en aangifte']]},
 
@@ -1003,7 +1005,7 @@ function scan(raw){
  S0.word18=/\bword(t)?\b.{0,25}\b18\b(?! ?(uur|u\b|euro|€))|\bbijna 18\b|\b18 word|achttiende|\bturn(ing)? 18\b/.test(t);
  const NOT_AGE='(?! ?(uur|u\\b|euro|eur\\b|€|per|keer|%|maanden|weken|dagen))';
  const AGE=[ new RegExp('\\b(\\d{2}) ?(jaar|jr|j)\\b(?! (geleden|getrouwd|lang|terug|oud\\w* huis))','g'), new RegExp('\\bben (\\d{2})\\b'+NOT_AGE), new RegExp('\\bnet (\\d{2})\\b'+NOT_AGE), /\bik (\d{2}) (ben|word|werd)\b/,
-  new RegExp('\\bzijn (allebei |beiden |allebei )?(\\d{2})\\b'+NOT_AGE), /\b(\d{2})[- ]jarig/,/\bals (?:je|ik) (\d{2}) (?:bent|ben|jaar)\b/,/\bop (?:mijn|m'n|mn|me|je) (\d{2})e\b/, /(?:^|[,(] ?)(1[2-9]|2\d) ?[,)]/,/^ ?(1[2-9]|2\d)(?: ?(?:jaar|jr|j))?(?:,|\s(?:en|ben|wil|heb|net|doe|woon|sta|moet|jaar)\b)/, new RegExp('^ ?[a-zà-ü]+,? (\\d{2})[ ,.]'+NOT_AGE)];
+  new RegExp('\\bzijn (allebei |beiden |allebei )?(\\d{2})\\b'+NOT_AGE), /\b(\d{2})[- ]jarig/,/\bals (?:je|ik) (\d{2}) (?:bent|ben|jaar)\b/,/\bop (?:mijn|m'n|mn|me|je) (\d{2})e\b/, /(?:^|[,(] ?)(1[2-9]|2\d) ?[,)]/,/^ ?(1[2-9]|2\d)(?: ?(?:jaar|jr|j))?(?:,|\s(?:en|ben|wil|heb|net|doe|woon|sta|moet|jaar)\b)/,/^ ?(1[2-9]|2\d) ?(?:jaar|jr|j)?[.!?]?$/, new RegExp('^ ?[a-zà-ü]+,? (\\d{2})[ ,.]'+NOT_AGE)];
  S0.age=null;for(const re of AGE){const m=t.replace(/\bal \d{2} jaar\b/g,' ').match(re.global?new RegExp(re.source):re);if(m){const v=+(m[m.length-1]&&/^\d+$/.test(m[m.length-1])?m[m.length-1]:m.slice(1).find(x=>/^\d+$/.test(x||'')));if(v>=12&&v<=99){S0.age=v;break}}}
  if(S0.word18&&(S0.age===null||S0.age===18))S0.age=17;
  // 4. eigen kind vs. ouder van tiener
@@ -1068,6 +1070,9 @@ function scan(raw){
  // nieuwe situaties
  f('krap',/kom\w* (niet|nie) rond|rondkomen|\bkrap\b|\bblut\b|platzak|broke|geen (cent|rooie cent|geld|stuiver)|nul euro|€ ?0 op|geld is (altijd )?op|geld (altijd )?op voor|hou\w* (niks|niets) over|niks (meer )?over|\btekort\b|gat in (mijn|m'n|me|mn) begroting|eind van de maand/);
  f('budget',/gat in (mijn|m'n|me|mn) hand|waar (mijn|m'n|mn) geld blijft|\bbudget|begroting|overzicht|\bsparen\b|leren sparen|te ?veel uit|impulsaankopen/);
+ f('crisis',/zelfmoord|su[iï]cid|suicide|kill myself|want to die|wil er niet meer zijn|ik wil niet meer zijn|zie het (echt |gewoon |helemaal )?niet meer zitten|geen uitweg|van kant|(liever|beter) (niet|nooit) (bestaan|geboren)|maak er (dan )?(maar )?een eind(e)? aan|nooit meer wakker|beter af zonder mij|leven (te )?(beeindigen|beëindigen)|het leven zat|geen zin (meer )?in (het|mijn|m'n|mn|dit) leven|snij(d|den)? mezelf|mezelf (snijden|pijn doen)|\bkms\b|voor de trein|mezelf (wat|iets) aan|zelfdoding|eind(e)? aan (mijn|m'n|mn|me|het) leven|er een eind(e)? aan (te )?maken|niet meer (willen )?leven|wil (niet meer leven|dood)|dood (willen|wil)\b|mezelf (iets )?aan ?(te )?doen/);
+ f('somber',/somber|depressi|angstig|paniekaanval|slaap (slecht|niet) (door|van|om)|geldstress|stress (over|door|om|van) (mijn )?geld|geldzorgen|zorgen (over|om) geld|ten einde raad|wanhopig|hou het niet (meer )?vol|houd het niet (meer )?vol|wil verdwijnen|kan het niet meer aan/);
+ f('dwang',/(pakken|pakt|pakte|afpakken|nemen|neemt|houden|houdt) .{0,12}(mijn|m'n|mn|me) (geld|loon|salaris|pinpas|spaargeld)|(mijn|m'n|mn) (geld|loon|salaris|pinpas|spaargeld) .{0,12}(afgepakt|afgenomen|af ?pakken)|bedreig|afpers|chantage|chanteer|\bdreig(t|en|de)\b/);
  f('gokken',/\bgok|casino|\btoto\b|\bbet(ten|s)?\b|wedden|unibet|bet365|holland casino|lootbox|\bpoker\b|kansspel/);
  f('crypto',/crypto|bitcoin|beleg|aandelen|trading|forex/);
  f('zzp',/\bzzp|freelanc|eigen bedrijf|\bkvk\b|\bbtw\b|ondernemer/);
@@ -1182,7 +1187,7 @@ function plan2(s){const p=plan(s);const D=(a)=>p.doe.unshift(a),W=a=>p.weet.push
  if(s.ouder&&s.kindAge!==null&&(s.kindAge>=19||s.kindAge<=15)){
   p.doe=drop(p.doe,/Praat vóór de verjaardag|knip op 18|Help je kind met zorgverzekering|Laat je kind zich inschrijven/);
   if(s.kindAge<=15)D(['👪','Oefenen met geld, nu het nog kan','Geef een vast bedrag zakgeld of kleedgeld en spreek af wat je kind er zelf van betaalt. Fouten maken met € 20 is beter dan met € 2.000 op je 18e. Wil je kind een bijbaan? Check de regels per leeftijd.',`<button class="mini" onclick="chal('l6')">Speel samen level Budget →</button>`]);
-  else D(['👪','Volwassen kind thuis of op zichzelf','Spreek kostgeld af (Rekenlab Kostgeld). Woont je kind thuis en verdient het meer dan € '+eur(R.ht_vrij).slice(2)+' per jaar? Dan telt dat mee voor jullie huurtoeslag. Tot 21 jaar moeten ouders bijdragen aan levensonderhoud.',T('r5','Kostgeld rekenen')])}
+  else D(['👪','Volwassen kind thuis of op zichzelf','Spreek kostgeld af (Rekenlab Kostgeld). Woont je kind thuis en verdient het meer dan € '+eur(R.ht_vrij).slice(2)+' per jaar? Dan telt het deel daarboven mee voor jullie huurtoeslag (vanaf 23 jaar het hele inkomen). Tot 21 jaar moeten ouders bijdragen aan levensonderhoud.',T('r5','Kostgeld rekenen')])}
  if(s.geldezel){p.doe=[['🚨','Stop! Dit is een geldezel-truc','Je pas, pincode of rekening uitlenen voor geld is witwassen. Daar ben je zelf strafbaar voor, ook als je jonger dan 18 bent. Je bank sluit je rekening en je komt jaren in een register. Al gedaan? Bel direct je bank en praat met iemand die je vertrouwt.',L('https://www.fraudehelpdesk.nl','Fraudehelpdesk')],...p.doe];H(['Fraudehelpdesk','Twijfel of al opgelicht? Bel 088-786 73 72 of kijk online','https://www.fraudehelpdesk.nl'])}
  if(s.fraude&&!s.geldezel)D(['🕵️','Opgelicht of twijfel?','Geld overgemaakt aan een oplichter? Bel meteen je bank (het nummer staat op je pas), doe aangifte bij de politie en meld het bij de Fraudehelpdesk. Hoe sneller, hoe meer kans dat het geld terugkomt.',L('https://www.fraudehelpdesk.nl','Fraudehelpdesk')]);
  if(s.gokken&&(minor||(s.age!==null&&s.age<18))){p.doe=drop(p.doe,/Gokken kost/);D(['🎰','Gokken mag pas vanaf 18','Een site die jou wel laat spelen, is illegaal. Packs, skins en lootboxes zijn ook een gok: je weet niet wat je krijgt. Betaalde je met de kaart van je ouders? Vertel het ze en vraag samen bij de app-store om je geld terug.',L('https://www.loketkansspel.nl','Loket Kansspel')])}
@@ -1191,10 +1196,10 @@ function plan2(s){const p=plan(s);const D=(a)=>p.doe.unshift(a),W=a=>p.weet.push
  if(s.klarna&&(minor||(s.age!==null&&s.age<18))){p.let_=drop(p.let_,/Achteraf betalen/);D(['🛍️','Achteraf betalen: pas vanaf 18','Onder de 18 mag je Klarna of Riverty niet gebruiken. Kocht je toch iets zonder toestemming van je ouders? Dan kunnen zij de aankoop vaak terugdraaien. Neem contact op met de winkel.',''])}
  if(s.bnplPlan&&!s.schuld)p.hulp=p.hulp.filter(x=>!/Schuldhulp|Budgetbeheer|SchuldHulpMaatje|Geldhulp in jouw/.test(x[0]));
  if(s.bkrVraag||s.lease||s.telefoon)W(['📋','BKR en lenen voor spullen','Een telefoon met toestel is een lening: kost het toestel meer dan € 250, dan kom je bij BKR. Private lease en een autolening ook. Dat verlaagt later je hypotheek. Vraag je af: kan ik dit 2 tot 5 jaar elke maand betalen?']);
- if(s.bbl){p.doe=drop(p.doe,/Studiefinanciering/);D(['🛠️','Bbl: werken én leren','Bij bbl krijg je loon, maar geen studiefinanciering en geen studentenreisproduct. Die zijn alleen voor voltijd (bol). Check je loonstrook: voor bbl geldt een eigen minimumjeugdloon.',L('https://www.rijksoverheid.nl/onderwerpen/studiefinanciering','Rijksoverheid')])}
+ if(s.bbl){p.doe=drop(p.doe,/Studiefinanciering/);D(['🛠️','Bbl: werken én leren','Bij bbl krijg je loon, maar geen studiefinanciering en geen studentenreisproduct. Die zijn alleen voor voltijd (bol). Check je loonstrook: voor bbl geldt in 2026 nog een lager minimumjeugdloon. Vanaf 1 januari 2027 is dat gelijk aan het gewone minimumjeugdloon.',L('https://www.rijksoverheid.nl/onderwerpen/studiefinanciering','Rijksoverheid')])}
  if(s.afgestudeerd){p.doe=drop(p.doe,/Studiefinanciering/);D(['🎓','Klaar met je studie? Stop je reisproduct!','Vanaf de 1e van de volgende maand reis je niet meer gratis. Zet je studentenreisproduct uiterlijk de 10e stop. Doe je dat niet, dan krijg je een ov-boete van ca. € 96 per halve maand. Gaat je inkomen omhoog? Pas dan ook je zorgtoeslag aan.',L('https://duo.nl/particulier/studentenreisproduct-stopzetten.jsp','Reisproduct stopzetten')])}
  if(s.gestopt)p.doe=drop(p.doe,/Studiefinanciering:/);
- if(s.lenen&&(s.studie||s.studieschuld)&&!s.gestopt)W(['🏦','Lenen bij DUO: wat betekent dat?','Je betaalt terug in 35 jaar, maar nooit meer dan 4% van je inkomen boven het minimumloon. Terugbetalen begint 2 jaar na je studie. Rente 2026: 2,33%. Bij een hypotheek telt je maandbedrag aan DUO mee: hoe minder je leent, hoe meer je later kunt lenen voor een huis.']);
+ if(s.lenen&&(s.studie||s.studieschuld)&&!s.gestopt)W(['🏦','Lenen bij DUO: wat betekent dat?','Je betaalt terug in 35 jaar, maar nooit meer dan 4% van je inkomen boven het minimumloon. Terugbetalen begint 2 jaar na je studie. Rente 2026: 2,33% (2027: 2,70%). Bij een hypotheek telt je maandbedrag aan DUO mee: hoe minder je leent, hoe meer je later kunt lenen voor een huis.']);
  if(s.proeftijd)D(['📝','Proeftijd en tijdelijk contract','Bij een contract van 6 maanden of korter mag er geen proeftijd in. Tot 2 jaar is het maximaal 1 maand, langer maximaal 2 maanden. In de proeftijd mogen jij en je werkgever direct stoppen. Twijfel? Vraag het Juridisch Loket, gratis.',L('https://www.juridischloket.nl','Juridisch Loket')]);
  if(s.bijstandVraag&&!s.geenInkomen&&(s.age===null||s.age<27))D(['🧭','Bijstand onder de 27','Meestal zoek je eerst 4 weken naar werk of school. Heb je schulden, psychische problemen of geen vast adres? Dan kan de gemeente dat overslaan. Van 18 tot 21 krijg je een lager bedrag, en je ouders moeten bijdragen.',L('https://www.rijksoverheid.nl/onderwerpen/bijstand','Rijksoverheid bijstand')]);
  if(s.belastingTerug)D(['💸','Belasting terugvragen','Werkte je maar een deel van het jaar, of in de vakantie? Dan is er vaak te veel loonheffing ingehouden. Vraag het terug met een aangifte via Mijn Belastingdienst, tot 5 jaar terug.',T('r4','Reken het uit')]);
@@ -1206,7 +1211,7 @@ function plan2(s){const p=plan(s);const D=(a)=>p.doe.unshift(a),W=a=>p.weet.push
  if(s.bank)D(['🪪','DigiD, ID en bankrekening','Vanaf 14 jaar kun je zelf DigiD aanvragen. Onder de 18 heb je een jongerenrekening met toestemming van je ouders; op je 18e wordt die een gewone rekening. Tip: open dan ook een spaarrekening en zet meldingen aan in je bank-app.',L('https://www.digid.nl','DigiD aanvragen')]);
  if(s.zakgeld)D(['👛','Zakgeld en kleedgeld','Spreek af wat je er zelf van betaalt (kleding, telefoon, uitgaan). Verdeel het meteen: een deel om uit te geven, een deel om te sparen. Zo oefen je met budgetteren.',`<button class="mini" onclick="chal('l6')">Speel level Budget →</button>`]);
  if(s.verkopen)W(['🏷️','Online verkopen of eigen bedrijfje','Je eigen oude spullen verkopen: meestal geen belasting. Koop je in om te verkopen? Dan kan het inkomen zijn. Platforms geven verkopers met 30 of meer verkopen of meer dan € 2.000 per jaar door aan de Belastingdienst. Onder de 18 kun je je bij de KVK inschrijven met toestemming van je ouders.']);
- if(s.kinderbijslag)W(['👪','Kinderbijslag en alimentatie','Kinderbijslag gaat naar je ouders en stopt in het kwartaal waarin je 18 wordt. Ben je 16 of 17, dan moet je naar school of een opleiding volgen. Kinderalimentatie loopt door tot je 21e; vanaf 18 kan het geld naar jou zelf gaan.']);
+ if(s.kinderbijslag)W(['👪','Kinderbijslag en alimentatie','Kinderbijslag gaat naar je ouders. Ze krijgen het nog over het kwartaal waarin je 18 wordt; daarna stopt het. Ben je 16 of 17, dan moet je naar school of een opleiding volgen. Kinderalimentatie loopt door tot je 21e; vanaf 18 kan het geld naar jou zelf gaan.']);
  if(s.mantelzorg)W(['💛','Jonge mantelzorger','Zorg je veel voor iemand thuis? Je gemeente of het wijkteam kan je ondersteunen. Praat er ook over op school.']);
  if(s.scooter&&!/auto|rijles|2 ?to ?drive/.test(raw)){p.weet=drop(p.weet,/Rijbewijs & auto/);W(['🛵','Scooter of brommer','Het bromfietsrijbewijs (AM) mag vanaf 16, theorie al vanaf 15,5. Je moet een WA-verzekering hebben: voor jongeren is die vaak duur. Vergelijk voordat je een scooter koopt.'])}
  if(s.onveilig||s.dakloos&&(s.age===null||s.age<18)){H(['Veilig Thuis','Niet veilig thuis? Bel gratis 0800-2000, dag en nacht','https://veiligthuis.nl']);if(s.age===null||s.age<18)H(['De Kindertelefoon','8 t/m 18 jaar: bel of chat gratis 0800-0432','https://www.kindertelefoon.nl'])}
@@ -1227,7 +1232,7 @@ function plan2(s){const p=plan(s);const D=(a)=>p.doe.unshift(a),W=a=>p.weet.push
  if(/oppas|krantenwijk|\bzzp|freelanc|working holiday|werkvakantie/.test(raw))p.doe=drop(p.doe,/Loonheffingskorting/);
  if(!(minor||u18||kidU18))p.doe=drop(p.doe,/Werken: wat mag/);
  if(s.zzp&&/ziek|aov|arbeidsongeschikt/.test(raw))W(['🤒','Ziek als zzp\'er?','Als zzp\'er krijg je geen loon door bij ziekte. Een arbeidsongeschiktheidsverzekering (AOV) is vaak duur: vergelijk goed, of kijk naar een broodfonds. Zet in elk geval een buffer opzij.']);
- if(s.age===21||/net 21|21 geworden/.test(raw))W(['💶','21 = volledig minimumloon','Vanaf je 21e krijg je het volledige minimumloon (€ 14,71 bruto per uur in 2026). Check je loonstrook in de maand na je verjaardag.']);
+ if(s.age===21||/net 21|21 geworden/.test(raw))W(['💶','21 = volledig minimumloon','Vanaf je 21e krijg je het volledige minimumloon: € 14,99 bruto per uur sinds 1 juli 2026, € 15,29 vanaf 1 januari 2027. Check je loonstrook in de maand na je verjaardag.']);
  if((s.lenen&&!s.studie&&!s.studieschuld)||/creditcard/.test(raw))if(!p.weet.some(x=>/BKR/.test(x[1])))W(['📋','Lenen en BKR','Een lening, creditcard, private lease of telefoon met toestel komt bij BKR. Dat verlaagt later hoeveel je kunt lenen voor een huis. Vraag je af: kan ik dit elke maand betalen, ook als ik minder ga verdienen?']);
  if(/statushouder|vluchteling|nieuw in nederland|inburger|asiel/.test(raw))D(['🌍','Nieuw in Nederland','Je gemeente helpt bij inburgering en vaak ook met geld in het begin. Zorgverzekering, toeslagen en DigiD werken hetzelfde als voor iedereen. Hulp nodig, ook in je eigen taal? Vraag het wijkteam of VluchtelingenWerk.',L('https://www.vluchtelingenwerk.nl','VluchtelingenWerk')]);
  if(/working holiday|werkvakantie|buitenland|australi|emigr/.test(raw))W(['✈️','Langer naar het buitenland','Ga je langer weg en schrijf je je uit? Dan stopt je Nederlandse zorgverzekering meestal: regel een internationale verzekering. Stop je studiefinanciering als je niet studeert, en zet je studentenreisproduct stop.']);
@@ -1236,13 +1241,17 @@ function plan2(s){const p=plan(s);const D=(a)=>p.doe.unshift(a),W=a=>p.weet.push
  if(s.zorg&&!minor&&!u18&&!p.doe.some(x=>/zorgverzekering/i.test(x[1])))D(['🏥','Zorgverzekering','Iedereen die in Nederland woont of werkt, moet een basisverzekering hebben. Gemiddeld ca. € '+R.premie_1825+' per maand. Laag inkomen? Check zorgtoeslag.',`<button class="mini" onclick="openRK('r9')">Welke polis past bij mij? →</button>`]);
  if(/schenking|erfenis|geërfd|(kreeg|gekregen|krijg) .{0,25}van (mijn |mn |m'n )?(oma|opa|ouders|tante|oom)/.test(raw))W(['🎁','Geld gekregen van familie','Een gift van opa of oma is belastingvrij tot € 2.769 per jaar (2026). Van je ouders mag meer. Voor een erfenis gelden andere regels. Check het op belastingdienst.nl, en zet het geld eerst op een spaarrekening.']);
  if((minor||u18)&&/gespaard|sparen|spaargeld|spaar/.test(raw))D(['🐷','Sparen als je jonger bent dan 18','Zet je spaargeld op een eigen (jongeren)spaarrekening, samen met je ouders. Geef je spaargeld een doel en een datum. Beleggen kan pas via je ouders, en alleen met geld dat je lang niet nodig hebt.',`<button class="mini" onclick="openTH('t7')">Slim met je geld →</button>`]);
+ if(s.somber&&!s.crisis){D(['💬','Geldstress? Praat erover','Zorgen over geld kunnen je slaap en stemming flink raken. Je huisarts kan helpen. Geldfit (gratis en anoniem, 0800-8115) zoekt met je uit wat er met je geld kan. Denk je weleens aan doodgaan? Bel dan ook 113 (0800-0113, gratis, dag en nacht) of chat via 113.nl.',L('https://www.geldfit.nl','Geldfit')]);if(!p.hulp.some(x=>x[0]==='Geldfit'))H(['Geldfit','Gratis en anoniem: test, chat, WhatsApp of 0800-8115','https://www.geldfit.nl'])}
+ if(s.dwang){D(['🛡️','Neemt iemand je geld af, of word je bedreigd?','Dat is niet oké en niet jouw schuld. Praat met iemand die je vertrouwt. Bel gratis Veilig Thuis (0800-2000, dag en nacht)'+(minor||(s.age!==null&&s.age<19)?' of de Kindertelefoon (0800-0432, tot je 18e)':'')+'. Word je bedreigd? Bel de politie op 0900-8844. Direct gevaar: bel 112.',L('https://veiligthuis.nl','Veilig Thuis')]);H(['Veilig Thuis','Niet veilig thuis of onder druk gezet? Gratis 0800-2000, dag en nacht','https://veiligthuis.nl'])}
+ if(s.crisis){D(['💬','Je hoeft dit niet alleen te dragen','Denk je aan zelfdoding? Praat er nu over met iemand. Bel je huisarts (\'s avonds en in het weekend de huisartsenpost) of 113 Zelfmoordpreventie: bel 113 of 0800-0113 (gratis, 24/7) of chat via 113.nl. Is er direct gevaar? Bel 112. Geldproblemen zijn op te lossen: daar helpen de organisaties hieronder je bij.',L('https://www.113.nl','113.nl')]);p.hulp=p.hulp.filter(x=>x[0]!=='Je huisarts');H(['113 Zelfmoordpreventie','Bel 113 of 0800-0113 (gratis, 24/7) of chat via 113.nl','https://www.113.nl']);H(['Je huisarts','Bel vandaag. \'s Avonds en in het weekend: de huisartsenpost.',''])}
  if(!p.doe.length)p.doe.push(['🧭','Kies een onderwerp of vertel iets meer','We konden je situatie nog niet goed plaatsen. Beantwoord de vraag hierboven, of zoek zelf in de onderwerpen.',`<button class="mini" onclick="go('home')">Bekijk alle onderwerpen →</button>`]);
+ if(s.crisis){const c=p.doe.find(x=>x[1]==='Je hoeft dit niet alleen te dragen');p.doe=[c,['🤝','Geldzorgen? Je hoeft het niet zelf op te lossen','Eerst zorgen dat het met jóu goed gaat. Daarna helpt Geldfit (gratis en anoniem, 0800-8115) of je gemeente je met schulden en post. Dat hoef je niet alleen te doen.',L('https://www.geldfit.nl','Geldfit')]].filter(Boolean)}
  p.doe=p.doe.slice(0,6);return p}
 function chips(s){const c=[];if(s.ouder)c.push('👪 ouder');if(s.age)c.push((s.ouder?'🧒 kind ':'🎂 ')+(s.word18&&s.age===17?'wordt 18':s.age+' jaar'));if(s.ink)c.push('💶 '+eur(s.ink.m)+' p/m');if(s.thuis&&(s.uit||s.andereStad))c.push('🏠 thuis → verhuizen');else if(s.uit)c.push('🏠 op zichzelf');else if(s.thuis)c.push('🏠 thuis');if(s.studie)c.push('🎓 '+(s.studie==='hbo'?'hbo/wo':'mbo'));if(s.werk)c.push('💼 werk');if(s.tweeBanen)c.push('⚖️ 2 banen');if(s.samen)c.push('👫 samen');if(s.schuld||(s.klarna&&!s.bnplPlan))c.push('📮 betalingsachterstand');else if(s.klarna||s.lease)c.push('🛍️ afbetalen');if(s.age!==null&&s.age<18&&!s.ouder&&!s.word18)c.push('🧒 minderjarig');if(s.dakloos)c.push('📬 geen vaste woonplek');return c}
 let lastScan=null,lastPlan=null,chatHist=[];
 /* Doorvragen: wat bedoel je precies? */
 let skipQ=new Set();
-function vragen(s){const r=s.raw.toLowerCase(),Q=[];
+function vragen(s){const r=s.raw.toLowerCase(),Q=[];if(s.crisis)return Q;
  if(/schuld/.test(r)&&!/achterstand|aanmaning|deurwaarder|incasso|cjib|klarna|afterpay|riverty|achteraf|duo|studie|rekening|boete/.test(r))
   Q.push({k:'schuld',q:'Wat voor schuld bedoel je?',o:[['📮 Rekeningen die ik niet kan betalen','ik heb een betalingsachterstand op rekeningen'],['🛍️ Klarna of achteraf betalen','ik heb openstaande betalingen bij klarna'],['🎓 Studieschuld bij DUO','ik heb een studieschuld bij duo']]});
  if(s.age===null&&!s.word18&&!s.ouder)
@@ -1354,18 +1363,18 @@ hud();
 
   /* ---------- 2. Geldchallenge van de week ---------- */
   var WEEK = [
-    ['🧾', 'Abonnementen-jacht', 'Zoek in je bank-app alle vaste afschrijvingen. Is er eentje die je niet meer gebruikt? Opzeggen = direct winst.'],
-    ['🛒', 'Prijs per kilo', 'Vergelijk bij de supermarkt 3 producten op de prijs per kilo/liter (staat klein op het kaartje). Welke is écht goedkoper?'],
-    ['⏳', '48-uurregel', 'Zie je iets dat je wilt kopen? Zet het 48 uur op een lijstje. Wil je het daarna nog steeds? Dan pas kopen.'],
-    ['💬', 'Vraag het thuis', 'Vraag een ouder of verzorger: wat kost onze boodschappenweek ongeveer? Raad eerst zelf.'],
-    ['📱', 'Telefoon-check', 'Kijk wat je telefoonabonnement per maand kost en hoeveel data je echt gebruikt. Kan het goedkoper?'],
-    ['🐷', 'Spaar je kleingeld', 'Leg deze week elke dag een vast bedrag (b.v. € 1) apart. Hoeveel is dat na een jaar?'],
-    ['🔍', 'Kleine lettertjes', 'Zoek bij een "achteraf betalen"-knop wat er gebeurt als je te laat bent. Hoe hoog zijn de kosten?'],
-    ['🍝', 'Kookweek', 'Kook één keer zelf in plaats van bestellen. Reken uit wat je hebt bespaard.'],
-    ['📅', 'Vaste lasten op een rij', 'Schrijf op wat je elke maand vast kwijt bent. Klopt dat met wat je dácht?'],
-    ['🏦', 'Bank-app tour', 'Ontdek 1 functie in je bank-app die je nog niet kende: spaarpotje, betaallimiet of meldingen.'],
-    ['🎁', 'Cadeau-budget', 'Zet een maximumbedrag voor het volgende cadeau dat je koopt. Lukt het om eronder te blijven?'],
-    ['🆘', 'Weet waar hulp is', 'Zoek op welke gratis geldhulp er in jouw gemeente is (b.v. via 0800-8115). Je hoeft het niet nodig te hebben: weten is genoeg.']
+    ['🧾', 'Abonnementen-jacht', 'Zoek in je bank-app alle vaste afschrijvingen. Is er eentje die je niet meer gebruikt? Opzeggen = direct winst.', 'Hoeveel vaste afschrijvingen vond je? En welke kan weg?'],
+    ['🛒', 'Prijs per kilo', 'Vergelijk bij de supermarkt 3 producten op de prijs per kilo/liter (staat klein op het kaartje). Welke is écht goedkoper?', 'Welk product was per kilo/liter het goedkoopst?'],
+    ['⏳', '48-uurregel', 'Zie je iets dat je wilt kopen? Zet het 48 uur op een lijstje. Wil je het daarna nog steeds? Dan pas kopen.', 'Wat zette je op je lijstje? Wil je het na 48 uur nog?'],
+    ['💬', 'Vraag het thuis', 'Vraag een ouder of verzorger: wat kost onze boodschappenweek ongeveer? Raad eerst zelf.', 'Wat dacht jij, en wat kost het echt?'],
+    ['📱', 'Telefoon-check', 'Kijk wat je telefoonabonnement per maand kost en hoeveel data je echt gebruikt. Kan het goedkoper?', 'Wat kost je abonnement per maand, en hoeveel data gebruik je?'],
+    ['🐷', 'Spaar je kleingeld', 'Leg deze week elke dag een vast bedrag (b.v. € 1) apart. Hoeveel is dat na een jaar?', 'Hoeveel heb je deze week apart gezet?'],
+    ['🔍', 'Kleine lettertjes', 'Zoek bij een "achteraf betalen"-knop wat er gebeurt als je te laat bent. Hoe hoog zijn de kosten?', 'Hoe hoog zijn de kosten als je te laat betaalt?'],
+    ['🍝', 'Kookweek', 'Kook één keer zelf in plaats van bestellen. Reken uit wat je hebt bespaard.', 'Wat kookte je, en hoeveel heb je bespaard?'],
+    ['📅', 'Vaste lasten op een rij', 'Schrijf op wat je elke maand vast kwijt bent. Klopt dat met wat je dácht?', 'Hoeveel ben je elke maand vast kwijt?'],
+    ['🏦', 'Bank-app tour', 'Ontdek 1 functie in je bank-app die je nog niet kende: spaarpotje, betaallimiet of meldingen.', 'Welke functie heb je ontdekt?'],
+    ['🎁', 'Cadeau-budget', 'Zet een maximumbedrag voor het volgende cadeau dat je koopt. Lukt het om eronder te blijven?', 'Wat was je maximumbedrag, en is het gelukt?'],
+    ['🆘', 'Weet waar hulp is', 'Zoek op welke gratis geldhulp er in jouw gemeente is (b.v. via Geldfit of bel gratis 0800-8115). Je hoeft het niet nodig te hebben: weten is genoeg.', 'Hoe heet de gratis geldhulp in jouw gemeente?']
   ];
   function weekChallenge() { var w = weekId() % 100; return WEEK[w % WEEK.length]; }
 
@@ -1386,7 +1395,9 @@ hud();
   function doWeek() {
     var s = st(); if (!s.wc) s.wc = {};
     var id = weekId(); if (s.wc[id]) { say('Deze week al gedaan ✓'); return; }
-    s.wc[id] = 1; active(); if (typeof addXP === 'function') addXP(10, '💪 Weekchallenge +10 XP'); else persist();
+    var inp = document.getElementById('l18wa'), ans = inp ? inp.value.trim() : '';
+    if (ans.length < 2) { say('Typ eerst kort wat je hebt gedaan of ontdekt ✍️'); if (inp) inp.focus(); return; }
+    s.wc[id] = ans.slice(0, 80); active(); if (typeof addXP === 'function') addXP(10, '💪 Weekchallenge +10 XP'); else persist();
     home();
   }
 
@@ -1400,7 +1411,11 @@ hud();
       '<div class="card" style="margin:0 0 14px">' +
       '<span class="tag" style="color:' + C.cyan + '">Week ' + (weekId() % 100) + '</span>' +
       '<h3 style="margin-top:6px">' + c[0] + ' Geldchallenge: ' + e(c[1]) + '</h3><p style="margin:6px 0 10px">' + e(c[2]) + '</p>' +
-      (done ? '<p class="tiny">✓ Gedaan. Volgende week een nieuwe.</p>' : '<button class="btn small" onclick="L18X.doWeek()">Gedaan! +10 XP</button>') +
+      (done ? '<p class="tiny">✓ Gedaan' + (typeof done === 'string' ? ': <i>' + e(done) + '</i>' : '') + '. Volgende week een nieuwe.</p>'
+        : (c[1] === 'Weet waar hulp is' ? '<p style="margin:0 0 8px"><a class="btn small ghost" href="https://www.geldfit.nl/hulp-bij-jou-in-de-buurt" target="_blank" rel="noopener">🔎 Zoek hulp in jouw gemeente</a></p>' : '') +
+          '<label class="tiny" for="l18wa" style="display:block;margin-bottom:4px"><b>' + e(c[3] || 'Wat heb je gedaan of ontdekt?') + '</b></label>' +
+          '<input id="l18wa" maxlength="80" placeholder="Typ je antwoord…" oninput="document.getElementById(\'l18wb\').disabled=this.value.trim().length<2" onkeydown="if(event.key===\'Enter\'){event.preventDefault();L18X.doWeek()}" enterkeyhint="done" style="width:100%;padding:10px;border-radius:10px;border:0;margin-bottom:8px;font-size:16px">' +
+          '<button id="l18wb" class="btn small" disabled onclick="L18X.doWeek()">Klaar! +10 XP</button><p class="tiny" style="margin-top:4px">Je antwoord blijft alleen op je eigen telefoon.</p>') +
       '<p class="tiny" style="margin-top:10px">' + dots + '<br>🔥 ' + si.now + ' ' + (si.now === 1 ? 'week' : 'weken') + ' op rij · record ' + si.best +
       '<br>Eén week overslaan mag: je reeks blijft staan.</p>' +
       '<button class="btn small ghost" onclick="L18X.wrapped()">🎬 Mijn Level 18 Wrapped</button> ' +
