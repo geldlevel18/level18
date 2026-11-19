@@ -270,7 +270,7 @@ canvas#cf{position:fixed;inset:0;pointer-events:none;z-index:30}
   </div>
   <div class="card">
     <h3>⏰ Deadline</h3>
-    <p style="margin-top:6px">Op je 18e blijf je <b>automatisch verzekerd</b> bij de verzekeraar van je ouders. Vanaf de 1e van de maand na je verjaardag betaal je <b>zelf premie</b>. Een andere polis kiezen? Doe het rond je verjaardag. Check ook direct of je <b>zorgtoeslag</b> krijgt.</p><p style="margin-top:8px">📅 In {{jaar_volgend}} wordt het eigen risico <b>€ {{er_volgend}}</b>.</p>
+    <p style="margin-top:6px">Op je 18e blijf je <b>automatisch verzekerd</b> bij de verzekeraar van je ouders. Vanaf de 1e van de maand na je verjaardag betaal je <b>zelf premie</b>. Een andere polis kiezen? Doe het rond je verjaardag. Check ook direct of je <b>zorgtoeslag</b> krijgt.</p><p class="volg" style="margin-top:8px">📅 In {{jaar_volgend}} wordt het eigen risico <b>€ {{er_volgend}}</b>.</p>
   </div>
   <button class="btn" onclick="chal('l2')">⚔️ Start de challenge</button><p class="tiny" style="text-align:center;margin-top:6px">4 vragen · alles goed in één keer = ⭐⭐⭐</p>
 </section>
@@ -453,6 +453,8 @@ const WOON=[["Achterhoek", "Thuis in de Achterhoek", "https://www.thuisindeachte
 function woonKies(v){const o=$('woonOut');if(!o)return;if(v===''){o.innerHTML='';return}const w=v==='x'?['','socialehuurwoning.nl','https://www.socialehuurwoning.nl/']:WOON[+v];o.innerHTML=`<a class="link" href="${w[2]}" target="_blank" rel="noopener" style="margin-top:8px"><span>${w[1]}<small>${v==='x'?'Landelijke wegwijzer naar de woonsite van jouw regio':'Inschrijven, kosten en verlengen: check het meteen'}</small></span>↗</a>`}
 
 const R={{js:ALL}};
+const VOLG=R.er_volgend!==R.er||R.premie_volgend!==R.premie_1825,ERV=VOLG&&R.er_volgend!==R.er?' ('+R.jaar_volgend+': € '+R.er_volgend+')':'';   // 'volgend jaar'-teksten alleen als er echt iets verandert
+if(!VOLG)document.addEventListener('DOMContentLoaded',()=>document.querySelectorAll('.volg').forEach(e=>e.remove()));
 const LEVELS=[
  {id:'l1',em:'🎂',t:'18 worden',s:'Wat verandert er?'},
  {id:'l2',em:'🏥',t:'Zorg',s:'Eigen risico'},
@@ -679,7 +681,7 @@ const ZK={
   'q1=wsb':'⛔ <b>Zelf opzeggen kan niet zolang er een achterstand is.</b> Maar via schuldhulp of bewind kun je in veel gemeenten een regeling treffen en daarna meedoen met de <b>gemeentepolis</b>. Met een saneringskrediet heb je nog maar één schuldeiser: dan is de achterstand weg en kun je weer overstappen. Vraag het je schuldhulpverlener of bewindvoerder.',
   'q2=nee':'✅ Kies een <b>naturapolis</b>. Die is vaak het goedkoopst. Check wel of je apotheek en het ziekenhuis in de buurt een contract hebben.',
   'q2=ja':'🔍 Kijk naar een <b>combinatiepolis</b>, of een naturapolis waar jouw zorgverlener een contract heeft. Bij een zorgverlener zonder contract krijg je soms maar een deel vergoed.',
-  'q3=nee':'✅ <b>Geen vrijwillig eigen risico.</b> Dan betaal je bij pech maximaal € {{er}} per jaar ({{jaar_volgend}}: € {{er_volgend}}). Mét € 500 vrijwillig eigen risico zou dat tot € {{=er+500}} zijn ({{jaar_volgend}}: € {{=er_volgend+500}}), vaak in één keer. Dat risico is de lagere premie meestal niet waard.',
+  'q3=nee':'✅ <b>Geen vrijwillig eigen risico.</b> Dan betaal je bij pech maximaal € {{er}} per jaar'+ERV+'. Mét € 500 vrijwillig eigen risico zou dat tot € {{=er+500}} zijn'+(ERV?' ({{jaar_volgend}}: € {{=er_volgend+500}})':'')+', vaak in één keer. Dat risico is de lagere premie meestal niet waard.',
   'q3=ja':'⚖️ Vrijwillig eigen risico <b>kan</b>, als je weinig zorg verwacht. Reken het uit: wat bespaar je per jaar aan premie, en wat kost het als je pech hebt? Let op: vooraf spreiden kan dan bij de meeste verzekeraars niet.',
   'q4=controle':'💡 <b>Geen tandartsverzekering nodig.</b> 2 controles kosten in 2027 samen ca. € 59. Een normaal tandartsjaar (2 controles, gebitsreiniging, 1 vulling met verdoving) ca. € 175. Een gemiddelde tandartsverzekering kost ca. € 27 per maand = € 324 per jaar. Zet liever € 15 per maand apart.',
   'q4=meer':'🦷 Een tandartsverzekering <b>kan</b> lonen. Vraag je tandarts om een begroting en vergelijk die met de premie + wat de polis maximaal vergoedt. Beugel: vaak wachttijd of maximum.',
@@ -913,7 +915,7 @@ const TH=[
  intro:'Gezond blijven kost geld. En hulp vragen is slim, niet zwak.',
  kaarten:[
   ['🏥 Zorgverzekering','Op je 18e blijf je automatisch verzekerd bij de verzekeraar van je ouders. Vanaf de 1e van de maand na je verjaardag betaal je zelf premie. Gemiddelde premie: ca. € {{premie_1825}} per maand ({{jaar}}). Vergelijken loont.'],
-  ['📅 Volgend jaar duurder','Het eigen risico stijgt in {{jaar_volgend}} van € {{er}} naar <b>€ {{er_volgend}}</b>. De gemiddelde premie wordt ca. € {{premie_volgend}} per maand. Vergelijk in december en stap eventueel over.'],
+  ...(VOLG?[['📅 Volgend jaar duurder','Het eigen risico stijgt in {{jaar_volgend}} van € {{er}} naar <b>€ {{er_volgend}}</b>. De gemiddelde premie wordt ca. € {{premie_volgend}} per maand. Vergelijk in december en stap eventueel over.']]:[]),
   ['👩‍⚕️ Huisarts is gratis','De huisarts valt niet onder je eigen risico. Twijfel je? Bel gewoon.'],
   ['🧠 Stress of zorgen?','Geldstress, zorgen over school, werk of thuis? Je <b>huisarts</b> is de eerste plek om aan te kloppen. Die luistert en verwijst je door als dat nodig is. Ook het wijkteam van je gemeente denkt gratis met je mee.']],
  checks:[['Zorgverzekering gecheckt','Past mijn polis bij mij?'],['Zorgtoeslag aangevraagd (als ik recht heb)','Het is een voorschot!'],['Geld opzij voor het eigen risico','€ {{=round(er/12)}} per maand']],
@@ -922,9 +924,9 @@ const TH=[
 {id:'t6',em:'🛡️',t:'Verzekeringen',s:'Wat moet, wat is slim, wat kan weg',
  intro:'Sommige verzekeringen zijn verplicht, andere slim, en soms ben je dubbel verzekerd. Zo kies je goed.',
  kaarten:[
-  ['🏥 Zorgverzekering (verplicht)','Op je 18e blijf je verzekerd bij de verzekeraar van je ouders; vanaf de maand erna betaal je zelf premie (gemiddeld ca. € {{premie_1825}} per maand in {{jaar}}, ca. € {{premie_volgend}} in {{jaar_volgend}}). Er zijn nog 2 soorten: <b>natura</b> (zorgverleners met contract) en <b>combinatie</b>. Overstappen: opzeggen vóór 1 januari, nieuwe polis vóór 1 februari.'],
+  ['🏥 Zorgverzekering (verplicht)','Op je 18e blijf je verzekerd bij de verzekeraar van je ouders; vanaf de maand erna betaal je zelf premie (gemiddeld ca. € {{premie_1825}} per maand in {{jaar}}'+(VOLG?', ca. € {{premie_volgend}} in {{jaar_volgend}}':'')+'). Er zijn nog 2 soorten: <b>natura</b> (zorgverleners met contract) en <b>combinatie</b>. Overstappen: opzeggen vóór 1 januari, nieuwe polis vóór 1 februari.'],
   ['🦷 Tandarts en aanvullend','Vanaf 18 vergoedt de basisverzekering de tandarts niet meer. Alleen 2× per jaar controle? Reken uit of een losse rekening goedkoper is dan een aanvullende tandartsverzekering. Een gemeentepolis geeft korting, maar soms betaal je voor meer dan je nodig hebt.'],
-  ['💰 Eigen risico: zet het apart','€ {{er}} per jaar ({{jaar_volgend}}: € {{er_volgend}}). Huisarts valt er niet onder, maar bloedprikken en medicijnen wél. Je betaalt het achteraf per nota, in een betalingsregeling, of vooraf in ca. 10 termijnen (aanmelden vaak vóór 1 februari, bij DSW vóór 1 januari). <b>Tip: zet vanaf je 18e elke maand € {{=round(er/12)}} apart.</b>'],
+  ['💰 Eigen risico: zet het apart','€ {{er}} per jaar'+ERV+'. Huisarts valt er niet onder, maar bloedprikken en medicijnen wél. Je betaalt het achteraf per nota, in een betalingsregeling, of vooraf in ca. 10 termijnen (aanmelden vaak vóór 1 februari, bij DSW vóór 1 januari). <b>Tip: zet vanaf je 18e elke maand € {{=round(er/12)}} apart.</b>'],
   ['⚠️ Vrijwillig eigen risico','Lagere premie, maar bij pech betaal je tot € 885 per jaar (2027: € 900), vaak in één keer. Alleen slim als je dat geld écht op de bank hebt.'],
   ['🤝 Aansprakelijkheid (AVP)','Niet verplicht, wel heel slim: dekt schade die jij per ongeluk aan anderen doet. Ca. € 3–5 per maand. Thuis (en vaak als student op kamers) ben je meestal meeverzekerd bij je ouders. Werk je en woon je zelfstandig? Neem een eigen AVP.'],
   ['🛋️ Inboedel','Dekt je eigen spullen tegen brand, diefstal en water. Op kamers ben je meestal niet automatisch meeverzekerd bij je ouders: vraag het na. Laptop en telefoon buitenshuis vallen er vaak niet onder.'],
@@ -1173,7 +1175,7 @@ function plan(s){const doe=[],weet=[],let_=[],hulp=[];const y=s.ink?s.ink.y:null
   let_.push(['💡','Toeslagen zijn voorschotten','Gaat je kind meer verdienen? Dan moet het dat zelf doorgeven bij Toeslagen, anders volgt later een terugbetaling. Herinner je kind eraan.']);
   doe.push(['🏡','Laat je kind zich inschrijven bij de woonsite','Op de 18e verjaardag: de wachttijd telt vanaf dan. En elk jaar verlengen!',TH_('t1','Thema Wonen')]);
  } else {
-  if(meer18&&(s.age===null||s.age<=19||s.word18))doe.push(['🏥','Regel je zorgverzekering','Meestal blijf je verzekerd bij de verzekeraar van je ouders (check het even), maar je betaalt vanaf de maand na je 18e zelf. Vergelijk: gemiddeld ca. € '+R.premie_1825+' per maand. Eigen risico € '+R.er+' ('+R.jaar_volgend+': € '+R.er_volgend+').',L('https://www.consumentenbond.nl/zorgverzekering','Vergelijk onafhankelijk')]);
+  if(meer18&&(s.age===null||s.age<=19||s.word18))doe.push(['🏥','Regel je zorgverzekering','Meestal blijf je verzekerd bij de verzekeraar van je ouders (check het even), maar je betaalt vanaf de maand na je 18e zelf. Vergelijk: gemiddeld ca. € '+R.premie_1825+' per maand. Eigen risico € '+R.er+ERV+'.',L('https://www.consumentenbond.nl/zorgverzekering','Vergelijk onafhankelijk')]);
   const sfz=s.studie?' Studiefinanciering telt niet mee als inkomen.':'';
   if(meer18){if(s.samen)doe.push(['💶','Samenwonen: zorgtoeslag samen berekenen','Met een toeslagpartner tellen jullie inkomens samen. Zorgtoeslag kan tot een gezamenlijk inkomen van € '+eur(R.zt_grens_partner).slice(2)+' per jaar (2026), inclusief vakantiegeld. Doe samen de proefberekening.'+sfz,L('https://www.toeslagen.nl','Proefberekening')]);
    else if(y!==null){const z=ZT(y)/12,vg=s.ink.vg?' (incl. 8% vakantiegeld)':'',dicht=y>R.zt_grens-5000&&y<=R.zt_grens;doe.push(['💶',z>0?`Vraag zorgtoeslag aan: ca. ${eur(z)} per maand`:'Zorgtoeslag: waarschijnlijk geen recht',z>0?`Bij ${eur(y)} per jaar${vg} heb je waarschijnlijk recht op ongeveer ${eur(z)} per maand. Het is een voorschot: verandert je inkomen, geef het meteen door.${dicht?' <b>Je zit dicht bij de grens van € '+eur(R.zt_grens).slice(2)+'.</b> Vraag liever een lager voorschot aan, dan betaal je later niets terug.':''}${sfz}`:`Je inkomen (${eur(y)} per jaar${vg}) ligt boven de grens van € ${eur(R.zt_grens).slice(2)}. Vakantiegeld telt ook mee.`,L('https://www.toeslagen.nl','Proefberekening')])}
