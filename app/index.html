@@ -1580,5 +1580,21 @@ hud();
 })();
 
 </script>
+<!-- Anonieme bezoekersteller (GoatCounter): geen cookies, geen persoonsgegevens -->
+<script data-goatcounter="https://geldlevel18.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script>
+(function(){var seen={};
+function t(n){if(seen[n])return;seen[n]=1;var go=function(){try{window.goatcounter.count({path:'stap/'+n,title:n,event:true})}catch(e){}};
+ if(window.goatcounter&&window.goatcounter.count)go();else setTimeout(function(){if(window.goatcounter&&window.goatcounter.count)go();else seen[n]=0},2500)}
+function wrap(name,label){var f=window[name];if(typeof f!=='function')return;window[name]=function(){try{t(label(arguments))}catch(e){}return f.apply(this,arguments)}}
+wrap('go',function(a){return 'scherm-'+a[0]});
+wrap('openTH',function(a){return 'thema-'+a[0]});
+wrap('openRK',function(a){return 'rekentool-'+a[0]});
+wrap('runScan',function(){return 'vraag-gesteld'});
+wrap('quiz',function(){return 'eindbaas-gestart'});
+function wd(){if(window.L18X&&L18X.diploma&&!L18X._w){var d=L18X.diploma;L18X._w=1;L18X.diploma=function(){t('diploma-geopend');return d.apply(this,arguments)}}}
+wd();setTimeout(wd,1000);
+})();
+</script>
 </body>
 </html>
