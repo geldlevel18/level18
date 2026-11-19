@@ -15,7 +15,7 @@ De game (`app/index.html`) en de website (`index.html`) worden daaruit gebouwd.
 De meeste bedragen in teksten zijn sjabloon-velden (`{{er}}`, `{{ht_vrij}}` …) in `app/index.template.html`.
 Controleer bij een nieuw jaar daarnaast handmatig:
 - het jaartal "2026" in teksten (zoek op `2026` in de sjablonen);
-- incassokosten (WIK: 15%, minimaal € 40) in level 3 en de challenge;
+- incassokosten (WIK: maximaal 15%, bij kleine rekeningen tot € 40) in level 3 en de challenge;
 - de nieuwsdatum `bnpl_datum` (achteraf betalen) – na een jaar mag die tekst weg of anders;
 - statistieken op de website (Nibud, CBS, Wijzer in geldzaken) – vervang door nieuwer onderzoek als dat er is.
 
