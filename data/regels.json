@@ -97,8 +97,8 @@
    "voor": "premie_laag"
   },
   {
-   "t": "Huurtoeslag 2026 – vrijstelling inwonend kind",
-   "u": "https://woneninbeaufort.nl/blog/post/32194/de-revolutie-van-2026-een-expert-analyse-van-de-huurtoeslagwijzigingen-voor-jongeren-en-ouders/",
+   "t": "Belastingdienst – ik woon bij mijn ouders (eerste € 6.218 telt niet mee, jonger dan 23)",
+   "u": "https://www.belastingdienst.nl/wps/wcm/connect/nl/toeslagen-jongeren/content/ik-woon-bij-mijn-ouders",
    "voor": "ht_vrij"
   },
   {
@@ -127,7 +127,7 @@
    "voor": "bnpl_datum"
   },
   {
-   "t": "Zorgwijzer – Miljoenennota 2027: eigen risico € 400, premie € 169",
+   "t": "Zorgwijzer – 2027: eigen risico € 400; gem. premie ca. € 173 (marktgemiddelde nov 2026; VWS-raming € 169)",
    "u": "https://www.zorgwijzer.nl/zorgverzekering-2027/miljoenennota-2027-zorgpremie-hard-omhoog-toch-stijging-eigen-risico",
    "voor": "er_volgend premie_volgend"
   },
@@ -145,11 +145,93 @@
    "t": "Leegstandwet: geen huurbescherming bij tijdelijke verhuur",
    "u": "https://www.volkshuisvestingnederland.nl/onderwerpen/huren-en-wonen/huurbescherming-en-huurcontracten/tijdelijke-verhuur-op-grond-van-leegstandwet-geen-huurbescherming",
    "voor": "wonen"
+  },
+  {
+   "t": "Belastingdienst – maximaal inkomen zorgtoeslag 2026 (ook partners, vakantiegeld telt mee, stufi niet)",
+   "u": "https://www.belastingdienst.nl/wps/wcm/connect/nl/zorgtoeslag/content/maximaal-inkomen-voor-zorgtoeslag",
+   "voor": "zt_grens_partner"
+  },
+  {
+   "t": "Belastingdienst – huurtoeslag verandert vanaf 2026 (max. huur € 932,93, oudste bewoner, onder 18)",
+   "u": "https://www.belastingdienst.nl/wps/wcm/connect/nl/huurtoeslag/content/huurtoeslag-verandert-vanaf-2026",
+   "voor": "ht_max_huur ht_jong_grens"
+  },
+  {
+   "t": "Belastingdienst – student op kamers en huurtoeslag",
+   "u": "https://www.belastingdienst.nl/wps/wcm/connect/nl/huurtoeslag/content/student-op-kamers-huurtoeslag",
+   "voor": "wonen"
+  },
+  {
+   "t": "Belastingdienst – klein bedrag toeslag terugbetalen (€ 121)",
+   "u": "https://www.belastingdienst.nl/wps/wcm/connect/nl/toeslag-terugbetalen/content/klein-bedrag-aan-toeslag-terugbetalen",
+   "voor": "terug_drempel"
+  },
+  {
+   "t": "Rijksoverheid – bedragen minimumloon 2026",
+   "u": "https://www.rijksoverheid.nl/onderwerpen/minimumloon/bedragen-minimumloon/bedragen-minimumloon-2026",
+   "voor": "wml_jeugd"
+  },
+  {
+   "t": "Rijksoverheid – bedragen minimumloon 2027",
+   "u": "https://www.rijksoverheid.nl/onderwerpen/minimumloon/bedragen-minimumloon/bedragen-minimumloon-2027",
+   "voor": "wml_jeugd_volgend"
+  },
+  {
+   "t": "Rijksoverheid – hoogte lesgeld en cursusgeld mbo",
+   "u": "https://www.rijksoverheid.nl/vraag-en-antwoord/middelbaar-beroepsonderwijs/hoogte-lesgeld-en-cursusgeld-mbo",
+   "voor": "lesgeld_mbo cursusgeld_bbl_12 cursusgeld_bbl_34"
+  },
+  {
+   "t": "DUO – studentenreisproduct stopzetten (ov-schuld)",
+   "u": "https://duo.nl/particulier/studentenreisproduct-stopzetten.jsp",
+   "voor": "ov_schuld_1 ov_schuld_2"
+  },
+  {
+   "t": "DUO – tegemoetkoming scholieren bedragen",
+   "u": "https://duo.nl/particulier/tegemoetkoming-scholieren/bedragen.jsp",
+   "voor": "tgs_thuis tgs_uit tgs_aanv_max"
+  },
+  {
+   "t": "Nibud Studentenonderzoek 2024 (kostgeld: 9%, gem. € 160)",
+   "u": "https://eerstekamer.nl/overig/20240913/nibud_studentenonderzoek_2024/document",
+   "voor": "kostgeld_nibud kostgeld_nibud_pct"
   }
  ],
  "contact_email": "",
  "er_volgend": 400,
  "premie_volgend": 173,
  "jaar_volgend": 2027,
- "ht_jong_grens": 498.2
+ "ht_jong_grens": 498.2,
+ "zt_grens_partner": 51142,
+ "ht_max_huur": 932.93,
+ "terug_drempel": 121,
+ "wml_jeugd": {
+  "15": 4.5,
+  "16": 5.17,
+  "17": 5.92,
+  "18": 7.5,
+  "19": 8.99,
+  "20": 11.99,
+  "21": 14.99
+ },
+ "wml_jeugd_volgend": {
+  "15": 4.59,
+  "16": 6.12,
+  "17": 7.65,
+  "18": 9.56,
+  "19": 11.47,
+  "20": 13.38,
+  "21": 15.29
+ },
+ "lesgeld_mbo": 1511,
+ "cursusgeld_bbl_12": 314,
+ "cursusgeld_bbl_34": 762,
+ "schooljaar": "2026/2027",
+ "ov_schuld_1": 96.09,
+ "ov_schuld_2": 192.21,
+ "tgs_thuis": 147.65,
+ "tgs_uit": 344.26,
+ "tgs_aanv_max": 113.98,
+ "kostgeld_nibud": 160,
+ "kostgeld_nibud_pct": 9
 }
